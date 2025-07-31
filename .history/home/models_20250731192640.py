@@ -1,15 +1,12 @@
 from django.db import models
-
 from wagtail.models import Page
 from wagtail.fields import RichTextField
-from wagtail.images.models import Image
-from wagtail.admin.panels import FieldPanel
+from wagtail.admin.panels import FieldPanel, ImageChooserPanel
 
 
 class HomePage(Page):
-    hero_text = RichTextField(blank=True)
-
-    background_image = models.ForeignKey(
+    intro = RichTextField(blank=True)
+    image = models.ForeignKey(
         'wagtailimages.Image',
         null=True,
         blank=True,
@@ -18,6 +15,6 @@ class HomePage(Page):
     )
 
     content_panels = Page.content_panels + [
-        FieldPanel("hero_text"),
-        FieldPanel("background_image"),
+        FieldPanel("intro"),
+        ImageChooserPanel("image"),
     ]

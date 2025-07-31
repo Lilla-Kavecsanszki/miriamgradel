@@ -1,0 +1,23 @@
+.hero {
+  height: 100vh;
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 5vw;
+}
+
+.hero-text {
+  width: 33vw;
+  color: red;
+  font-size: 4rem;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px #7df2fb;
+  line-height: 1.2;
+}
+
+.hero-text p {
+  margin: 0;
+}

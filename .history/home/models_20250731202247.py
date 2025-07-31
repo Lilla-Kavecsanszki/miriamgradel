@@ -1,10 +1,9 @@
 from django.db import models
-
 from wagtail.models import Page
 from wagtail.fields import RichTextField
-from wagtail.images.models import Image
 from wagtail.admin.panels import FieldPanel
-
+from wagtail.images.edit_handlers import ImageChooserPanel  # not used anymore in Wagtail 5+
+from wagtail.images.blocks import ImageChooserBlock  # also legacy, FYI
 
 class HomePage(Page):
     hero_text = RichTextField(blank=True)

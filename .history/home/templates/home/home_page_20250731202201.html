@@ -8,10 +8,9 @@
 {% endblock extra_css %}
 
 {% block content %}
-{% image page.background_image original as bg %}
-<div class="hero" style="background-image: url('{{ bg.url }}');">
+<div class="hero" style="background-image: url('{% image page.background_image original as bg %}{{ bg.url }}');">
   <div class="hero-text">
-    {{ page.hero_text|safe }}
+    {{ page.hero_text|linebreaksbr }}
   </div>
 </div>
-{% endblock %}
+{% endblock content %}

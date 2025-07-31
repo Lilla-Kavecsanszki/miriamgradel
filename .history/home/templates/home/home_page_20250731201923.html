@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block body_class %}template-homepage{% endblock %}
+
+{% block extra_css %}
+
+{% comment %}
+Delete the line below if you're just getting started and want to remove the welcome screen!
+{% endcomment %}
+<link rel="stylesheet" href="{% static 'css/welcome_page.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+
+{% extends "base.html" %}
+{% load static wagtailimages_tags %}
+
+{% block body_class %}template-homepage{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/hero.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="hero" style="background-image: url('{% image page.background_image original as bg %}{{ bg.url }}');">
+  <div class="hero-text">
+    {{ page.hero_text|linebreaksbr }}
+  </div>
+</div>
+{% endblock %}
+
+{% include 'home/welcome_page.html' %}
+
+{% endblock content %}

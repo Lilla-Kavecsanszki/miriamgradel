@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load static wagtailimages_tags %}
+
+{% block body_class %}template-homepage{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+{% image page.background_image original as bg %}
+<div class="container-fluid p-0">
+  <div class="row g-0 min-vh-100" style="background-image: url('{{ bg.url }}'); background-size: cover; background-position: center;">
+    <div class="col-12 col-md-4 d-flex align-items-center justify-content-center hero-text">
+      {{ page.hero_text|safe }}
+    </div>
+    <div class="col-12 col-md-8">
+      <!-- Right side remains empty or can be used for future content -->
+    </div>
+  </div>
+</div>
+{% endblock %}
