@@ -38,14 +38,15 @@
 {% block extra_js %}
 <script>
 (function(){
-  // Destination URL comes from the chosen page in Wagtail admin
-  const ENTER_URL = "{% if page.destination_page %}{% pageurl page.destination_page %}{% else %}/{% endif %}";
+  {% if page.destination_page %}
+    const ENTER_URL = "{% pageurl page.destination_page %}";
+  {% endif %}
 
   function goHome() {
     const hero = document.querySelector('.welcome-hero');
     if (hero) {
       hero.classList.add('fade-out');
-      setTimeout(() => window.location.href = ENTER_URL, 600); // match CSS transition
+      setTimeout(() => window.location.href = ENTER_URL, 600);
     } else {
       window.location.href = ENTER_URL;
     }
@@ -58,7 +59,6 @@
     let fired = false;
     function oneShot() { if (fired) return; fired = true; goHome(); }
 
-    // First user interaction → enter
     window.addEventListener('wheel', oneShot, { passive: true });
     window.addEventListener('touchmove', oneShot, { passive: true });
     window.addEventListener('keydown', function(e){
@@ -68,4 +68,3 @@
 })();
 </script>
 {% endblock %}
-

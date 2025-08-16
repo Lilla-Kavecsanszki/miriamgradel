@@ -26,7 +26,6 @@
   <button class="scroll-to-menu" aria-label="Scroll to menu">▼</button> {% endcomment %}
 </section>
 
-<!-- Services Section -->
 <section id="services" class="services-section py-5">
   <div class="container">
     <h2 class="mb-4">Services</h2>
@@ -47,36 +46,6 @@
     </div>
   </div>
 </section>
-
-<!-- Reviews Section -->
-<section id="reviews" class="reviews-section container my-5">
-  <h2 class="text-center mb-4">What People Say</h2>
-  <div class="row">
-    {% for block in page.reviews %}
-      {% if block.block_type == 'review' %}
-      <div class="col-md-4 mb-4">
-        <div class="card h-100 shadow-sm">
-          {% if block.value.image %}
-            {% image block.value.image fill-400x250 class="card-img-top" %}
-          {% endif %}
-          <div class="card-body d-flex flex-column">
-            <blockquote class="blockquote mb-3">
-              <p>“{{ block.value.quote }}”</p>
-            </blockquote>
-            <div class="mt-auto">
-              <div class="fw-bold">{{ block.value.name }}</div>
-              {% if block.value.role %}
-                <div class="text-muted">{{ block.value.role }}</div>
-              {% endif %}
-            </div>
-          </div>
-        </div>
-      </div>
-      {% endif %}
-    {% endfor %}
-  </div>
-</section>
-
 
 
 {% endblock %}

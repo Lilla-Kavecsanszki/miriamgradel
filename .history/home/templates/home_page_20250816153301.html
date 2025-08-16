@@ -56,19 +56,17 @@
       {% if block.block_type == 'review' %}
       <div class="col-md-4 mb-4">
         <div class="card h-100 shadow-sm">
-          {% if block.value.image %}
-            {% image block.value.image fill-400x250 class="card-img-top" %}
+          {% if block.value.photo %}
+            <img src="{{ block.value.photo.url }}" class="card-img-top" alt="{{ block.value.name }}">
           {% endif %}
-          <div class="card-body d-flex flex-column">
-            <blockquote class="blockquote mb-3">
+          <div class="card-body">
+            <blockquote class="blockquote mb-0">
               <p>“{{ block.value.quote }}”</p>
+              <footer class="blockquote-footer mt-2">
+                <strong>{{ block.value.name }}</strong>
+                {% if block.value.role %}, <cite>{{ block.value.role }}</cite>{% endif %}
+              </footer>
             </blockquote>
-            <div class="mt-auto">
-              <div class="fw-bold">{{ block.value.name }}</div>
-              {% if block.value.role %}
-                <div class="text-muted">{{ block.value.role }}</div>
-              {% endif %}
-            </div>
           </div>
         </div>
       </div>
@@ -76,7 +74,6 @@
     {% endfor %}
   </div>
 </section>
-
 
 
 {% endblock %}

@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% load static i18n wagtailimages_tags wagtailcore_tags %}
+
+{% block body_class %}template-welcome{% endblock %}
+{% block side_menu %}{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/welcome.css' %}">
+{% endblock %}
+
+{% block content %}
+  {% image page.background_image original as bg %}
+
+  {# Resolve destination ON THE SERVER #}
+  {% if page.destination_page %}
+    {% pageurl page.destination_page as enter_url %}
+  {% else %}
+    {% with "/" as enter_url %}{% endwith %} {# safe fallback: site root #}
+  {% endif %}
+
+  <section class="welcome-hero" style="--welcome-bg: url('{{ bg.url }}')">
+    <div class="container-fluid welcome-inner">
+      <div class="row w-100">
+        <div class="col-12 col-md-6 col-lg-4 d-flex align-items-center">
+          <div class="hero-text">
+            <div class="desktop-only">{{ page.hero_text|safe }}</div>
+            <div class="mobile-only mobile-layout">
+              <div class="mobile-top">MIRIAM</div>
+              <div class="mobile-bottom">GRADEL</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {# Use an <a> so it still navigates if JS is off #}
+      <a id="enter-link"
+         class="enter-btn"
+         href="{{ enter_url }}"
+         aria-label="{% trans 'Enter site' %}">
+        ▼
+      </a>
+    </div>
+  </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function(){
+  document.addEventListener('DOMContentLoaded', function(){
+    const link = document.getElementById('enter-link');
+    if (!link) return;
+
+    const url = (link.getAttribute('href') || '').trim();
+
+    // If no destination is configured, disable interactivity but DO NOT build "/None/"
+    if (!url || url === 'None') {
+      link.setAttribute('aria-disabled', 'true');
+      link.setAttribute('tabindex', '-1');
+      link.style.opacity = 0.5;
+      link.style.cursor = 'not-allowed';
+      console.warn('WelcomePage: destination_page is not set. Choose it in Wagtail admin.');
+      return;
+    }
+
+    // Fancy fade-out, then navigate to the link's href
+    link.addEventListener('click', function(ev){
+      ev.preventDefault();
+      const hero = document.querySelector('.welcome-hero');
+      if (hero) {
+        hero.classList.add('fade-out');
+        setTimeout(() => { window.location.href = url; }, 600);
+      } else {
+        window.location.href = url;
+      }
+    }, { passive: false });
+
+    // Also trigger on first scroll/touch/keys
+    let fired = false;
+    const go = () => {
+      if (fired) return; fired = true;
+      link.click(); // reuse the same flow
+    };
+    window.addEventListener('wheel', go, { passive: true });
+    window.addEventListener('touchmove', go, { passive: true });
+    window.addEventListener('keydown', e => {
+      if (['Enter','ArrowDown','PageDown',' '].includes(e.key)) go();
+    });
+  });
+})();
+</script>
+{% endblock %}

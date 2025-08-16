@@ -56,7 +56,7 @@ class ReviewBlock(blocks.StructBlock):
     name = blocks.CharBlock(required=True, max_length=100, help_text="Reviewer’s name")
     role = blocks.CharBlock(required=False, max_length=150, help_text="Reviewer’s role / company")
     quote = blocks.TextBlock(required=True, help_text="The testimonial text")
-    image = ImageChooserBlock(required=False, help_text="Optional reviewer photo")
+    photo = ImageChooserBlock(required=False, help_text="Optional reviewer photo")
 
     class Meta:
         icon = "user"
@@ -79,16 +79,8 @@ class HomePage(Page):
         use_json_field=True,
     )
 
-    reviews = StreamField(
-        [("review", ReviewBlock())],
-        null=True,
-        blank=True,
-        use_json_field=True,
-    )
-
     content_panels = Page.content_panels + [
         FieldPanel("intro_text"),
         FieldPanel("mission_statement"),
         FieldPanel("services"),
-        FieldPanel("reviews"),
     ]
