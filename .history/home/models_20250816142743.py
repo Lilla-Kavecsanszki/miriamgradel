@@ -2,7 +2,7 @@ from django.db import models
 
 from wagtail.models import Page
 from wagtail.fields import RichTextField, StreamField
-from wagtail.admin.panels import FieldPanel, PageChooserPanel
+from wagtail.admin.panels import FieldPanel
 from wagtail import blocks
 from wagtail.images.blocks import ImageChooserBlock
 
@@ -37,7 +37,7 @@ class WelcomePage(Page):
     content_panels = Page.content_panels + [
         FieldPanel("hero_text"),
         FieldPanel("background_image"),
-        PageChooserPanel("destination_page"),
+        FieldPanel("destination_page"),
     ]
 
 

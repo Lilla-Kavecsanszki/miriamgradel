@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load static wagtailimages_tags %}
+
+{% block body_class %}template-homepage{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+{% image page.background_image original as bg %}
+
+<!-- Hero Section -->
+<div id="hero-wrapper" class="hero-section hero d-flex align-items-center" style="background-image: url('{{ bg.url }}');">
+  <div class="container-fluid">
+    <div class="row w-100">
+      <div class="col-12 col-md-6 col-lg-4 d-flex align-items-stretch p-0">
+        <div class="hero-text">
+          <!-- Desktop stacked layout from Wagtail -->
+          <div class="desktop-only">
+            {{ page.hero_text|safe }}
+          </div>
+
+          <!-- Mobile layout override -->
+          <div class="mobile-only mobile-layout">
+            <div class="mobile-top">MIRIAM</div>
+            <div class="mobile-bottom">GRADEL</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Menu Section -->
+<div id="menu-wrapper" class="menu-section">
+  <div class="menu-logo">Miriam<br>Gradel</div>
+  <nav class="main-menu">
+    <ul>
+      <li>Journalism
+        <ul>
+          <li>Writings</li>
+          <li>Podcast</li>
+          <li>Videos</li>
+          <li>Communication</li>
+        </ul>
+      </li>
+      <li>Behind the scenes</li>
+      <li>Work with me</li>
+      <li>Contact</li>
+    </ul>
+  </nav>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const root = document.documentElement;
+
+    const triggerFlip = () => {
+      root.classList.add('flipped');
+    };
+
+    // Flip on scroll
+    window.addEventListener('scroll', triggerFlip, { once: true });
+
+    // Flip on click
+    document.getElementById('hero-wrapper').addEventListener('click', triggerFlip);
+  });
+</script>
+{% endblock %}

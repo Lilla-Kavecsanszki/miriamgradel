@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% load static wagtailimages_tags %}
+
+{% block body_class %}template-homepage{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+{% image page.background_image original as bg %}
+
+<!-- Hero Section (Background stays static) -->
+<section id="hero-wrapper" class="hero" style="background-image: url('{{ bg.url }}');">
+  <div class="container-fluid h-100">
+    <div class="row h-100">
+      <div class="col-12 col-md-6 col-lg-4 d-flex align-items-center">
+        <div class="hero-text">
+          <!-- Desktop stacked layout from Wagtail -->
+          <div class="desktop-only">
+            {{ page.hero_text|safe }}
+          </div>
+
+          <!-- Mobile layout override -->
+          <div class="mobile-only mobile-layout">
+            <div class="mobile-top">MIRIAM</div>
+            <div class="mobile-bottom">GRADEL</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll trigger (clickable area or icon) -->
+  <button class="scroll-to-menu" aria-label="Scroll to menu">▼</button>
+</section>
+
+<!-- Menu Section (Revealed by scrolling down) -->
+<section id="menu-section" class="menu-section">
+  <div class="menu-container container-fluid">
+    <div class="menu-logo">Miriam<br>Gradel</div>
+    <nav class="main-menu">
+      <ul>
+        <li class="has-submenu">
+          <button class="menu-toggle">Journalism <span class="arrow">▾</span></button>
+          <ul class="submenu">
+            <li>Writings</li>
+            <li>Podcast</li>
+            <li>Videos</li>
+          </ul>
+        </li>
+        <li>Communication</li>
+        <li>Behind the scenes</li>
+        <li>Work with me</li>
+      </ul>
+    </nav>
+  </div>
+</section>
+
+<!-- Mobile Top Bar (sticky, visible on scroll) -->
+<div class="mobile-top-bar d-lg-none">
+  <div class="brand">Miriam Gradel</div>
+  <div class="mobile-actions">
+    <button class="mobile-contact" aria-label="Contact">
+      <div class="square-icon"></div>
+      <span>Contact</span>
+    </button>
+    <button class="menu-open" aria-label="Open menu">☰</button>
+  </div>
+</div>
+{% endblock %}
+
+
+{% block extra_js %}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const scrollButton = document.querySelector('.scroll-to-menu');
+    const menuSection = document.getElementById('menu-section');
+    const menuToggles = document.querySelectorAll('.menu-toggle');
+    const menuOpenBtn = document.querySelector('.menu-open');
+
+    // Scroll to menu section
+    if (scrollButton && menuSection) {
+      scrollButton.addEventListener('click', () => {
+        menuSection.scrollIntoView({ behavior: 'smooth' });
+      });
+    }
+
+    // Mobile menu button scrolls back to top
+    if (menuOpenBtn) {
+      menuOpenBtn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+
+    // Submenu toggle (accordion style)
+    menuToggles.forEach(toggle => {
+      toggle.addEventListener('click', function () {
+        const parent = this.closest('.has-submenu');
+        parent.classList.toggle('open');
+      });
+    });
+  });
+</script>
+{% endblock %}

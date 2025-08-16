@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load static i18n wagtailimages_tags %}
+
+{% block body_class %}template-welcome{% endblock %}
+
+{% block side_menu %}{% endblock %}
+
+{% block extra_css %}
+<link rel="preload" as="image" href="{{ bg.url }}">
+<link rel="stylesheet" href="{% static 'css/welcome.css' %}">
+{% endblock %}
+
+{% block content %}
+  {% image page.background_image original as bg %}
+
+  <section class="welcome-hero" style="--welcome-bg: url('{{ bg.url }}')">
+    <div class="container-fluid welcome-inner">
+      <div class="row w-100">
+        <div class="col-12 col-md-6 col-lg-4 d-flex align-items-center">
+          <div class="hero-text">
+            <div class="desktop-only">
+              {{ page.hero_text|safe }}
+            </div>
+            {# keep mobile block commented out if not needed #}
+            {# <div class="mobile-only mobile-layout">
+              <div class="mobile-top">MIRIAM</div>
+              <div class="mobile-bottom">GRADEL</div>
+            </div> #}
+          </div>
+        </div>
+      </div>
+      <button class="enter-btn" type="button" aria-label="{% trans 'Enter site' %}">▼</button>
+    </div>
+  </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function(){
+  const ENTER_URL = "{% url 'home' %}";
+
+  function goHome() {
+    const hero = document.querySelector('.welcome-hero');
+    if (hero) {
+      hero.classList.add('fade-out');
+      setTimeout(function(){ window.location.href = ENTER_URL; }, 600); // match CSS
+    } else {
+      window.location.href = ENTER_URL;
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function(){
+    const btn = document.querySelector('.enter-btn');
+    if (btn) btn.addEventListener('click', goHome);
+
+    let fired = false;
+    function oneShot() { if (fired) return; fired = true; goHome(); }
+
+    // Scroll/touch/keyboard → enter
+    window.addEventListener('wheel', oneShot, { passive: true });
+    window.addEventListener('touchmove', oneShot, { passive: true }); // was touchstart
+    window.addEventListener('keydown', function(e){
+      if (['Enter','ArrowDown','PageDown',' '].includes(e.key)) oneShot();
+    });
+  });
+})();
+</script>
+{% endblock %}

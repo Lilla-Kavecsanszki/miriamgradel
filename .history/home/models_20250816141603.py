@@ -2,7 +2,7 @@ from django.db import models
 
 from wagtail.models import Page
 from wagtail.fields import RichTextField, StreamField
-from wagtail.admin.panels import FieldPanel, PageChooserPanel
+from wagtail.admin.panels import FieldPanel
 from wagtail import blocks
 from wagtail.images.blocks import ImageChooserBlock
 
@@ -11,9 +11,9 @@ class WelcomePage(Page):
     """
     Landing / splash page.
     Shows full-screen background image + hero text,
-    no menu, fade-out to chosen destination page.
+    no menu, fade-out to /home.
     """
-    template = "welcome_page.html"
+    template = "home/welcome_page.html"
 
     hero_text = RichTextField(blank=True)
 
@@ -25,19 +25,9 @@ class WelcomePage(Page):
         related_name="+"
     )
 
-    # lets you pick where the Enter button goes (e.g., your HomePage)
-    destination_page = models.ForeignKey(
-        "wagtailcore.Page",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+"
-    )
-
     content_panels = Page.content_panels + [
         FieldPanel("hero_text"),
         FieldPanel("background_image"),
-        PageChooserPanel("destination_page"),
     ]
 
 
@@ -59,11 +49,10 @@ class HomePage(Page):
     Main homepage with sections stacked vertically.
     Sticky side menu is visible here.
     """
-    template = "home_page.html"
+    template = "home/home_page.html"
 
     intro_text = RichTextField(blank=True)
     mission_statement = RichTextField(blank=True)
-
     services = StreamField(
         [("service", ServiceBlock())],
         null=True,

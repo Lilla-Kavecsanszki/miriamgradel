@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load static wagtailimages_tags %}
+
+{% block body_class %}template-homepage{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+{% image page.background_image original as bg %}
+
+<!-- Hero Section (Background stays static) -->
+<section id="hero-wrapper" class="hero" style="background-image: url('{{ bg.url }}');">
+  <div class="container-fluid h-100">
+    <div class="row h-100">
+      <div class="col-12 col-md-6 col-lg-4 d-flex align-items-center">
+        <div class="mission-statement">
+          {{ page.mission_statement|safe }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll trigger (clickable area or icon) -->
+  <button class="scroll-to-menu" aria-label="Scroll to menu">▼</button>
+</section>
+
+<section id="services" class="services-section py-5">
+  <div class="container">
+    <h2 class="mb-4">Services</h2>
+    <div class="row g-4">
+      {% for block in page.services %}
+        {% if block.block_type == "service" %}
+          <div class="col-md-6 col-lg-4">
+            <div class="card h-100 shadow-sm">
+              {% image block.value.image fill-600x400 class="card-img-top" %}
+              <div class="card-body">
+                <h3 class="card-title">{{ block.value.title }}</h3>
+                <p class="card-text">{{ block.value.description }}</p>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+
+{% endblock %}
