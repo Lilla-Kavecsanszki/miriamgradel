@@ -55,15 +55,15 @@
           <nav class="main-menu">
             <ul>
               <li class="has-submenu">
-                  <button class="menu-toggle" aria-expanded="false" aria-controls="submenu-journalism">
-                    Journalism <span class="arrow">▾</span>
-                  </button>
-                  <ul id="submenu-journalism" class="submenu" hidden>
-                    <li><a href="{% slugurl 'written' %}">Written</a></li>
-                    <li><a href="{% slugurl 'audio' %}">Audio</a></li>
-                    <li><a href="{% slugurl 'video' %}">Video</a></li>
-                  </ul>
-                </li>
+                <button class="menu-toggle" aria-expanded="false" aria-controls="submenu-journalism">
+                  Journalism <span class="arrow">▾</span>
+                </button>
+                <ul id="submenu-journalism" class="submenu" hidden>
+                  <li><a href="{{ journalism_url }}#writings">Written</a></li>
+                  <li><a href="{{ journalism_url }}#audio">Audio</a></li>
+                  <li><a href="{{ journalism_url }}#videos">Video</a></li>
+                </ul>
+              </li>
 
               <li><a href="{{ communication_url }}">Communication</a></li>
               <li><a href="{{ bts_url }}">Behind the Scenes</a></li>

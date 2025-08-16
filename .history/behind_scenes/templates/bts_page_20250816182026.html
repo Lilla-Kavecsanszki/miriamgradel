@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block body_class %}template-bts-onepage{% endblock %}
+
+{% block content %}
+<section class="container my-5">
+  <header class="mb-4">
+    <h1 class="mb-2">{{ page.intro_title|default:page.title }}</h1>
+    {% if page.intro_body %}<div class="lead">{{ page.intro_body|richtext }}</div>{% endif %}
+  </header>
+
+  {% for blk in page.slices %}
+    {% if blk.block_type == "section" %}
+      {% with sec=blk.value %}
+      <section id="{{ sec.anchor|default:sec.subtitle|slugify }}" class="bts-section py-4">
+        <h2 class="h4 mb-3">{{ sec.subtitle }}</h2>
+
+        {% if sec.image and sec.image_position != "full" %}
+          <div class="row align-items-center g-3">
+            {% if sec.image_position == "left" %}
+              <div class="col-md-5">
+                {% image sec.image width-900 class="img-fluid rounded" %}
+              </div>
+              <div class="col-md-7">
+                <div class="bts-body">{{ sec.body|richtext }}</div>
+              </div>
+            {% else %}
+              <div class="col-md-7">
+                <div class="bts-body">{{ sec.body|richtext }}</div>
+              </div>
+              <div class="col-md-5">
+                {% image sec.image width-900 class="img-fluid rounded" %}
+              </div>
+            {% endif %}
+          </div>
+        {% elif sec.image and sec.image_position == "full" %}
+          <div class="mb-3">
+            {% image sec.image width-1400 class="img-fluid rounded" %}
+          </div>
+          <div class="bts-body">{{ sec.body|richtext }}</div>
+        {% else %}
+          <div class="bts-body">{{ sec.body|richtext }}</div>
+        {% endif %}
+      </section>
+      {% endwith %}
+    {% endif %}
+  {% endfor %}
+</section>
+{% endblock %}

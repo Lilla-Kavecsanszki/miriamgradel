@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags %}
+
+{% block body_class %}template-audio{% endblock %}
+
+{% block content %}
+<section class="container my-5">
+  <h1 class="mb-3">{{ page.title }}</h1>
+  {% if page.intro %}<div class="lead mb-4">{{ page.intro|richtext }}</div>{% endif %}
+
+  {% for blk in page.episodes|dictsortreversed:"value.date" %}
+    {% if blk.block_type == "episode" %}
+      <article class="mb-5">
+        <h2 class="h5 mb-2">{{ blk.value.title }}</h2>
+        {% if blk.value.date %}<div class="small text-muted mb-2">{{ blk.value.date|date:"M j, Y" }}</div>{% endif %}
+        <div class="ratio ratio-16x9 mb-2">
+          {{ blk.value.embed }}
+        </div>
+        {% if blk.value.teaser %}<p class="small text-muted">{{ blk.value.teaser }}</p>{% endif %}
+        {% if blk.value.behind_scenes.page %}
+          <a class="btn btn-outline-dark btn-sm" href="{% pageurl blk.value.behind_scenes.page %}">
+            {{ blk.value.behind_scenes.label }}
+          </a>
+        {% endif %}
+      </article>
+    {% endif %}
+  {% empty %}
+    <p>No episodes yet.</p>
+  {% endfor %}
+</section>
+{% endblock %}

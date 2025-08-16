@@ -26,10 +26,6 @@ body { margin: 0; }
   z-index: 1040; /* above content */
 }
 
-.menu-logo {
-  font-family: 'Designer', sans-serif;
-}
-
 /* Branding */
 .side-menu .menu-logo {
   font-weight: 700;

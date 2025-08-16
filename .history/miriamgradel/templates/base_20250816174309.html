@@ -36,45 +36,30 @@
   {% wagtailuserbar %}
 
   {# Global sticky side menu (welcome page will override this block to hide it) #}
-    {% block side_menu %}
-      <aside id="side-menu" class="side-menu sticky" aria-label="Site menu">
-        <div class="menu-container">
-
-          {# Logo → Home page #}
-          {% slugurl 'home' as home_url %}
-          <div class="menu-logo">
-            <a href="{{ home_url|default:'/' }}">Miriam<br>Gradel</a>
-          </div>
-
-          {# Resolve absolute URLs for menu items #}
-          {% slugurl 'journalism' as journalism_url %}
-          {% slugurl 'communication' as communication_url %}
-          {% slugurl 'behind-scenes' as bts_url %}
-          {% slugurl 'work-with-me' as work_url %}
-
-          <nav class="main-menu">
-            <ul>
-              <li class="has-submenu">
-                  <button class="menu-toggle" aria-expanded="false" aria-controls="submenu-journalism">
-                    Journalism <span class="arrow">▾</span>
-                  </button>
-                  <ul id="submenu-journalism" class="submenu" hidden>
-                    <li><a href="{% slugurl 'written' %}">Written</a></li>
-                    <li><a href="{% slugurl 'audio' %}">Audio</a></li>
-                    <li><a href="{% slugurl 'video' %}">Video</a></li>
-                  </ul>
-                </li>
-
-              <li><a href="{{ communication_url }}">Communication</a></li>
-              <li><a href="{{ bts_url }}">Behind the Scenes</a></li>
-              <li><a href="{{ work_url }}">Work with Me</a></li>
+  {% block side_menu %}
+  <aside id="side-menu" class="side-menu sticky" aria-label="Site menu">
+    <div class="menu-container">
+      <div class="menu-logo">Miriam<br>Gradel<a href="home">Written</a></div>
+      <nav class="main-menu">
+        <ul>
+          <li class="has-submenu">
+            <button class="menu-toggle" aria-expanded="false" aria-controls="submenu-journalism">
+              Journalism <span class="arrow">▾</span>
+            </button>
+            <ul id="submenu-journalism" class="submenu" hidden>
+              <li><a href="#writings">Written</a></li>
+              <li><a href="#podcast">Audio</a></li>
+              <li><a href="#videos">Video</a></li>
             </ul>
-          </nav>
-        </div>
-      </aside>
-    {% endblock %}
-
-
+          </li>
+          <li><a href="communication">Communication</a></li>
+          <li><a href="#behind-the-scenes">Behind the Scenes</a></li>
+          <li><a href="#work-with-me">Work with Me</a></li>
+        </ul>
+      </nav>
+    </div>
+  </aside>
+  {% endblock %}
 
   <!-- Mobile Top Bar (optional) -->
   <div class="mobile-top-bar d-lg-none">

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block body_class %}template-written{% endblock %}
+
+{% block content %}
+<section class="container my-5">
+  <h1 class="mb-3">{{ page.title }}</h1>
+  {% if page.intro %}<div class="lead mb-4">{{ page.intro|richtext }}</div>{% endif %}
+
+  <div class="row">
+    {% for blk in page.articles %}
+      {% if blk.block_type == "article" %}
+        <div class="col-md-6 col-lg-4 mb-4">
+          <article class="card h-100 border-0 shadow-sm faded-card">
+            {% if blk.value.image %}{% image blk.value.image fill-600x360 class="card-img-top" %}{% endif %}
+            <div class="card-body d-flex flex-column">
+              <div class="small text-muted mb-1">
+                {% if blk.value.publication %}{{ blk.value.publication }} · {% endif %}
+                {% if blk.value.date %}{{ blk.value.date|date:"M j, Y" }}{% endif %}
+              </div>
+              <h2 class="h5 mb-2">
+                <a class="stretched-link text-decoration-none text-dark" href="{{ blk.value.url }}" target="_blank" rel="noopener">
+                  {{ blk.value.title }}
+                </a>
+              </h2>
+              {% if blk.value.teaser %}<p class="small text-muted mb-3">{{ blk.value.teaser }}</p>{% endif %}
+
+              {% if blk.value.behind_scenes.page %}
+                <a class="btn btn-outline-dark btn-sm mt-auto" href="{% pageurl blk.value.behind_scenes.page %}">
+                  {{ blk.value.behind_scenes.label }}
+                </a>
+              {% endif %}
+            </div>
+          </article>
+        </div>
+      {% endif %}
+    {% empty %}
+      <p>No articles yet.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

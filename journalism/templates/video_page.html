@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags %}
+
+{% block body_class %}template-video{% endblock %}
+
+{% block content %}
+<section class="container my-5">
+  <h1 class="mb-3">{{ page.title }}</h1>
+  {% if page.intro %}<div class="lead mb-4">{{ page.intro|richtext }}</div>{% endif %}
+
+  <div class="row">
+    {% for blk in page.videos|dictsortreversed:"value.date" %}
+      {% if blk.block_type == "video" %}
+        <div class="col-md-6 mb-4">
+          <article class="card h-100 border-0 shadow-sm">
+            <div class="{% if blk.value.orientation == 'portrait' %}ratio ratio-9x16{% else %}ratio ratio-16x9{% endif %}">
+              {{ blk.value.embed }}
+            </div>
+            <div class="card-body">
+              <h2 class="h6 mb-1">{{ blk.value.title }}</h2>
+              {% if blk.value.date %}<div class="small text-muted mb-2">{{ blk.value.date|date:"M j, Y" }}</div>{% endif %}
+              {% if blk.value.teaser %}<p class="small text-muted mb-2">{{ blk.value.teaser }}</p>{% endif %}
+              {% if blk.value.behind_scenes.page %}
+                <a class="btn btn-outline-dark btn-sm" href="{% pageurl blk.value.behind_scenes.page %}">
+                  {{ blk.value.behind_scenes.label }}
+                </a>
+              {% endif %}
+            </div>
+          </article>
+        </div>
+      {% endif %}
+    {% empty %}
+      <p>No videos yet.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
