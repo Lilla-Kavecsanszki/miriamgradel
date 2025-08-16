@@ -115,7 +115,7 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
   color: var(--sidebar-ink);
   text-decoration: none;
   display: inline-block;
-  padding-top: 10%;
+  margin-bottom: 12px;
 }
 .menu-logo:hover { 
   opacity: .9;
@@ -197,12 +197,9 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
   font-weight: 600;
 }
 
-.logo img{
-  display: block;
-  margin: 0 auto;     /* centers horizontally */
-  padding-top: 5%;
-  max-width: 80px;   
-  height: auto;
+.logo {
+  padding-top: 10%;
+  font-size: small;
 }
 
 /* Bottom area: language + dots */
@@ -210,7 +207,7 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
   margin-top: auto;
   justify-content: center;
   align-items: center;
-  padding-top: 5%;
+  padding-top: 10%;
 }
 
 .lang-picker { 

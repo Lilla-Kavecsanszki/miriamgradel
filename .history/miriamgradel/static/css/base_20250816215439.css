@@ -115,7 +115,8 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
   color: var(--sidebar-ink);
   text-decoration: none;
   display: inline-block;
-  padding-top: 10%;
+  margin-bottom: 2%;
+  padding-top: 5%;
 }
 .menu-logo:hover { 
   opacity: .9;
@@ -197,10 +198,10 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
   font-weight: 600;
 }
 
-.logo img{
+.logo {
   display: block;
   margin: 0 auto;     /* centers horizontally */
-  padding-top: 5%;
+  padding-top: 10%;
   max-width: 80px;   
   height: auto;
 }
@@ -210,7 +211,7 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
   margin-top: auto;
   justify-content: center;
   align-items: center;
-  padding-top: 5%;
+  padding-top: 10%;
 }
 
 .lang-picker { 
