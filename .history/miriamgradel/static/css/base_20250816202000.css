@@ -12,63 +12,6 @@ body { margin: 0; }
   font-style: normal;
 }
 
-/* TT Chocolates Trial - Regular */
-@font-face {
-  font-family: 'TT Chocolates';
-  src: url('../fonts/TT Chocolates Trial Regular.otf') format('opentype');
-  font-weight: 400;
-  font-style: normal;
-}
-
-/* TT Chocolates Trial - Italic */
-@font-face {
-  font-family: 'TT Chocolates';
-  src: url('../fonts/TT Chocolates Trial Italic.otf') format('opentype');
-  font-weight: 400;
-  font-style: italic;
-}
-
-/* TT Chocolates Trial - Medium */
-@font-face {
-  font-family: 'TT Chocolates';
-  src: url('../fonts/TT Chocolates Trial Medium.otf') format('opentype');
-  font-weight: 500;
-  font-style: normal;
-}
-
-/* TT Chocolates Trial - DemiBold */
-@font-face {
-  font-family: 'TT Chocolates';
-  src: url('../fonts/TT Chocolates Trial DemiBold.otf') format('opentype');
-  font-weight: 600;
-  font-style: normal;
-}
-
-/* TT Chocolates Trial - Bold */
-@font-face {
-  font-family: 'TT Chocolates';
-  src: url('../fonts/TT Chocolates Trial ExtraBold.otf') format('opentype');
-  font-weight: 700;
-  font-style: normal;
-}
-
-/* TT Chocolates Trial - Light */
-@font-face {
-  font-family: 'TT Chocolates';
-  src: url('../fonts/TT Chocolates Trial Light.otf') format('opentype');
-  font-weight: 300;
-  font-style: normal;
-}
-
-/* TT Chocolates Trial - ExtraLight */
-@font-face {
-  font-family: 'TT Chocolates';
-  src: url('../fonts/TT Chocolates Trial ExtraLight.otf') format('opentype');
-  font-weight: 200;
-  font-style: normal;
-}
-
-
 /* Push page content to the right (not on welcome page) */
 body:not(.template-welcome) header,
 body:not(.template-welcome) main,
@@ -78,11 +21,6 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
 .template-welcome main,
 .template-welcome footer { margin-left: 0; }
 
-.body {
-  font-family: 'TT Chocolates', sans-serif;
-}
-
-
 /* ========== Sidebar (structure) ========== */
 .side-menu {
   position: fixed;
@@ -91,7 +29,7 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
   height: 100vh;
   overflow-y: auto;
   z-index: 1040;
-  border-right: 3px solid rgba(0, 0, 0, 0.4);
+  border-right: 1px solid #000000;
   background: #F7F7F7;
   padding: 18px 16px 14px;
   display: flex;
@@ -117,10 +55,7 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
   display: inline-block;
   margin-bottom: 12px;
 }
-.menu-logo:hover { 
-  opacity: .9;
-  text-decoration: none; 
-}
+.menu-logo:hover { opacity: .9; text-decoration: none; }
 
 /* Lists */
 .main-menu .menu-root,
@@ -137,16 +72,13 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
 
 /* Top-level links */
 .menu-link { display: block; padding: 10px 4px; }
-.menu-link:hover { 
-  color: black;
-  background: #7DF2FF;
-}
+.menu-link:hover { opacity: .85; }
 
 /* Dropdown toggle (Journalism) */
 .menu-toggle {
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   padding: 10px 4px;
   background: transparent;
@@ -158,15 +90,6 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
 }
 .menu-toggle .chevron { transition: transform .2s ease; }
 .has-submenu.open .menu-toggle .chevron { transform: rotate(180deg); }
-
-.menu-toggle:hover {
-  color: black;
-  background: #7DF2FF;
-}
-
-.j-dropdown {
-  padding-right: 5%;
-}
 
 /* Submenu container */
 .submenu {
@@ -184,10 +107,7 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
   border-radius: 3px;
   position: relative;
 }
-.submenu-link:hover { 
-  color: black;
-  background: #7DF2FF;
-}
+.submenu-link:hover { background: #e9ecef; }
 
 /* Active highlight */
 .submenu-link.is-active {
@@ -196,31 +116,15 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
   font-weight: 600;
 }
 
-.logo {
-  padding-top: 30%;
-}
-
 /* Bottom area: language + dots */
-.menu-bottom { 
-  margin-top: auto;
-  justify-content: center;
-  align-items: center;
-  padding-top: 30%;
-}
+.menu-bottom { margin-top: auto; }
 
-.lang-picker { 
-  display: flex;
-  justify-content: center; /* center horizontally */
-  align-items: center;     /* center vertically */
-  margin: 10px 0 14px;
-}
-
+.lang-picker { margin: 10px 0 14px; }
 .lang-btn {
   width: 64px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  align-items: center;
+  justify-content: space-between;
   background: transparent;
   border: none;
   cursor: pointer;
@@ -229,11 +133,7 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
 .lang-btn .chevron { font-size: .9rem; }
 
 /* Social dots */
-.dot-row { 
-  display: flex; 
-  gap: 8px;
-  justify-content: center;
-}
+.dot-row { display: flex; gap: 8px; }
 .dot {
   width: 10px; height: 10px;
   background: #111; border-radius: 2px;

@@ -205,16 +205,14 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
   margin-top: auto;
   justify-content: center;
   align-items: center;
-  padding-top: 30%;
 }
 
 .lang-picker { 
-  display: flex;
-  justify-content: center; /* center horizontally */
-  align-items: center;     /* center vertically */
   margin: 10px 0 14px;
+  justify-content: center;
+  align-items: center;
+  padding-top: 30%;
 }
-
 .lang-btn {
   width: 64px;
   display: flex;

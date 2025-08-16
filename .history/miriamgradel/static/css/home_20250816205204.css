@@ -1,13 +1,6 @@
 /* mission-statement section */
-.hero-wrapper{
-  height: 500px;
-}
-
 .mission-statement {
   color: black;
-  font-family: 'TT Chocolates', sans-serif;
-  font-size: 5.5rem;
-  text-align: center;
 }
 
 /* Service caroussel */
