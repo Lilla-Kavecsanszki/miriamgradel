@@ -250,35 +250,59 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
 }
 .dot:hover { opacity: 1; }
 
-/* ========== Social icons row ========== */
-.dot-row {
+/* ================= Social dots ================= */
+:root{
+  /* responsive sizes */
+  --dot-size: clamp(28px, 3.2vw, 34px);
+  --dot-icon: clamp(14px, 1.6vw, 18px);
+}
+
+.dot-row{
   display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
+  flex-wrap: wrap;                 /* wrap on tiny screens */
+  gap: 10px;
   justify-content: center;
   align-items: center;
 }
 
-.dot {
+/* the “dot” button */
+.dot{
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: clamp(18px, 2vw, 24px); /* responsive sizing */
-  color: #222;                       /* default color */
-  transition: color .2s ease, transform .2s ease;
+  width: var(--dot-size);
+  height: var(--dot-size);
+  background: #111;                /* base fill */
+  color: #fff;                     /* icon color */
+  border-radius: 3px;              /* square with soft corners (like the mock) */
   text-decoration: none;
+  transition: transform .15s ease, background .2s ease, color .2s ease;
 }
 
-.dot:hover {
-  transform: translateY(-2px);
+/* font awesome icon sizing */
+.dot .icon{
+  font-size: var(--dot-icon);
+  line-height: 1;
 }
 
-/* Brand-specific hover colors */
-.dot.insta:hover   { color: #E4405F; }  /* Instagram pink */
-.dot.linkedin:hover{ color: #0A66C2; }  /* LinkedIn blue */
-.dot.twitter:hover { color: #1DA1F2; }  /* Twitter/X blue */
-.dot.youtube:hover { color: #FF0000; }  /* YouTube red */
-.dot.mail:hover    { color: #666; }     /* Neutral gray for email */
+/* hover + focus styles */
+.dot:hover{
+  background: var(--sidebar-cyan, #00CFEA);
+  color: #000;
+  transform: translateY(-1px);
+}
+.dot:focus-visible{
+  outline: 2px solid var(--sidebar-cyan, #00CFEA);
+  outline-offset: 2px;
+}
+
+/* Optional brand tints (uncomment if you want brand colors by default)
+.dot.insta { background:#E4405F; }
+.dot.linkedin { background:#0A66C2; }
+.dot.twitter { background:#1DA1F2; }
+.dot.youtube { background:#FF0000; }
+.dot.mail { background:#333; }
+*/
 
 
 /* ========== Mobile: hide sidebar, remove offset ========== */

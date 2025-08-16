@@ -250,37 +250,6 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
 }
 .dot:hover { opacity: 1; }
 
-/* ========== Social icons row ========== */
-.dot-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  justify-content: center;
-  align-items: center;
-}
-
-.dot {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: clamp(18px, 2vw, 24px); /* responsive sizing */
-  color: #222;                       /* default color */
-  transition: color .2s ease, transform .2s ease;
-  text-decoration: none;
-}
-
-.dot:hover {
-  transform: translateY(-2px);
-}
-
-/* Brand-specific hover colors */
-.dot.insta:hover   { color: #E4405F; }  /* Instagram pink */
-.dot.linkedin:hover{ color: #0A66C2; }  /* LinkedIn blue */
-.dot.twitter:hover { color: #1DA1F2; }  /* Twitter/X blue */
-.dot.youtube:hover { color: #FF0000; }  /* YouTube red */
-.dot.mail:hover    { color: #666; }     /* Neutral gray for email */
-
-
 /* ========== Mobile: hide sidebar, remove offset ========== */
 @media (max-width: 991.98px) {
   .side-menu { display: none; }

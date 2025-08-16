@@ -116,7 +116,7 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
   color: var(--sidebar-ink);
   text-decoration: none;
   display: inline-block;
-  padding-top: 25%;
+  padding-top: 15%;
 }
 .menu-logo:hover { 
   opacity: .9;
@@ -125,7 +125,7 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
 
 /* Lists */
 .main-menu .menu-root,
-.main-menu ul { list-style: none; margin: 16px 0 0; padding: 10px; }
+.main-menu ul { list-style: none; margin: 16px 0 0; padding: 40px; }
 .main-menu a { text-decoration: none; color: var(--sidebar-ink); }
 
 /* Thin separators */
@@ -171,8 +171,8 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
 
 /* Submenu container */
 .submenu {
-  margin: 2px 0 2px;
-  background: lightgray;
+  padding: 1px;
+  background: #f3f4f6;
   border-radius: 4px;
 }
 .submenu[hidden] { display: none !important; }
@@ -180,9 +180,8 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
 /* Submenu links */
 .submenu-link {
   display: block;
-  text-align: center;
-  padding: 4px 2px;
-  font-size: 14px;
+  padding: 8px 10px;
+  font-size: 12px;
   border-radius: 3px;
   position: relative;
 }
@@ -209,8 +208,6 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
 /* Bottom area: language + dots */
 .menu-bottom { 
   margin-top: auto;
-  font-family: 'TT Chocolates', sans-serif;
-  font-size: 12px;
   justify-content: center;
   align-items: center;
   padding-top: 5%;
@@ -226,7 +223,6 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
 .lang-btn {
   width: 64px;
   display: flex;
-  font-size: 18px;
   align-items: center;
   justify-content: center;
   align-items: center;
@@ -240,46 +236,15 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
 /* Social dots */
 .dot-row { 
   display: flex; 
-  margin-top: 10%;
   gap: 8px;
   justify-content: center;
 }
 .dot {
-  color: black;
-  display: inline-block;
+  width: 10px; height: 10px;
+  background: #111; border-radius: 2px;
+  display: inline-block; opacity: .9;
 }
 .dot:hover { opacity: 1; }
-
-/* ========== Social icons row ========== */
-.dot-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  justify-content: center;
-  align-items: center;
-}
-
-.dot {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: clamp(18px, 2vw, 24px); /* responsive sizing */
-  color: #222;                       /* default color */
-  transition: color .2s ease, transform .2s ease;
-  text-decoration: none;
-}
-
-.dot:hover {
-  transform: translateY(-2px);
-}
-
-/* Brand-specific hover colors */
-.dot.insta:hover   { color: #E4405F; }  /* Instagram pink */
-.dot.linkedin:hover{ color: #0A66C2; }  /* LinkedIn blue */
-.dot.twitter:hover { color: #1DA1F2; }  /* Twitter/X blue */
-.dot.youtube:hover { color: #FF0000; }  /* YouTube red */
-.dot.mail:hover    { color: #666; }     /* Neutral gray for email */
-
 
 /* ========== Mobile: hide sidebar, remove offset ========== */
 @media (max-width: 991.98px) {
