@@ -55,7 +55,7 @@
   --st-cut: 15px;        /* depth of the angled cut */
   --st-edgeW: 12px;      /* thickness of the dark fin */
   --st-overhang: 12px;   /* how far the fin sticks out to the right */
-  --st-seam: 1px;        /* tiny overlap to avoid hairline gaps */
+  --st-seam: 16px;        /* tiny overlap to avoid hairline gaps */
 }
 
 .section-title{

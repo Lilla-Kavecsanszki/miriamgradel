@@ -50,73 +50,45 @@
 .written-hero p{ margin:0; opacity:.95; }
 
 /* ===== SECTION TITLES ===== */
-/* === Section Title ribbon — final === */
-:root{
-  --st-cut: 15px;        /* depth of the angled cut */
-  --st-edgeW: 12px;      /* thickness of the dark fin */
-  --st-overhang: 12px;   /* how far the fin sticks out to the right */
-  --st-seam: 1px;        /* tiny overlap to avoid hairline gaps */
-}
-
 .section-title{
   position: relative;
-  display: inline-block;    /* ribbon hugs text */
+  display: inline-block;          /* shrink to text width */
   margin: 18px 0 12px;
-  padding: 6px 18px;        /* inner padding */
+  padding: 6px 30px 4px;          /* inside padding */
   line-height: 1.1;
-  margin-left: -15px;       /* align with hero if gutters were canceled */
-  color: #000000;           /* text on cyan */
-  overflow: visible;        /* let fin overhang */
-  isolation: isolate;       /* keep pseudo layers behind text */
+  margin-left: -15px;            /* align with the hero */
+  color: #000000;                 /* text color on cyan */
+  overflow: visible;              /* allow edge to overhang */
+  z-index: 0;
 }
 
-/* ensure text is above the ribbons (works with or without inner <span>) */
-.section-title > .band,
-.section-title > span,
-.section-title > * {
-  position: relative;
-  z-index: 2;
-}
-
-/* cyan slab with angled right cut (top longer) */
+/* Cyan slab with angled right cut (top longer) */
 .section-title::before{
   content:"";
   position:absolute;
   inset: 0;
-  background: #73f0fa;      /* brand cyan */
-  border-radius: 0px;
-  clip-path: polygon(
-    0 0,
-    100% 0,
-    calc(100% - var(--st-cut)) 100%,
-    0 100%
-  );
-  z-index: -1;              /* behind text */
+  background: #73f0fa;           /* cyan slab */
+  clip-path: polygon(0 0, 100% 0, calc(100% - 28px) 100%, 0 100%);
+  z-index: 1;                      /* above cyan fin, below text */
+  border-radius: 0;                /* keep edges straight */
 }
 
-/* dark fin that matches the same diagonal — no gap */
+/* Dark angled edge that matches the same diagonal */
 .section-title::after{
   content:"";
   position:absolute;
-  top: 0; bottom: 0;
-  right:0px;                     /* push outside the slab so it’s visible */
+  top: 0;
+  bottom: 0;
+  right: calc(-1 * var(--st-overhang));
+  width: calc(var(--st-edgeW) + var(--st-overhang) + var(--st-seam));
+  background: #000000;           /* dark edge */             
   width:20px;                      /* thickness of cyan band */
-  background:#73f0fa;              /* your cyan */
-  transform: skewX(-19deg);   
-  background: #000000;      /* dark edge */
-  border-radius: 0px;
-  z-index: -2;              /* behind cyan slab */
+  transform: skewX(-15deg);        /* match the cut angle */
+  z-index: 0; 
 }
 
-/* optional: tighten for small screens */
-@media (max-width: 575.98px){
-  .section-title{ padding: 6px 14px; }
-  :root{
-    --st-cut: 20px;
-    --st-edgeW: 10px;
-    --st-overhang: 8px;
-  }
-}
+/* keep text above shapes */
+.band > *{ position: relative; z-index: 2; }
 
 
 /* mobile tweaks */

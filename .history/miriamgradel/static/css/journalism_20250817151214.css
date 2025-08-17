@@ -55,7 +55,7 @@
   --st-cut: 15px;        /* depth of the angled cut */
   --st-edgeW: 12px;      /* thickness of the dark fin */
   --st-overhang: 12px;   /* how far the fin sticks out to the right */
-  --st-seam: 1px;        /* tiny overlap to avoid hairline gaps */
+  --st-seam: 16px;        /* tiny overlap to avoid hairline gaps */
 }
 
 .section-title{
@@ -84,7 +84,7 @@
   position:absolute;
   inset: 0;
   background: #73f0fa;      /* brand cyan */
-  border-radius: 0px;
+  border-radius: 6px;
   clip-path: polygon(
     0 0,
     100% 0,
@@ -102,7 +102,7 @@
   right:0px;                     /* push outside the slab so it’s visible */
   width:20px;                      /* thickness of cyan band */
   background:#73f0fa;              /* your cyan */
-  transform: skewX(-19deg);   
+  transform: skewX(-15deg);   
   background: #000000;      /* dark edge */
   border-radius: 0px;
   z-index: -2;              /* behind cyan slab */

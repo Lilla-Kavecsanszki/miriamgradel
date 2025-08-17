@@ -50,74 +50,27 @@
 .written-hero p{ margin:0; opacity:.95; }
 
 /* ===== SECTION TITLES ===== */
-/* === Section Title ribbon — final === */
-:root{
-  --st-cut: 15px;        /* depth of the angled cut */
-  --st-edgeW: 12px;      /* thickness of the dark fin */
-  --st-overhang: 12px;   /* how far the fin sticks out to the right */
-  --st-seam: 1px;        /* tiny overlap to avoid hairline gaps */
-}
-
 .section-title{
   position: relative;
-  display: inline-block;    /* ribbon hugs text */
+  font-weight:800;
   margin: 18px 0 12px;
-  padding: 6px 18px;        /* inner padding */
-  line-height: 1.1;
-  margin-left: -15px;       /* align with hero if gutters were canceled */
-  color: #000000;           /* text on cyan */
-  overflow: visible;        /* let fin overhang */
-  isolation: isolate;       /* keep pseudo layers behind text */
+  padding-left:12px;
+  color:#072431;
 }
-
-/* ensure text is above the ribbons (works with or without inner <span>) */
-.section-title > .band,
-.section-title > span,
-.section-title > * {
-  position: relative;
-  z-index: 2;
-}
-
-/* cyan slab with angled right cut (top longer) */
 .section-title::before{
   content:"";
-  position:absolute;
-  inset: 0;
-  background: #73f0fa;      /* brand cyan */
-  border-radius: 0px;
-  clip-path: polygon(
-    0 0,
-    100% 0,
-    calc(100% - var(--st-cut)) 100%,
-    0 100%
-  );
-  z-index: -1;              /* behind text */
+  position:absolute; left:0; top:.25em; bottom:.25em;
+  width:6px; background:#73f0fa; border-radius:2px;  /* updated cyan */
 }
-
-/* dark fin that matches the same diagonal — no gap */
 .section-title::after{
   content:"";
-  position:absolute;
-  top: 0; bottom: 0;
-  right:0px;                     /* push outside the slab so it’s visible */
-  width:20px;                      /* thickness of cyan band */
-  background:#73f0fa;              /* your cyan */
-  transform: skewX(-19deg);   
-  background: #000000;      /* dark edge */
-  border-radius: 0px;
-  z-index: -2;              /* behind cyan slab */
+  position:absolute; right:14px; top:.15em;
+  width:46px; height:12px;
+  background:#0b2230;
+  transform:skewX(-20deg);
+  border-radius:2px;
+  opacity:.9;
 }
-
-/* optional: tighten for small screens */
-@media (max-width: 575.98px){
-  .section-title{ padding: 6px 14px; }
-  :root{
-    --st-cut: 20px;
-    --st-edgeW: 10px;
-    --st-overhang: 8px;
-  }
-}
-
 
 /* mobile tweaks */
 @media (max-width:575.98px){
