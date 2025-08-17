@@ -130,18 +130,15 @@
 
 
 /* Article lists */
-.written-item {
-    font-size: small;
-}
-
 .written-item a {
     color: #000000;
     text-decoration: none;
     font-weight: bold;
+    font-size: small;
 }
 
-.written-item time, .written-item span {
+.written-item {
     font-style: italic;
     margin-bottom: 12px;
-    color: gray;
+    color: darkgray;
 }
