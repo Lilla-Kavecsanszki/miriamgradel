@@ -1,0 +1,52 @@
+/* ==== Shared Error Page Styles (404 + 500) ==== */
+.error-page {
+  min-height: 500vh;
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #d9e9f3; /* full-page background */
+  text-align: center;
+  color: #000; /* default text black */
+}
+
+.error-code {
+  font-family: 'Designer', sans-serif;
+  font-size: clamp(4rem, 12vw, 10rem);
+  font-weight: 700;
+  color: #000; /* black for the big number */
+  margin: 0;
+  line-height: 1;
+}
+
+.error-title {
+  font-size: 2rem;
+  margin: 1rem 0;
+  color: #000;
+}
+
+.error-message {
+  font-size: 1.125rem;
+  color: #333; /* dark grey for readability */
+}
+
+/* Button styling */
+.error-page .btn {
+  background-color: #000;   /* black base */
+  color: #7DF2FF;           /* cyan text */
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.3s ease;
+  border: 2px solid #000;
+}
+
+/* Hover state: invert with grey for subtle effect */
+.error-page .btn:hover {
+  background-color: #7DF2FF;
+  color: #000;
+  border-color: #555; /* grey border */
+  opacity: 0.95;
+}

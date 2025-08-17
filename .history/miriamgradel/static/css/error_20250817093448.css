@@ -1,0 +1,45 @@
+/* ==== Shared Error Page Styles (404 + 500) ==== */
+.error-page {
+  min-height: 100vh;
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f9f9f9;
+  text-align: center;
+}
+
+.error-code {
+  font-family: 'Designer', sans-serif;
+  font-size: clamp(4rem, 12vw, 10rem);
+  font-weight: 700;
+  color: #00cfea; /* your cyan highlight */
+  margin: 0;
+  line-height: 1;
+}
+
+.error-title {
+  font-size: 2rem;
+  margin: 1rem 0;
+  color: #222;
+}
+
+.error-message {
+  font-size: 1.125rem;
+  color: #555;
+}
+
+.error-page .btn {
+  background-color: #00cfea;
+  border: none;
+  color: #000;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.error-page .btn:hover {
+  opacity: 0.9;
+}
