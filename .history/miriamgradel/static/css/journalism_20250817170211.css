@@ -165,7 +165,7 @@
   position:relative;
   border-radius:0;
   transition:transform .15s ease, box-shadow .15s ease;
-  margin-top: 5%;
+  padding-top: 5%;
 
   /* layered shadows */
   box-shadow: 
