@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block body_class %}template-written-index{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+  <div class="row">
+    <!-- Left: hero + lists -->
+    <div class="col-12 col-lg-8">
+
+      <div class="written-hero mb-3">
+        <div class="block-title">Discover here some of my articles</div>
+        <div>I had the chance to work for 10 years for different magazines. I had the
+          chance to work for 10 years for different magazines.</div>
+      </div>
+
+      {% if page.intro %}<div class="mb-3">{{ page.intro|richtext }}</div>{% endif %}
+
+      <!-- My work — current year -->
+      <h3 class="section-title">My work — {{ current_year }}</h3>
+      <ul class="written-list">
+        {% for a in recent_articles %}
+          <li class="written-item">
+            {% if a.external_url %}
+              <a href="{{ a.external_url }}" target="_blank" rel="noopener" class="title">{{ a.title }}</a>
+            {% else %}
+              <a href="{% pageurl a %}" class="title">{{ a.title }}</a>
+            {% endif %}
+            {% if a.publication_name %}<span class="dot">·</span><span>{{ a.publication_name }}</span>{% endif %}
+            {% with d=a.publication_date|default:a.first_published_at %}
+              {% if d %}<span class="dot">·</span><span>{{ d|date:"d/m/Y" }}</span>{% endif %}
+            {% endwith %}
+          </li>
+        {% empty %}
+          <li class="written-item text-muted">No articles for {{ current_year }} yet.</li>
+        {% endfor %}
+      </ul>
+
+      <!-- Previous works -->
+      <h3 class="section-title mt-4">My previous works</h3>
+      <ul class="written-list">
+        {% for a in previous_articles %}
+          <li class="written-item">
+            {% if a.external_url %}
+              <a href="{{ a.external_url }}" target="_blank" rel="noopener" class="title">{{ a.title }}</a>
+            {% else %}
+              <a href="{% pageurl a %}" class="title">{{ a.title }}</a>
+            {% endif %}
+            {% if a.publication_name %}<span class="dot">·</span><span>{{ a.publication_name }}</span>{% endif %}
+            {% with d=a.publication_date|default:a.first_published_at %}
+              {% if d %}<span class="dot">·</span><span>{{ d|date:"d/m/Y" }}</span>{% endif %}
+            {% endwith %}
+          </li>
+        {% empty %}
+          <li class="written-item text-muted">No older articles yet.</li>
+        {% endfor %}
+      </ul>
+
+    </div>
+
+    <!-- Right: BTS teasers (matches your CSS) -->
+    <div class="col-12 col-lg-4 mt-4 mt-lg-0">
+      <aside class="bts-aside">
+        <h3 class="section-title">Behind the Scenes</h3>
+        {% for b in bts_items %}
+          <article class="bts-card">
+            {% if b.teaser_image %}
+              <a href="{% pageurl b %}" class="thumb">
+                {% image b.teaser_image fill-400x250 class="img-fluid" %}
+              </a>
+            {% endif %}
+            <div class="bts-body">
+              <h4 class="bts-title"><a href="{% pageurl b %}">{{ b.title }}</a></h4>
+              {% if b.teaser_text %}<p class="bts-text">{{ b.teaser_text|truncatewords:30 }}</p>{% endif %}
+              <a class="bts-cta" href="{% pageurl b %}">Discover what happened…</a>
+            </div>
+          </article>
+        {% empty %}
+          <p class="text-muted">More behind-the-scenes coming soon.</p>
+        {% endfor %}
+      </aside>
+    </div>
+  </div>
+</div>
+{% endblock %}

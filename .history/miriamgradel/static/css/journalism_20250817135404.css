@@ -1,46 +1,47 @@
-/* ===== HERO ===== */
-/* HERO — black trapezoid + full-height cyan cut edge */
+/* ===== HERO (clean, no artifacts) ===== */
 .written-hero{
   position: relative;
-  /* no background here; the black is drawn in ::before */
+  background: #000;
   color: #fff;
   padding: 18px 22px 16px;
   margin-bottom: 16px;
-  margin-left: -15px;
-  margin-right: 140px;
-  /* allow the cyan fin to extend past the right edge */
-  overflow: visible;
+  margin-left: -15px;   /* cancel bootstrap gutter */
+  margin-right: 140px;   /* cancel bootstrap gutter */
+  border-radius: 0;     /* keep slab straight */
 }
 
-/* black slab with angled right cut (top longer) */
+/* left cyan bar */
 .written-hero::before{
   content:"";
   position:absolute;
-  inset:0;                         /* fill the box */
-  background:#000;
-  /* top-right -> bottom shifts left by 28px (adjust depth here) */
-  clip-path: polygon(0 0, 100% 0, calc(100% - 28px) 100%, 0 100%);
-  z-index: 1;                      /* above cyan fin, below text */
-  border-radius: 0;                /* keep edges straight */
+  left:-10px;                       /* sits outside for that “trim” look */
+  top:8px; bottom:8px;
+  width:10px;
+  background:#73f0fa;               /* updated cyan */
+  border-radius: 3px;
 }
 
-/* cyan edge that runs the FULL height along the cut */
+/* right cyan slanted bar */
 .written-hero::after{
   content:"";
   position:absolute;
-  top:0;
-  bottom:0;
-  right:0px;                     /* push outside the slab so it’s visible */
-  width:20px;                      /* thickness of cyan band */
-  background:#73f0fa;              /* your cyan */
-  transform: skewX(-15deg);        /* match the cut angle */
-  z-index: 0;                      /* under the black slab */
+  right:-18px;                      /* overhang outside the card */
+  top:8px; bottom:8px;
+  width:14px;
+  background:#73f0fa;               /* updated cyan */
+  transform: skewX(-20deg);
+  border-radius: 2px;
 }
 
-/* keep text above shapes */
-.written-hero > *{ position: relative; z-index: 2; }
-
-
+/* optional small dark cap on the top edge (like the mock) */
+.written-hero .cap{
+  position:absolute;
+  right:66px; top:-8px;
+  width:84px; height:22px;
+  background:#061f2a;
+  transform: skewX(-20deg);
+  border-radius:2px;
+}
 
 .written-hero .block-title{
   font-weight:800;

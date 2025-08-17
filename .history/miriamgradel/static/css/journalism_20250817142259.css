@@ -33,7 +33,7 @@
   right:0px;                     /* push outside the slab so it’s visible */
   width:20px;                      /* thickness of cyan band */
   background:#73f0fa;              /* your cyan */
-  transform: skewX(-15deg);        /* match the cut angle */
+  transform: skewX(-16deg);        /* match the cut angle */
   z-index: 0;                      /* under the black slab */
 }
 

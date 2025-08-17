@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block body_class %}template-written-index{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+  <div class="row">
+    <!-- Left column: articles -->
+    <div class="col-12 col-lg-8">
+      {% if page.intro %}
+        <div class="lead mb-4">{{ page.intro|richtext }}</div>
+      {% endif %}
+
+      <div class="row">
+        {% for article in articles %}
+          <div class="col-md-6 col-lg-4 mb-4">
+            <article class="card h-100 border-0 shadow-sm faded-card">
+              {% if article.specific.teaser_image %}
+                {% image article.specific.teaser_image fill-600x360 class="card-img-top" %}
+              {% endif %}
+
+              <div class="card-body d-flex flex-column">
+                <div class="small text-muted mb-1">
+                  {% if article.specific.publication_name %}
+                    {{ article.specific.publication_name }} ·
+                  {% endif %}
+                  {% if article.specific.publication_date %}
+                    {{ article.specific.publication_date|date:"M j, Y" }}
+                  {% endif %}
+                </div>
+
+                <h2 class="h5 mb-2">
+                  {% if article.specific.external_url %}
+                    <a class="stretched-link text-decoration-none text-dark"
+                       href="{{ article.specific.external_url }}"
+                       target="_blank" rel="noopener">
+                      {{ article.title }}
+                    </a>
+                  {% else %}
+                    <a class="stretched-link text-decoration-none text-dark"
+                       href="{% pageurl article %}">
+                      {{ article.title }}
+                    </a>
+                  {% endif %}
+                </h2>
+
+                {% if article.specific.excerpt %}
+                  <p class="small text-muted mb-3">{{ article.specific.excerpt }}</p>
+                {% endif %}
+
+                {% for bts in article.specific.related_bts.all %}
+                  <a class="btn btn-outline-dark btn-sm mt-auto"
+                     href="{% pageurl bts %}">
+                    Behind the scenes
+                  </a>
+                {% endfor %}
+              </div>
+            </article>
+          </div>
+        {% empty %}
+          <p>No articles yet.</p>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Right: Behind the Scenes teasers -->
+    <div class="col-12 col-lg-4 mt-4 mt-lg-0">
+      <aside class="bts-aside">
+        <h3 class="section-title">Behind the Scenes</h3>
+        {% for b in bts_items %}
+          <article class="bts-card">
+            {% if b.teaser_image %}
+              <a href="{% pageurl b %}" class="thumb">
+                {% image b.teaser_image fill-400x250 class="img-fluid" %}
+              </a>
+            {% endif %}
+            <div class="bts-body">
+              <h4 class="bts-title">
+                <a href="{% pageurl b %}">{{ b.title }}</a>
+              </h4>
+              {% if b.teaser_text %}
+                <p class="bts-text">{{ b.teaser_text|truncatewords:30 }}</p>
+              {% endif %}
+              <a class="bts-cta" href="{% pageurl b %}">
+                Discover what happened…
+              </a>
+            </div>
+          </article>
+        {% empty %}
+          <p class="text-muted">More behind-the-scenes coming soon.</p>
+        {% endfor %}
+      </aside>
+    </div>
+  </div>
+</div>
+{% endblock %}

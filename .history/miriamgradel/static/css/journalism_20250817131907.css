@@ -1,0 +1,160 @@
+/* ================================
+   WRITTEN PAGES — consolidated CSS
+   ================================ */
+
+/* Palette / helpers */
+:root{
+  --ink: #072431;
+  --ink-2: #0b2a3a;
+  --ink-deep: #06212c;
+  --sky: #00cfea;
+  --ink-soft: #415a68;
+  --paper: #f8fbfd;
+  --paper-plain: #ffffff;
+  --line: #e9eef2;
+}
+
+/* ---------- HERO (angled slab + cyan trim) ---------- */
+.written-hero{
+  position: relative;
+  color: #7DF2FF;
+  font-family: 'TT Chocolates', sans-serif;
+  padding: 18px 22px 16px;
+  margin: 0 0 14px;
+  isolation: isolate;             /* keep pseudo elements behind text */
+}
+.written-hero::before{
+  content:"";
+  position:absolute; inset:0;
+  background: var(--ink);
+  border-radius: 6px;
+  /* angled right edge */
+  clip-path: polygon(0 0, calc(100% - 28px) 0, 100% 18px, calc(100% - 28px) 100%, 0 100%);
+  z-index: -2;
+}
+.written-hero::after{
+  content:"";
+  position:absolute; inset:-6px -10px -6px 10px; /* outer trim */
+  border: 6px solid transparent;
+  border-left-color: var(--sky);                 /* cyan bar on the left */
+  box-shadow:
+    0 -6px 0 0 var(--sky) inset,                 /* cyan top hairline */
+    0  6px 0 0 var(--paper-plain) inset;         /* clear bottom */
+  border-radius: 8px;
+  clip-path: polygon(0 0, calc(100% - 36px) 0, 100% 24px, calc(100% - 36px) 100%, 0 100%);
+  z-index: -3;
+}
+/* Optional small tag on top edge */
+.written-hero .tag{
+  position:absolute;
+  top:-8px; right:56px;
+  width:86px; height:22px;
+  background: var(--ink-deep);
+  border-radius:2px;
+  transform: skew(-20deg);
+  z-index: -1;
+}
+.written-hero .tag::after{
+  content:"";
+  position:absolute; left:10px; top:0; bottom:0; width:6px;
+  background: var(--sky);
+}
+
+.written-hero .block-title{
+  font-weight:800;
+  line-height:1.1;
+  margin:0 0 .35rem;
+  font-size:1.12rem;
+  letter-spacing:.2px;
+}
+.written-hero p{ margin:0; opacity:.95; }
+
+/* ---------- Section titles (cyan left ribbon + small cap) ---------- */
+.section-title{
+  position: relative;
+  font-weight:800;
+  margin:16px 0 12px;
+  padding-left:12px;
+  color: var(--ink);
+}
+.section-title::before{
+  content:"";
+  position:absolute; left:0; top:.25em; bottom:.25em;
+  width:6px; background:var(--sky); border-radius:2px;
+}
+.section-title::after{
+  content:"";
+  position:absolute; right:14px; top:.15em;
+  width:48px; height:12px;
+  background:#000; opacity:.85;
+  transform:skew(-20deg);
+  border-radius:2px;
+}
+
+/* ---------- Article lists ---------- */
+.written-list{ list-style:none; margin:0; padding:0; }
+.written-item{ border-bottom:1px solid var(--line); padding:10px 0; }
+
+.written-row{
+  display:flex; align-items:baseline; flex-wrap:wrap;
+  gap:.35rem .5rem; line-height:1.4;
+}
+.w-title{
+  flex:1 1 360px; min-width:240px;
+  color:#111; font-weight:600; text-decoration:none;
+}
+.w-title:hover{ text-decoration:underline; }
+.w-dot{ opacity:.55; padding:0 .25rem; }
+.w-pub{ color:var(--ink-soft); font-style:italic; white-space:nowrap; flex:0 0 auto; }
+.w-date{ color:#6b7c86; white-space:nowrap; flex:0 0 auto; }
+
+/* Small screens */
+@media (max-width:575.98px){
+  .written-hero{ padding:14px 16px; }
+  .written-hero::after{ inset:-4px -8px -4px 8px; }
+  .written-hero .tag{ right:34px; width:64px; }
+  .section-title::after{ display:none; }
+
+  .w-title{ flex:1 1 100%; }
+  .w-dot{ display:none; }
+  .w-pub, .w-date{ font-size:.95rem; }
+}
+
+/* ---------- BTS aside ---------- */
+.bts-aside{ position:sticky; top:20px; }
+.bts-aside .bts-card{
+  display:flex; gap:12px; padding:10px;
+  border:1px solid var(--line); border-radius:10px;
+  background:var(--paper);
+  box-shadow:0 1px 0 rgba(0,0,0,.03);
+  transition: transform .15s, box-shadow .15s;
+  margin-bottom:12px;
+}
+.bts-aside .bts-card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 6px 18px rgba(0,0,0,.06);
+}
+.bts-aside .thumb{ flex:0 0 120px; }
+.bts-aside .thumb img{
+  display:block; width:120px; height:75px; object-fit:cover; border-radius:8px;
+}
+.bts-body{ min-width:0; }
+.bts-body .bts-title{ font-size:1.05rem; margin:0 0 .25rem; font-weight:800; }
+.bts-body .bts-title a{ color:var(--ink-2); text-decoration:none; }
+.bts-body .bts-title a:hover{ text-decoration:underline; }
+.bts-text{ margin:0 0 .5rem; color:#374956; font-size:.95rem; }
+.bts-cta{
+  display:inline-block; font-weight:700; font-size:.92rem; padding:6px 10px;
+  color:var(--ink-2); text-decoration:none; border:2px solid var(--sky);
+  border-radius:6px; box-shadow: inset 0 -2px 0 rgba(0,0,0,.04);
+}
+.bts-cta:hover{ background:#e5fbff; color:#000; }
+@media (max-width:420px){
+  .bts-aside .bts-card{ flex-direction:column; }
+  .bts-aside .thumb img{ width:100%; height:auto; }
+}
+
+/* Utilities you already had */
+.faded-card{ opacity:.96; transition:opacity .2s, transform .2s; }
+.faded-card:hover{ opacity:1; transform:translateY(-2px); }
+.ratio.ratio-9x16{ --bs-aspect-ratio: calc(100% * 16 / 9); }

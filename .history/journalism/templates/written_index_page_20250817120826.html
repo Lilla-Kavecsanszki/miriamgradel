@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block body_class %}template-written-index{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+  <div class="row">
+    <!-- Left column omitted for brevity ... -->
+
+    <!-- Right: Behind the Scenes teasers -->
+    <div class="col-12 col-lg-4 mt-4 mt-lg-0">
+      <aside class="bts-aside">
+        <h3 class="section-title">Behind the Scenes</h3>
+        {% for b in bts_items %}
+          <article class="bts-card">
+            {% if b.teaser_image %}
+              <a href="{% pageurl b %}" class="thumb">
+                {% image b.teaser_image fill-400x250 class="img-fluid" %}
+              </a>
+            {% endif %}
+            <div class="bts-body">
+              <h4 class="bts-title">
+                <a href="{% pageurl b %}">{{ b.title }}</a>
+              </h4>
+              {% if b.teaser_text %}
+                <p class="bts-text">{{ b.teaser_text|truncatewords:30 }}</p>
+              {% endif %}
+              <a class="bts-cta" href="{% pageurl b %}">Discover what happened…</a>
+            </div>
+          </article>
+        {% empty %}
+          <p class="text-muted">More behind-the-scenes coming soon.</p>
+        {% endfor %}
+      </aside>
+    </div>
+  </div>
+</div>
+{% endblock %}

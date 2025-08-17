@@ -51,8 +51,7 @@
         </a>
 
         {# Pre-resolve page URLs used below #}
-        {% slugurl 'written-index-page' as written_url %}
-        {% slugurl 'written-article-page' as written_article_url %}
+        {% slugurl 'home/written-index-page' as written_url %}
         {% slugurl 'audio' as audio_url %}
         {% slugurl 'videos' as videos_url %}
         {% slugurl 'communication' as communication_url %}
@@ -68,9 +67,9 @@
               </button>
 
               <ul id="submenu-journalism" class="submenu" hidden>
-                <li><a class="submenu-link{% if request.path == written_url %} is-active{% endif %}" href="{{ written_url }}">Written</a></li>
-                <li><a class="submenu-link{% if request.path == audio_url %} is-active{% endif %}" href="{{ audio_url }}">Audio</a></li>
-                <li><a class="submenu-link{% if request.path == videos_url %} is-active{% endif %}" href="{{ videos_url }}">Video</a></li>
+                <li><a class="submenu-link{% if request.path == written_url %} is-active{% endif %}" href="{{ written_url }}">Writings</a></li>
+                <li><a class="submenu-link{% if request.path == audio_url %} is-active{% endif %}" href="{{ audio_url }}">Podcast</a></li>
+                <li><a class="submenu-link{% if request.path == videos_url %} is-active{% endif %}" href="{{ videos_url }}">Videos</a></li>
               </ul>
             </li>
 
