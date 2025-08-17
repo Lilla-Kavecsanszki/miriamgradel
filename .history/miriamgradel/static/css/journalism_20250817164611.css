@@ -189,7 +189,7 @@
 .bts-title{
   position:absolute;
   color: #000000;
-  font-family: 'Inter', sans-serif;
+  font-family: 'TT Chocolates', sans-serif;
   left:0;
   right:0;
   bottom:0;
@@ -204,7 +204,7 @@
 .bts-title a{
   color:#000;
   text-decoration:none;
-  font-family: 'Inter', sans-serif;
+  font-family: 'TT Chocolates', sans-serif;
 }
 
 .bts-title a:hover{

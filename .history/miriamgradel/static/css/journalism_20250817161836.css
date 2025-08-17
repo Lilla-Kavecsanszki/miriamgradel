@@ -161,16 +161,32 @@
 .bts-card{
   background:#fff;
   border:1px solid #e9eef2;
-  overflow:hidden;                 
-  position:relative;
-  border-radius:0;
+  overflow:hidden;                 /* rounds image and overlay */
+  box-shadow:0 10px 24px rgba(0,0,0,.08);
   transition:transform .15s ease, box-shadow .15s ease;
+  position:relative;
+  border-radius:12px;
+}
 
-  /* layered shadows */
-  box-shadow: 
-    -4px 4px 12px rgba(0,0,0,.06),   /* left/bottom soft shadow */
-    0 4px 12px rgba(0,0,0,.08),      /* bottom soft shadow */
-    6px 0 0 #73f0fa;                 /* solid cyan shadow on right */
+/* cyan accent on right + bottom edges */
+.bts-card::after{
+  content:"";
+  position:absolute;
+  right:0; bottom:0;
+  width:6px; height:100%;
+  background:#73f0fa;             /* right edge */
+}
+.bts-card::before{
+  content:"";
+  position:absolute;
+  left:0; right:6px; bottom:0;    /* stop at right accent */
+  height:6px;
+  background:#73f0fa;             /* bottom edge */
+}
+
+.bts-card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 14px 28px rgba(0,0,0,.12);
 }
 
 /* image wrapper */
@@ -181,15 +197,13 @@
 .bts-card .thumb img{
   display:block;
   width:100%;
-  height:220px;
+  height:220px;                    /* adjust as you like */
   object-fit:cover;
 }
 
 /* Title overlay on the image */
 .bts-title{
   position:absolute;
-  color: #000000;
-  font-family: 'Inter', sans-serif;
   left:0;
   right:0;
   bottom:0;
@@ -198,17 +212,15 @@
   font-weight:800;
   font-size:1.2rem;
   line-height:1.25;
-  z-index: 5;
+  background:rgba(255,255,255,0.8); /* translucent background */
+  backdrop-filter:blur(4px);        /* subtle glassy effect */
 }
-
 .bts-title a{
   color:#000;
   text-decoration:none;
-  font-family: 'Inter', sans-serif;
 }
-
 .bts-title a:hover{
-  cursor:pointer;
+  text-decoration:underline;        /* optional */
 }
 
 /* body */
@@ -217,8 +229,6 @@
   padding:14px 16px 16px;
   position:relative;
   z-index:1;
-  /* cyan glow instead of cyan fill */
-  box-shadow: 0 -24px 30px #73f0fa;
 }
 
 /* blurb */
@@ -226,9 +236,7 @@
   margin:.9rem 0 1rem;
   color:#2b3b45;
   font-size:.98rem;
-  font-family: 'TT Chocolates', sans-serif;
 }
-
 .bts-text strong{
   display:block;
   font-weight:800;
@@ -240,13 +248,12 @@
 .bts-cta{
   display:inline-block;     /* shrink to fit text */
   background:#73f0fa;
-  color:#000000;
-  font-family: 'TT Chocolates', sans-serif;
+  color:#072431;
   font-weight:800;
   text-decoration:none;
   padding:10px 16px;
   margin-top:8px;
-  border-radius: 0;
+  border-radius:4px;
   box-shadow: inset 0 -2px 0 rgba(0,0,0,.06);
 }
 

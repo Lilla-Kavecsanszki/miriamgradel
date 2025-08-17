@@ -75,41 +75,47 @@
       </ul>
 
     </div>
-    
+
     <!-- Right: Behind the Scenes teasers -->
     <div class="col-12 col-lg-4 mt-4 mt-lg-0">
-    <aside class="bts-aside">
+      <aside class="bts-aside">
         <h3 class="section-title">Behind the Scenes</h3>
-
         {% for b in bts_items %}
-        <article class="bts-card">
-            {% if b.teaser_image %}
+          <article class="bts-card">
+        {% if b.teaser_image %}
             <a href="{% pageurl b %}" class="thumb">
-                {% image b.teaser_image fill-400x250 class="img-fluid" %}
-                <h4 class="bts-title">{{ b.title }}</h4>
+            {% image b.teaser_image fill-400x250 class="img-fluid" %}
+            <h4 class="bts-title">{{ b.title }}</h4>
             </a>
-            <div class="bts-body">
-                {% if b.teaser_text %}
-                <p class="bts-text">{{ b.teaser_text|truncatewords:30 }}</p>
-                {% endif %}
-                <a class="bts-cta" href="{% pageurl b %}">Discover what happened…</a>
-            </div>
-            {% else %}
-            <div class="bts-body">
-                <h4 class="bts-title bts-title--text">
-                <a href="{% pageurl b %}">{{ b.title }}</a>
-                </h4>
-                {% if b.teaser_text %}
-                <p class="bts-text">{{ b.teaser_text|truncatewords:30 }}</p>
-                {% endif %}
-                <a class="bts-cta" href="{% pageurl b %}">Discover what happened…</a>
-            </div>
+        {% endif %}
+        <div class="bts-body">
+            {% if b.teaser_text %}
+            <p class="bts-text">{{ b.teaser_text|truncatewords:30 }}</p>
             {% endif %}
+            <a class="bts-cta" href="{% pageurl b %}">Discover what happened…</a>
+        </div>
         </article>
         {% empty %}
-        <p class="text-muted">More behind-the-scenes coming soon.</p>
+          <p class="text-muted">No behind-the-scenes articles yet.</p>
         {% endfor %}
-    </aside>
+        {% for b in bts_items %}
+          {% if not b.teaser_image %}
+            <article class="bts-card">
+              <h4 class="bts-title">{{ b.title }}</h4>
+              <div class="bts-body">
+                {% if b.teaser_text %}
+                  <p class="bts-text">{{ b.teaser_text|truncatewords:30 }}</p>
+                {% endif %}
+                <a class="bts-cta" href="{% pageurl b %}">Discover what happened…</a>
+              </div>
+            </article>
+          {% endif %}
+        {% endfor %}
+        {% if not bts_items %}
+        {% empty %}
+          <p class="text-muted">More behind-the-scenes coming soon.</p>
+        {% endfor %}
+      </aside>
     </div>
   </div>
 </div>

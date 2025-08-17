@@ -173,6 +173,7 @@
     6px 0 0 #73f0fa;                 /* solid cyan shadow on right */
 }
 
+
 /* image wrapper */
 .bts-card .thumb{
   position:relative;
@@ -188,8 +189,6 @@
 /* Title overlay on the image */
 .bts-title{
   position:absolute;
-  color: #000000;
-  font-family: 'Inter', sans-serif;
   left:0;
   right:0;
   bottom:0;
@@ -198,15 +197,13 @@
   font-weight:800;
   font-size:1.2rem;
   line-height:1.25;
-  z-index: 5;
+  background:rgba(255,255,255,0.8); /* translucent background */
+  backdrop-filter:blur(4px);        /* subtle glassy effect */
 }
-
 .bts-title a{
   color:#000;
   text-decoration:none;
-  font-family: 'Inter', sans-serif;
 }
-
 .bts-title a:hover{
   cursor:pointer;
 }
@@ -217,8 +214,6 @@
   padding:14px 16px 16px;
   position:relative;
   z-index:1;
-  /* cyan glow instead of cyan fill */
-  box-shadow: 0 -24px 30px #73f0fa;
 }
 
 /* blurb */
@@ -226,9 +221,7 @@
   margin:.9rem 0 1rem;
   color:#2b3b45;
   font-size:.98rem;
-  font-family: 'TT Chocolates', sans-serif;
 }
-
 .bts-text strong{
   display:block;
   font-weight:800;
@@ -241,7 +234,6 @@
   display:inline-block;     /* shrink to fit text */
   background:#73f0fa;
   color:#000000;
-  font-family: 'TT Chocolates', sans-serif;
   font-weight:800;
   text-decoration:none;
   padding:10px 16px;

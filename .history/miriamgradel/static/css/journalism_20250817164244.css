@@ -189,7 +189,7 @@
 .bts-title{
   position:absolute;
   color: #000000;
-  font-family: 'Inter', sans-serif;
+  font-family: 'TT Chocolates', sans-serif;
   left:0;
   right:0;
   bottom:0;
@@ -198,13 +198,12 @@
   font-weight:800;
   font-size:1.2rem;
   line-height:1.25;
-  z-index: 5;
 }
 
 .bts-title a{
   color:#000;
   text-decoration:none;
-  font-family: 'Inter', sans-serif;
+  font-family: 'TT Chocolates', sans-serif;
 }
 
 .bts-title a:hover{
@@ -217,8 +216,6 @@
   padding:14px 16px 16px;
   position:relative;
   z-index:1;
-  /* cyan glow instead of cyan fill */
-  box-shadow: 0 -24px 30px #73f0fa;
 }
 
 /* blurb */
