@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static wagtailcore_tags wagtailembeds_tags %}
+{% load wagtailcore_tags wagtailembeds_tags %}
 
 {% block body_class %}template-video{% endblock %}
 
@@ -10,17 +10,16 @@
 {% block content %}
 <section class="container my-5">
 
-  {# DARK TRAPEZOID HEADER (same look as written) #}
-  <header class="video-hero mb-4">
-    <h1 class="block-title">As a multimedia Journalist I also do Videos</h1>
+  <header class="mast mb-4">
+    <h1 class="mast__title">As a multimedia Journalist I also do Videos</h1>
     {% if page.intro %}
-      <p>{{ page.intro|richtext }}</p>
+      <p class="mast__dek">{{ page.intro|richtext }}</p>
     {% endif %}
   </header>
 
   {% if featured %}
   <section class="featured mb-5">
-    <h2 class="section-title"><span>My Last video in {{ current_year }}</span></h2>
+    <div class="section-hd"><span>My Last video in {{ current_year }}</span></div>
 
     <div class="featured__grid">
       <div class="featured__media">
@@ -31,7 +30,7 @@
 
       <aside class="featured__meta">
         <p class="meta__date">{{ featured.video_date|default:featured.first_published_at|date:"d/m/Y" }}</p>
-        <h3 class="meta__title"><a href="{{ featured.url }}">{{ featured.title }}</a></h3>
+        <h2 class="meta__title"><a href="{{ featured.url }}">{{ featured.title }}</a></h2>
 
         {% if featured.description %}
           <div class="meta__body richtext">{{ featured.description|richtext }}</div>
@@ -61,7 +60,7 @@
   {% endif %}
 
   <section class="all-videos">
-    <h2 class="section-title"><span>All my videos</span></h2>
+    <div class="section-hd"><span>All my videos</span></div>
 
     <div class="cards">
       {% for v in videos %}

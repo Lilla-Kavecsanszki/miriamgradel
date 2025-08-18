@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load static wagtailcore_tags wagtailembeds_tags %}
+
+{% block body_class %}template-video-detail{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/journalism.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+<section class="container my-5">
+
+  {# DARK TRAPEZOID HEADER to match written #}
+  <header class="video-hero mb-4">
+    <p class="meta__date" style="margin:0 0 4px;">
+      {{ page.video_date|default:page.first_published_at|date:"d/m/Y" }}
+    </p>
+    <h1 class="block-title" style="margin:0;">{{ page.title }}</h1>
+    {% if page.standfirst %}<p style="margin-top:6px;">{{ page.standfirst }}</p>{% endif %}
+  </header>
+
+  <div class="featured__grid mb-4">
+    <div class="featured__media">
+      <div class="embed">{% embed page.embed_url %}</div>
+    </div>
+    <aside class="featured__meta">
+      {% if page.description %}<div class="richtext meta__body">{{ page.description|richtext }}</div>{% endif %}
+
+      <div class="meta__credits">
+        {% if page.produced_by %}
+          Produced by <strong>{{ page.produced_by }}</strong>{% if page.produced_for %} for: <strong>{{ page.produced_for }}</strong>{% endif %}
+        {% elif page.produced_for %}
+          Produced for: <strong>{{ page.produced_for }}</strong>
+        {% endif %}
+      </div>
+
+      <div class="meta__share">
+        <span>Share it</span>
+        {% with u=page.full_url|urlencode t=page.title|urlencode %}
+          <a aria-label="Share to X" href="https://twitter.com/intent/tweet?url={{ u }}&text={{ t }}" target="_blank" rel="noopener">X</a>
+          <a aria-label="Share to Facebook" href="https://www.facebook.com/sharer/sharer.php?u={{ u }}" target="_blank" rel="noopener">FB</a>
+          <a aria-label="Share to LinkedIn" href="https://www.linkedin.com/sharing/share-offsite/?url={{ u }}" target="_blank" rel="noopener">IN</a>
+        {% endwith %}
+      </div>
+    </aside>
+  </div>
+
+</section>
+{% endblock %}
