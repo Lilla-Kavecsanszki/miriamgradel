@@ -105,7 +105,7 @@ class WrittenArticlePage(Page):
 
 class VideoIndexPage(Page):
     """
-    Lists VideoPage children (latest featured on top)
+    Lists VideoPage children (latest featured on top) – matches your screenshot.
     """
     template = "video_index_page.html"
 
