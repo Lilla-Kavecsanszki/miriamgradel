@@ -1,5 +1,5 @@
 /* ===== JOURNALISM (Video & Written) ===== */
-:root { --accent: #73f0fa; }
+:root { --accent: red; }
 
 /* Optional mast header (older template variant) */
 .mast{background:linear-gradient(90deg,#0b0e11,#182232);color:#fff;padding:20px 0;position:relative}

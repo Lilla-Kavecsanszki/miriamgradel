@@ -27,7 +27,7 @@
 :root{ --st-cut:15px;}
 .section-title{
   position:relative;display:inline-block;margin:18px 0 12px;padding:6px 18px;line-height:1.1;
-  margin-left:-15px;color:#000;font-size:larger;overflow:visible;isolation:isolate;
+  margin-left:-15px;color: red;font-size:larger;overflow:visible;isolation:isolate;
 }
 .section-title > *{position:relative;z-index:2}
 .section-title::before{
