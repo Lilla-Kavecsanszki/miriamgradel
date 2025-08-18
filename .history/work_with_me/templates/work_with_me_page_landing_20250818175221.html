@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load static wagtailcore_tags wagtailimages_tags %}
+
+{% block body_class %}template-work-with-me landing{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/journalism.css' %}">{% endblock %}
+
+{% block content %}
+<section class="container my-5">
+  <div class="wme-banner mb-4">
+    <div class="wme-banner__stripe"></div>
+    <div class="wme-banner__title"><span>Thanks!</span></div>
+  </div>
+
+  {% if page.thank_you_text %}
+    <div class="mb-4">{{ page.thank_you_text|richtext }}</div>
+  {% else %}
+    <p>Thanks for your message — I’ll get back to you shortly.</p>
+  {% endif %}
+
+  <p><a class="btn btn-dark" href="{{ page.get_parent.url }}">Back to home</a></p>
+</section>
+{% endblock %}

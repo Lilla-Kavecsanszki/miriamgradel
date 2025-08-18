@@ -28,6 +28,3 @@
 /* Portrait & QR */
 .wme-portrait img { object-fit: cover; }
 .wme-qr img { max-width: 260px; }
-
-/* QR CODE */
-.wme-qr img, .wme-qr svg { max-width: 260px; height: auto; }

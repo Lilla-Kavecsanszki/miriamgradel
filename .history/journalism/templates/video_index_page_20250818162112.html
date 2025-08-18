@@ -8,24 +8,21 @@
 {% endblock extra_css %}
 
 {% block content %}
-<section class="container-fluid py-4">
+<section class="container my-5">
 
   {# DARK TRAPEZOID HEADER (same look as written) #}
-  <div class="row">
-    <!-- Left: hero + lists -->
-    <div class="col-12 col-lg-8">
+  <header class="video-hero mb-4">
       <!-- Hero ribbon -->
       <div class="written-hero mb-3">
         <span class="cap" aria-hidden="true"></span>
-        <div class="block-title" style="color: #73f0fa">As a multimedia Journalist I also do Videos</div>
-        <p>For some clients, i had to film and produce videos. Here s a glimpse at my multimedia work. </p>
+        <div class="block-title" style="color: #73f0fa">Discover here some of my articles</div>
+        <p>I had the chance to work for 10 years for different magazines. I had the chance to work for 10 years for different magazines.</p>
       </div>
 
       {% if page.intro %}
         <div class="mb-3">{{ page.intro|richtext }}</div>
       {% endif %}
-    </div>
-  </section>
+  </header>
 
   {% if featured %}
   <section class="featured mb-5">

@@ -10,6 +10,7 @@ SECRET_KEY = "django-insecure-9nnv+ih1#xsxg^@4ab9w@oddx$5-2i)06+tkd&60j2&**@6f!p
 ALLOWED_HOSTS = ["*"]
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 DEFAULT_FROM_EMAIL = "no-reply@example.com"
 
 

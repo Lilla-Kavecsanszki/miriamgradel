@@ -17,7 +17,7 @@
 .wme-aside__title span {
   display: inline-block;
   font-family: 'Designer', sans-serif;
-  border-left: 6px solid #7DF2FF;
+  border-left: 6px solid #00CFEA;
   padding-left: .6rem;
 }
 
@@ -28,6 +28,3 @@
 /* Portrait & QR */
 .wme-portrait img { object-fit: cover; }
 .wme-qr img { max-width: 260px; }
-
-/* QR CODE */
-.wme-qr img, .wme-qr svg { max-width: 260px; height: auto; }

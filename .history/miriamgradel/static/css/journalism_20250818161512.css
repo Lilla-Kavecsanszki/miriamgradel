@@ -301,18 +301,19 @@
   display:grid;
   grid-template-columns:2fr 1fr;
   gap:18px;
-  padding: 0 2%;
 }
 
 .featured{
   background: #F7F7F7;
   border-top: 3px solid rgba(0, 0, 0, 0.4); 
-  border-bottom: 3px solid rgba(0, 0, 0, 0.4);
+  border-bottom: 3px solid rgba(0, 0, 0, 0.4); 
+  padding-left: 15px;              /* breathing room for content */
+  
 }
 
 .featured__meta{ padding:6px 0; }
-.meta__date{ color:#6b7280; font-size:14px; text-decoration:italic; }
-.meta__title{ margin:0 0 8px; font-size:18px; color: black; text-decoration:none; }
+.meta__date{ color:#6b7280; font-size:14px; }
+.meta__title{ margin:0 0 8px; font-size:18px; }
 .meta__body{ color:#374151; }
 .meta__credits{ margin-top:10px; color:#374151; font-size:14px; }
 .meta__share{ display:flex; gap:10px; align-items:center; margin:10px 0; }

@@ -14,66 +14,52 @@ class WorkWithMeFormField(AbstractFormField):
     )
 
 
-class WorkWithMePage(AbstractEmailForm):  # don't inherit Page again
+class WorkWithMePage(AbstractEmailForm, Page):
     template = "work_with_me_page.html"
     landing_page_template = "work_with_me_page_landing.html"
 
     # Content
     greeting = models.CharField(max_length=200, blank=True)
     intro = RichTextField(blank=True)
-
-    bold_text = models.CharField(max_length=200, blank=True)
-    paragraph = RichTextField(blank=True, features=["bold", "italic", "link"])
-
     portrait = models.ForeignKey(
         "wagtailimages.Image",
         null=True, blank=True, on_delete=models.SET_NULL, related_name="+",
     )
     phone_number = models.CharField(max_length=50, blank=True)
 
-    thank_you_text = RichTextField(blank=True, help_text="Shown after a successful submission.")
-    contact_email = models.EmailField(blank=True, help_text="Shown on the page")
-
-    # QR (auto-generate)
-    qr_data = models.CharField(
-        max_length=300, blank=True,
-        help_text="Text/URL to encode. Leave blank to auto-use mailto:contact_email"
+    # Optional: text to show on the landing/thank-you page
+    thank_you_text = RichTextField(
+        blank=True,
+        help_text="Shown after a successful submission.",
     )
-    qr_scale = models.PositiveSmallIntegerField(default=10, help_text="Size scale for the QR SVG")
+
+    # (Optional) Public contact email to display on the page
+    contact_email = models.EmailField(blank=True, help_text="Shown on the page")
 
     content_panels = Page.content_panels + [
         FieldPanel("greeting"),
         FieldPanel("intro"),
-        FieldPanel("bold_text"),
-        FieldPanel("paragraph"),
         FieldPanel("portrait"),
         FieldPanel("phone_number"),
         FieldPanel("contact_email"),
         FieldPanel("thank_you_text"),
-
         InlinePanel("form_fields", label="Form fields"),
-
         MultiFieldPanel(
-            [FieldPanel("from_address"), FieldPanel("to_address"), FieldPanel("subject")],
+            [
+                FieldPanel("from_address"),
+                FieldPanel("to_address"),
+                FieldPanel("subject"),
+            ],
             heading="Email settings (used for notifications)",
-        ),
-        MultiFieldPanel(
-            [FieldPanel("qr_data"), FieldPanel("qr_scale")],
-            heading="QR auto-generate",
         ),
     ]
 
-    def get_qr_payload(self):
-        if self.qr_data:
-            return self.qr_data.strip()
-        if self.contact_email:
-            return f"mailto:{self.contact_email}"
-        return self.get_full_url()
-
+    # (Nice-to-have) Seed default fields on first create
     def save(self, *args, **kwargs):
         creating = self.pk is None
         super().save(*args, **kwargs)
         if creating and not self.form_fields.exists():
+            # Default fields: Name / Email / Subject / Message
             WorkWithMeFormField.objects.create(
                 page=self, label="Your name", field_type="singleline", required=True
             )

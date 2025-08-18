@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load static wagtailcore_tags wagtailimages_tags %}
+
+{% block body_class %}template-work-with-me{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/work_with_me_page.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+<section class="container my-4 my-lg-5">
+  <div class="row g-4">
+    <!-- Left column -->
+    <div class="col-lg-8">
+
+      <!-- Greeting banner -->
+      <div class="wme-banner mb-3">
+        <div class="wme-banner__stripe"></div>
+        <h1 class="wme-banner__title">{{ page.greeting_title }}</h1>
+      </div>
+
+      <!-- Intro -->
+      <h2 class="wme-section__title mt-4">
+        <span>{{ page.intro_heading }}</span>
+      </h2>
+      {% if page.intro_body %}
+        <div class="wme-intro-body mb-3">{{ page.intro_body|richtext }}</div>
+      {% endif %}
+
+      <!-- Form heading -->
+      <h2 class="wme-section__title mt-4">
+        <span>{{ page.form_heading }}</span>
+      </h2>
+
+      <!-- Contact form -->
+      <form action="{% pageurl page %}" method="POST" novalidate class="wme-form">
+        {% csrf_token %}
+
+        {# Layout specific fields if they exist; fallback renders anything extra #}
+        <div class="row g-3">
+          {% if form.name %}<div class="col-md-4">{% include "work_with_me/_field.html" with field=form.name placeholder="Write your name" %}</div>{% endif %}
+          {% if form.family_name %}<div class="col-md-4">{% include "work_with_me/_field.html" with field=form.family_name placeholder="Write your family name" %}</div>{% endif %}
+          {% if form.email %}<div class="col-md-4">{% include "work_with_me/_field.html" with field=form.email placeholder="Write your email" %}</div>{% endif %}
+
+          {% if form.subject %}<div class="col-12">{% include "work_with_me/_field.html" with field=form.subject placeholder="Write your subject" %}</div>{% endif %}
+          {% if form.message %}<div class="col-12">{% include "work_with_me/_field.html" with field=form.message placeholder="Write your message" rows=6 %}</div>{% endif %}
+
+          {# Render any additional fields editors add #}
+          {% for field in form.hidden_fields %}{{ field }}{% endfor %}
+          {% for field in form.visible_fields %}
+            {% if field.name not in "name,family_name,email,subject,message"|cut:"," %}
+              <div class="col-12">{% include "templates/_field.html" with field=field %}</div>
+            {% endif %}
+          {% endfor %}
+        </div>
+
+        <div class="text-end mt-3">
+          <button type="submit" class="btn btn-dark px-4">Send</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Right column -->
+    <aside class="col-lg-4">
+      {% if page.portrait_image %}
+        <div class="wme-portrait mb-3">
+          {% image page.portrait_image width-900 class="img-fluid rounded" %}
+        </div>
+      {% endif %}
+
+      {% if page.contact_heading %}
+        <h3 class="wme-aside__title mt-3"><span>{{ page.contact_heading }}</span></h3>
+      {% endif %}
+
+      {% if page.qr_image %}
+        <div class="wme-qr my-3 text-center">
+          {% image page.qr_image fill-500x500 class="img-fluid" %}
+        </div>
+      {% endif %}
+
+      <ul class="list-unstyled small">
+        {% if page.phone_display %}
+          <li class="mb-2">📞 {{ page.phone_display }}</li>
+        {% endif %}
+        {% if page.email_display %}
+          <li class="mb-2">✉️ <a href="mailto:{% firstof page.to_address page.email_display %}">{{ page.email_display }}</a></li>
+        {% endif %}
+      </ul>
+    </aside>
+  </div>
+</section>
+{% endblock %}

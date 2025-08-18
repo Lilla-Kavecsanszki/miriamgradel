@@ -45,13 +45,13 @@
     </div>
 
     <aside class="col-lg-5">
+      <h2 class="wme-aside__title mb-3"><span>Contact details</span></h2>
 
       {% if page.portrait %}
         <div class="wme-portrait mb-3">
           {% image page.portrait fill-720x900 class="img-fluid rounded" alt="Portrait" %}
         </div>
       {% endif %}
-      <h2 class="wme-aside__title mb-2"><span>Contact details</span></h2>
 
       <ul class="list-unstyled">
         {# Auto-generate from qr_data/contact_email; renders nothing if segno missing #}

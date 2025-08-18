@@ -1,7 +1,6 @@
 from django.db import models
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.fields import RichTextField
-from wagtail.models import Page
 from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
 from modelcluster.fields import ParentalKey
 
@@ -14,7 +13,7 @@ class WorkWithMeFormField(AbstractFormField):
     )
 
 
-class WorkWithMePage(AbstractEmailForm):  # don't inherit Page again
+class WorkWithMePage(AbstractEmailForm):  # <- no need to add Page again
     template = "work_with_me_page.html"
     landing_page_template = "work_with_me_page_landing.html"
 
@@ -31,7 +30,10 @@ class WorkWithMePage(AbstractEmailForm):  # don't inherit Page again
     )
     phone_number = models.CharField(max_length=50, blank=True)
 
+    # Landing text
     thank_you_text = RichTextField(blank=True, help_text="Shown after a successful submission.")
+
+    # Public contact email to display
     contact_email = models.EmailField(blank=True, help_text="Shown on the page")
 
     # QR (auto-generate)
@@ -39,30 +41,36 @@ class WorkWithMePage(AbstractEmailForm):  # don't inherit Page again
         max_length=300, blank=True,
         help_text="Text/URL to encode. Leave blank to auto-use mailto:contact_email"
     )
-    qr_scale = models.PositiveSmallIntegerField(default=10, help_text="Size scale for the QR SVG")
+    qr_scale = models.PositiveSmallIntegerField(
+        default=10, help_text="Size scale for the QR SVG (higher = bigger)"
+    )
 
-    content_panels = Page.content_panels + [
-        FieldPanel("greeting"),
-        FieldPanel("intro"),
-        FieldPanel("bold_text"),
-        FieldPanel("paragraph"),
-        FieldPanel("portrait"),
-        FieldPanel("phone_number"),
-        FieldPanel("contact_email"),
-        FieldPanel("thank_you_text"),
+    content_panels = (
+        super().content_panels
+        + [
+            FieldPanel("greeting"),
+            FieldPanel("intro"),
+            FieldPanel("bold_text"),     # <- include in editor
+            FieldPanel("paragraph"),     # <- include in editor
+            FieldPanel("portrait"),
+            FieldPanel("phone_number"),
+            FieldPanel("contact_email"),
+            FieldPanel("thank_you_text"),
 
-        InlinePanel("form_fields", label="Form fields"),
+            InlinePanel("form_fields", label="Form fields"),
 
-        MultiFieldPanel(
-            [FieldPanel("from_address"), FieldPanel("to_address"), FieldPanel("subject")],
-            heading="Email settings (used for notifications)",
-        ),
-        MultiFieldPanel(
-            [FieldPanel("qr_data"), FieldPanel("qr_scale")],
-            heading="QR auto-generate",
-        ),
-    ]
+            MultiFieldPanel(
+                [FieldPanel("from_address"), FieldPanel("to_address"), FieldPanel("subject")],
+                heading="Email settings (used for notifications)",
+            ),
+            MultiFieldPanel(
+                [FieldPanel("qr_data"), FieldPanel("qr_scale")],
+                heading="QR auto-generate",
+            ),
+        ]
+    )
 
+    # Helper used by the template/tag
     def get_qr_payload(self):
         if self.qr_data:
             return self.qr_data.strip()
@@ -70,6 +78,7 @@ class WorkWithMePage(AbstractEmailForm):  # don't inherit Page again
             return f"mailto:{self.contact_email}"
         return self.get_full_url()
 
+    # Seed default fields on first create
     def save(self, *args, **kwargs):
         creating = self.pk is None
         super().save(*args, **kwargs)
