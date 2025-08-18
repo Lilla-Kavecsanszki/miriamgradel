@@ -45,7 +45,7 @@
 
 /* Hover state: invert with grey for subtle effect */
 .error-page .btn:hover {
-  background-color: #73f0fa;
+  background-color: #7DF2FF;
   color: #000;
   border-color: #555; /* grey border */
   opacity: 0.95;

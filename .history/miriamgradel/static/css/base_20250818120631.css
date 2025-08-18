@@ -140,7 +140,7 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
 .menu-link { display: block; padding: 10px 4px; }
 .menu-link:hover { 
   color: black;
-  background: #73f0fa;
+  background: #7DF2FF;
 }
 
 /* Dropdown toggle (Journalism) */
@@ -162,7 +162,7 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
 
 .menu-toggle:hover {
   color: black;
-  background: #73f0fa;
+  background: #7DF2FF;
 }
 
 .j-dropdown {
@@ -188,7 +188,7 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
 }
 .submenu-link:hover { 
   color: black;
-  background: #73f0fa;
+  background: #7DF2FF;
 }
 
 /* Active highlight */
