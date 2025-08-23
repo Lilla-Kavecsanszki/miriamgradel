@@ -21,8 +21,8 @@ class WrittenPage(Page):
         MultiFieldPanel([InlinePanel("articles", label="Article")], heading="Articles"),
     ]
 
-    parent_page_types = ["home.HomePage"]
-    subpage_types = []
+    # parent_page_types = ["home.HomePage"]
+    # subpage_types = []
 
     def get_context(self, request, *args, **kwargs):
         ctx = super().get_context(request, *args, **kwargs)

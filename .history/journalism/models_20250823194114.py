@@ -204,8 +204,8 @@ class AudioPage(Page):
         MultiFieldPanel([InlinePanel("audios", label="Audio")], heading="Audio items"),
     ]
 
-    parent_page_types = ["home.HomePage"]
-    subpage_types = []  # no children
+    # parent_page_types = ["home.HomePage"]
+    # subpage_types = []  # no children
 
     def get_context(self, request, *args, **kwargs):
         ctx = super().get_context(request, *args, **kwargs)

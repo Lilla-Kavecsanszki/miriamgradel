@@ -96,8 +96,8 @@ class VideoPage(Page):
         MultiFieldPanel([InlinePanel("videos", label="Video")], heading="Videos"),
     ]
 
-    parent_page_types = ["home.HomePage"]
-    subpage_types = []  # nothing underneath
+    # parent_page_types = ["home.HomePage"]
+    # subpage_types = []  # nothing underneath
 
     def get_context(self, request, *args, **kwargs):
         ctx = super().get_context(request, *args, **kwargs)
@@ -204,8 +204,8 @@ class AudioPage(Page):
         MultiFieldPanel([InlinePanel("audios", label="Audio")], heading="Audio items"),
     ]
 
-    parent_page_types = ["home.HomePage"]
-    subpage_types = []  # no children
+    # parent_page_types = ["home.HomePage"]
+    # subpage_types = []  # no children
 
     def get_context(self, request, *args, **kwargs):
         ctx = super().get_context(request, *args, **kwargs)

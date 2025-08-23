@@ -8,6 +8,18 @@ from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
 from modelcluster.fields import ParentalKey
 
 
+# TEMP STUB — only to unblock the admin so you can delete old pages
+from wagtail.models import Page
+
+class WrittenArticlePage(Page):
+    is_creatable = False
+    parent_page_types = []
+    subpage_types = []
+    class Meta:
+        verbose_name = "Legacy Written Article (to delete)"
+
+
+
 # ======================
 # WRITTEN
 # ======================
