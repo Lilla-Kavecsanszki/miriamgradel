@@ -60,7 +60,7 @@ class BTSIndexPage(Page):
 # -----------------------
 class BTSPage(Page):
     """One BTS detail page with its own URL."""
-    template = "bts_detail_page.html"
+    template = "behind_scenes/bts_page.html"
 
     # Category (controls where it appears as a teaser)
     category = models.CharField(

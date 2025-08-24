@@ -6,22 +6,53 @@ from wagtail.fields import RichTextField, StreamField
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 from wagtail import blocks
 from wagtail.images.blocks import ImageChooserBlock
-from wagtail.embeds.blocks import EmbedBlock
+from wagtail.embeds.blocks import EmbedBlock  # for YouTube/Vimeo/SoundCloud/Spotify
 
+# --- constants ---
 
-# Categories used for grouping teasers
 BTS_CATEGORIES = (
     ("written", "Written"),
     ("audio", "Audio"),
     ("video", "Video"),
 )
 
+# --- detail body blocks ---
 
-# -----------------------
-# INDEX (intro + 3x grids)
-# -----------------------
+class ImageBlock(blocks.StructBlock):
+    image = ImageChooserBlock(required=True)
+    caption = blocks.CharBlock(required=False, max_length=200)
+    alignment = blocks.ChoiceBlock(
+        required=False,
+        choices=[("full", "Full width"), ("left", "Left"), ("right", "Right")],
+        default="full",
+    )
+
+    class Meta:
+        icon = "image"
+        label = "Image"
+
+class GalleryBlock(blocks.StructBlock):
+    items = blocks.ListBlock(
+        blocks.StructBlock(
+            [
+                ("image", ImageChooserBlock(required=True)),
+                ("caption", blocks.CharBlock(required=False, max_length=200)),
+            ],
+            icon="image",
+            label="Gallery image",
+        )
+    )
+
+    class Meta:
+        icon = "image"
+        label = "Gallery"
+
+# --- pages ---
+
 class BTSIndexPage(Page):
-    """Landing page that shows intro + teaser cards grouped by category."""
+    """
+    Landing page: shows intro + teaser cards grouped by Written/Audio/Video.
+    """
     template = "bts_index_page.html"
 
     intro_heading = models.CharField(max_length=120, blank=True, default="Behind the Scenes")
@@ -33,7 +64,7 @@ class BTSIndexPage(Page):
     ]
 
     parent_page_types = ["home.HomePage"]
-    subpage_types = ["behind_scenes.BTSPage"]  # <-- detail pages live under here
+    subpage_types = ["behind_scenes.BTSPage"]
 
     def teasers_for_category(self, category: str, limit: int = 3):
         return (
@@ -55,20 +86,27 @@ class BTSIndexPage(Page):
         return ctx
 
 
-# -----------------------
-# DETAIL (one BTS item)
-# -----------------------
 class BTSPage(Page):
-    """One BTS detail page with its own URL."""
-    template = "bts_detail_page.html"
+    """
+    One BTS detail page (has its own URL).
+    Editors choose category; teaser fields power cards; body holds rich content.
+    """
+    template = "bts_page.html"
 
-    # Category (controls where it appears as a teaser)
+    # Category (used to surface cards on Written/Audio/Video pages)
     category = models.CharField(
         max_length=20, choices=BTS_CATEGORIES, default="written",
         help_text="Which main section this BTS relates to.",
     )
 
-    # Teaser card fields (used on index + sidebars)
+    # Detail-page intro
+    intro_title = models.CharField(
+        max_length=120, blank=True,
+        help_text="Optional heading on detail page (falls back to page title).",
+    )
+    intro_body = RichTextField(blank=True, help_text="Intro paragraph under the heading.")
+
+    # Teaser card fields (used on BTS index and elsewhere)
     teaser_title = models.CharField(
         max_length=120, blank=True,
         help_text="Short title for teaser cards (falls back to page title).",
@@ -83,35 +121,13 @@ class BTSPage(Page):
         help_text="Card/hero image.",
     )
 
-    # Detail intro
-    intro_title = models.CharField(
-        max_length=120, blank=True,
-        help_text="Optional heading on the detail page (falls back to page title).",
-    )
-    intro_body = RichTextField(blank=True, help_text="Intro paragraph under the heading.")
-
-    # Rich detail body (paragraphs, images, embeds, gallery)
+    # Rich detail content
     body = StreamField(
         [
             ("paragraph", blocks.RichTextBlock(features=["h2", "h3", "bold", "italic", "link", "ol", "ul"])),
-            ("image", blocks.StructBlock([
-                ("image", ImageChooserBlock(required=True)),
-                ("caption", blocks.CharBlock(required=False, max_length=200)),
-                ("alignment", blocks.ChoiceBlock(
-                    required=False,
-                    choices=[("full", "Full width"), ("left", "Left"), ("right", "Right")],
-                    default="full",
-                )),
-            ], icon="image", label="Image")),
-            ("embed", EmbedBlock(help_text="YouTube/Vimeo/SoundCloud/Spotify, etc.")),
-            ("gallery", blocks.StructBlock([
-                ("items", blocks.ListBlock(
-                    blocks.StructBlock([
-                        ("image", ImageChooserBlock(required=True)),
-                        ("caption", blocks.CharBlock(required=False, max_length=200)),
-                    ], icon="image", label="Gallery image")
-                )),
-            ], icon="image", label="Gallery")),
+            ("image", ImageBlock()),
+            ("embed", EmbedBlock(help_text="YouTube / Vimeo / SoundCloud / Spotify, etc.")),
+            ("gallery", GalleryBlock()),
         ],
         use_json_field=True, blank=True, null=True,
     )
@@ -119,18 +135,18 @@ class BTSPage(Page):
     content_panels = Page.content_panels + [
         FieldPanel("category"),
         MultiFieldPanel(
-            [FieldPanel("teaser_title"), FieldPanel("teaser_summary"), FieldPanel("teaser_image")],
-            heading="Teaser card",
-        ),
-        MultiFieldPanel(
             [FieldPanel("intro_title"), FieldPanel("intro_body")],
             heading="Detail intro",
+        ),
+        MultiFieldPanel(
+            [FieldPanel("teaser_title"), FieldPanel("teaser_summary"), FieldPanel("teaser_image")],
+            heading="Teaser card",
         ),
         FieldPanel("body"),
     ]
 
-    parent_page_types = ["behind_scenes.BTSIndexPage"]  # <-- only under the index
-    subpage_types = []  # no children
+    parent_page_types = ["behind_scenes.BTSIndexPage"]
+    subpage_types = []
 
     # Helpers for cards/templates
     @property

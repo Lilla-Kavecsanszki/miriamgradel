@@ -7,8 +7,8 @@
     {% if page.intro_body %}<div class="lead mx-auto" style="max-width:60ch">{{ page.intro_body|richtext }}</div>{% endif %}
   </header>
 
-  {% include "_teaser_group.html" with title="Written" items=written_teasers %}
-  {% include "_teaser_group.html" with title="Audio"   items=audio_teasers %}
-  {% include "_teaser_group.html" with title="Video"   items=video_teasers %}
+  {% include "bts/_teaser_group.html" with title="Written" items=written_teasers %}
+  {% include "bts/_teaser_group.html" with title="Audio"   items=audio_teasers %}
+  {% include "bts/_teaser_group.html" with title="Video"   items=video_teasers %}
 </section>
 {% endblock %}

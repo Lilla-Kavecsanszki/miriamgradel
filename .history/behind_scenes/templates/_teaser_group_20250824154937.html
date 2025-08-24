@@ -1,0 +1,35 @@
+{% load wagtailimages_tags %}
+<section class="mb-5">
+  <div class="d-flex align-items-baseline justify-content-between mb-3">
+    <h2 class="h4 mb-0">{{ title }}</h2>
+  </div>
+
+  {% if items %}
+    <div class="row g-4 row-cols-1 row-cols-sm-2 row-cols-lg-3">
+      {% for bts in items %}
+        <div class="col">
+          <article class="card h-100 shadow-sm">
+            {% if bts.teaser_image %}
+              <a href="{{ bts.url }}" class="ratio ratio-16x9">
+                {% image bts.teaser_image fill-900x506 class="card-img-top rounded-top" %}
+              </a>
+            {% endif %}
+
+            <div class="card-body d-flex flex-column">
+              <h3 class="h5 card-title">
+                <a href="{{ bts.url }}" class="stretched-link text-decoration-none">
+                  {{ bts.card_title }}
+                </a>
+              </h3>
+              {% with summary=bts.card_summary %}
+                {% if summary %}<p class="card-text mb-0">{{ summary }}</p>{% endif %}
+              {% endwith %}
+            </div>
+          </article>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="text-muted">No BTS items yet.</p>
+  {% endif %}
+</section>

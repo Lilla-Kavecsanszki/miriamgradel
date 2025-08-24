@@ -22,7 +22,7 @@ BTS_CATEGORIES = (
 # -----------------------
 class BTSIndexPage(Page):
     """Landing page that shows intro + teaser cards grouped by category."""
-    template = "bts_index_page.html"
+    template = "behind_scenes/bts_index_page.html"
 
     intro_heading = models.CharField(max_length=120, blank=True, default="Behind the Scenes")
     intro_body = RichTextField(blank=True)
@@ -60,7 +60,7 @@ class BTSIndexPage(Page):
 # -----------------------
 class BTSPage(Page):
     """One BTS detail page with its own URL."""
-    template = "bts_detail_page.html"
+    template = "behind_scenes/bts_page.html"
 
     # Category (controls where it appears as a teaser)
     category = models.CharField(

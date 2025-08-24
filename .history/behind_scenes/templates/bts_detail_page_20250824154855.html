@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block body_class %}template-bts-detail{% endblock %}
+
+{% block content %}
+<section class="container my-5">
+
+  <header class="mb-4">
+    <p class="text-uppercase small text-muted mb-1">{{ page.get_category_display }}</p>
+    <h1 class="mb-3">{{ page.intro_title|default:page.title }}</h1>
+    {% if page.intro_body %}
+      <div class="lead" style="max-width: 70ch;">
+        {{ page.intro_body|richtext }}
+      </div>
+    {% endif %}
+  </header>
+
+  {% if page.teaser_sections %}
+    <nav class="mb-4">
+      <p class="small text-muted mb-2">On this page</p>
+      <ul class="list-inline">
+        {% for s in page.teaser_sections %}
+          <li class="list-inline-item me-3">
+            <a href="#{{ s.anchor }}" class="text-decoration-none">{{ s.subtitle }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    </nav>
+  {% endif %}
+
+  {% if page.slices %}
+    {% for block in page.slices %}
+      {% if block.block_type == "section" %}
+        {% with val=block.value pos=block.value.image_position %}
+          <section id="{{ val.anchor }}" class="mb-5">
+            {% if pos == "full" and val.image %}
+              <figure class="mb-3">
+                {% image val.image fill-1200x675 class="img-fluid rounded w-100" %}
+                {% if val.subtitle %}<figcaption class="mt-2 text-muted small">{{ val.subtitle }}</figcaption>{% endif %}
+              </figure>
+              {% if val.body %}<div class="richtext">{{ val.body|richtext }}</div>{% endif %}
+
+            {% elif pos == "left" %}
+              <div class="row g-4 align-items-start">
+                {% if val.image %}
+                  <div class="col-md-5">
+                    {% image val.image fill-800x800 class="img-fluid rounded w-100" %}
+                  </div>
+                {% endif %}
+                <div class="col-md">
+                  {% if val.subtitle %}<h2 class="h4">{{ val.subtitle }}</h2>{% endif %}
+                  {% if val.body %}<div class="richtext">{{ val.body|richtext }}</div>{% endif %}
+                </div>
+              </div>
+
+            {% else %}{# default/right #}
+              <div class="row g-4 align-items-start">
+                <div class="col-md">
+                  {% if val.subtitle %}<h2 class="h4">{{ val.subtitle }}</h2>{% endif %}
+                  {% if val.body %}<div class="richtext">{{ val.body|richtext }}</div>{% endif %}
+                </div>
+                {% if val.image %}
+                  <div class="col-md-5">
+                    {% image val.image fill-800x800 class="img-fluid rounded w-100" %}
+                  </div>
+                {% endif %}
+              </div>
+            {% endif %}
+          </section>
+        {% endwith %}
+      {% endif %}
+    {% endfor %}
+  {% else %}
+    <p class="text-muted">More behind-the-scenes content coming soon.</p>
+  {% endif %}
+
+</section>
+{% endblock %}
