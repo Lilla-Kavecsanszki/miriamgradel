@@ -1,0 +1,23 @@
+<div class="form-group">
+  <label class="form-label mb-1" for="{{ field.id_for_label }}">
+    {{ field.label }}{% if field.field.required %}<span class="text-danger">*</span>{% endif %}
+  </label>
+
+  {% with r=rows|default:'' p=placeholder|default:'' %}
+    {% if r %}
+      {{ field.as_widget(attrs={
+        'class': 'form-control wme-input',
+        'rows': r|default:4,
+        'placeholder': p
+      }) }}
+    {% else %}
+      {{ field.as_widget(attrs={
+        'class': 'form-control wme-input',
+        'placeholder': p
+      }) }}
+    {% endif %}
+  {% endwith %}
+
+  {% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}
+  {% for error in field.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+</div>

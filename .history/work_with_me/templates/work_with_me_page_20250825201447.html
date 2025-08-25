@@ -4,7 +4,6 @@
 {% block body_class %}template-work-with-me{% endblock %}
 {% block extra_css %}
   <link rel="stylesheet" href="{% static 'css/work_with_me.css' %}">
-  <link rel="stylesheet" href="{% static 'css/journalism.css' %}">
 {% endblock extra_css %}
 
 {% block content %}
@@ -19,14 +18,14 @@
         <div class="block-title" style="color:#73f0fa">
           {{ page.greeting|default:"Work with me" }}
         </div>
+        {% if page.intro %}<p>{{ page.intro|richtext }}</p>{% endif %}
       </div>
 
       <!-- Optional sub-head like your example banner -->
       <h3 class="section-title"><span class="band">15 years of impactful storytelling Journalism</span></h3>
 
       <!-- Lead / paragraph (optional) -->
-      {% if page.intro %}<div class="mb-3">{{ page.intro|richtext }}</div>{% endif %}
-      {% if page.bold_text %}<p>{{ page.bold_text|richtext }}</p>{% endif %}
+      {% if page.paragraph %}<div class="mb-3">{{ page.paragraph|richtext }}</div>{% endif %}
 
       <!-- Form -->
       <h3 class="section-title mt-4"><span class="band">Let’s talk</span></h3>
@@ -74,14 +73,14 @@
     <!-- ================= RIGHT: sidebar (col-4) ================= -->
     <div class="col-12 col-lg-4 mt-4 mt-lg-0">
       <aside class="bts-aside contact_aside">
+        <h3 class="section-title">Contact details</h3>
 
         {% if page.portrait %}
           <div class="wme-portrait mb-3">
             {% image page.portrait fill-720x900 class="img-fluid rounded w-100" alt="Portrait" %}
           </div>
         {% endif %}
-        <h3 class="section-title">Contact details</h3>
-        {% comment %} QR code for contact details {% endcomment %}
+
         {% wme_qr_svg page.get_qr_payload page.qr_scale as qr_svg %}
         {% if qr_svg %}
           <div class="wme-qr mb-2 text-center">{{ qr_svg }}</div>

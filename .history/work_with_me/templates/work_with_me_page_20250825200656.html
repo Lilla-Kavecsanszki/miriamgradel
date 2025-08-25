@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% load static wagtailcore_tags wagtailimages_tags form_extras wme_qr %}
+
+{% block body_class %}template-work-with-me{% endblock %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/work_with_me.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+<section class="container my-5">
+
+  <div class="row align-items-start">
+    {# ================= RIGHT: PORTRAIT + QR + CONTACT (sticky) ================= #}
+    <aside class="contact_aside col-lg-5 order-lg-2">
+
+      {% if page.portrait %}
+        <div class="wme-portrait mb-3">
+          {% image page.portrait fill-720x900 class="img-fluid rounded w-100" alt="Portrait" %}
+        </div>
+      {% endif %}
+      <h2 class="section-title mb-2"><span>Contact details</span></h2>
+      {% wme_qr_svg page.get_qr_payload page.qr_scale as qr_svg %}
+      {% if qr_svg %}
+        <div class="wme-qr mb-2 text-center">
+          {{ qr_svg }}
+        </div>
+        {% if page.vcard_file %}
+          <p class="text-center mb-3">
+            <a class="small text-decoration-underline" href="{{ page.vcard_file.url }}" download>
+              Download vCard (.vcf)
+            </a>
+          </p>
+        {% endif %}
+      {% endif %}
+
+      <ul class="list-unstyled small">
+        {% if page.phone_number %}
+          <li class="mb-2"><strong>Phone:</strong> <a href="tel:{{ page.phone_number|cut:' ' }}">{{ page.phone_number }}</a></li>
+        {% endif %}
+        {% if page.contact_email or page.to_address %}
+          <li class="mb-2"><strong>Email:</strong> <a href="mailto:{% firstof page.contact_email page.to_address %}">{% firstof page.contact_email page.to_address %}</a></li>
+        {% endif %}
+      </ul>
+    </aside>
+
+    {# ================= LEFT: HERO + FORM ================= #}
+    <div class="col-lg-7 order-lg-1">
+      {# HERO now lives inside the left column so the sidebar can align to the top #}
+      <header class="contact-hero mb-4">
+        <h1 class="block-title">{{ page.greeting|default:"Work with me" }}</h1>
+        <h2 class="section-title mb-2"><span>15 years of impactful storytelling Journalism</span></h2>
+        {% if page.intro %}<p>{{ page.intro|richtext }}</p>{% endif %}
+        <p class="bold">{{ bold_text|richtext }}</p>
+      </header>
+
+      <h2 class="section-title mb-3"><span>Let’s talk</span></h2>
+
+      <form action="{% pageurl page %}" method="post" novalidate>
+        {% csrf_token %}
+
+        {# Row 1: first three fields side-by-side (Name / Family name / Email) #}
+        <div class="row g-3">
+          {% for field in form.visible_fields %}
+            {% if forloop.counter0 < 3 %}
+              <div class="col-12 col-md-4">
+                {% include "work_with_me/_field.html" with field=field rows=1 placeholder="" %}
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+
+        {# Row 2+: remaining non-textarea fields full width (e.g., Subject) #}
+        {% for field in form.visible_fields %}
+          {% if forloop.counter0 >= 3 and field.field.widget.input_type != "textarea" %}
+            <div class="mt-3">
+              {% include "work_with_me/_field.html" with field=field placeholder="" %}
+            </div>
+          {% endif %}
+        {% endfor %}
+
+        {# Message textarea (if present) #}
+        {% for field in form.visible_fields %}
+          {% if field.field.widget.input_type == "textarea" %}
+            <div class="mt-3">
+              {% include "work_with_me/_field.html" with field=field rows=8 placeholder="" %}
+            </div>
+          {% endif %}
+        {% endfor %}
+
+        {% for hf in form.hidden_fields %}{{ hf }}{% endfor %}
+
+        <div class="d-flex justify-content-end mt-2">
+          <button class="btn btn-dark px-4" type="submit">Send</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}

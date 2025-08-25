@@ -74,14 +74,14 @@
     <!-- ================= RIGHT: sidebar (col-4) ================= -->
     <div class="col-12 col-lg-4 mt-4 mt-lg-0">
       <aside class="bts-aside contact_aside">
+        <h3 class="section-title">Contact details</h3>
 
         {% if page.portrait %}
           <div class="wme-portrait mb-3">
             {% image page.portrait fill-720x900 class="img-fluid rounded w-100" alt="Portrait" %}
           </div>
         {% endif %}
-        <h3 class="section-title">Contact details</h3>
-        {% comment %} QR code for contact details {% endcomment %}
+
         {% wme_qr_svg page.get_qr_payload page.qr_scale as qr_svg %}
         {% if qr_svg %}
           <div class="wme-qr mb-2 text-center">{{ qr_svg }}</div>
