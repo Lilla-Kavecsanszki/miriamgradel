@@ -1,9 +1,31 @@
 {% extends "base.html" %}
-{% load static wagtailcore_tags wagtailimages_tags %}
+{% load wagtailcore_tags wagtailimages_tags %}
 
 {% block extra_css %}
-  <link rel="stylesheet" href="{% static 'css/bts.css' %}">
-{% endblock extra_css %}
+<style>
+  /* Brand cyan button (matches your site styles) */
+  .btn-brand {
+    background: #73f0fa;
+    color: #000;
+    font-weight: 800;
+    border: none;
+    border-radius: 0;
+  }
+  .btn-brand:hover,
+  .btn-brand:focus { filter: brightness(0.96); color: #000; }
+
+  /* Top back bar: compact on mobile, subtle on desktop */
+  .bts-backbar {
+    background: #F7F7F7;
+    border-left: 3px solid rgba(0,0,0,0.4);
+    padding: .5rem .75rem;
+    margin-bottom: 1rem;
+  }
+  @media (min-width: 992px) {
+    .bts-backbar { margin-bottom: 1.25rem; }
+  }
+</style>
+{% endblock %}
 
 {% block content %}
 <section class="container my-4 my-lg-5">
