@@ -1,0 +1,24 @@
+{% load wagtailimages_tags %}
+
+{# expects: bts (BTSPage) #}
+<article class="bts-card">
+  {% if bts.teaser_image %}
+    <a class="thumb" href="{{ bts.url }}">
+      {% image bts.teaser_image fill-800x450 class="rounded-top" alt=bts.card_title %}
+      <h4 class="bts-title">
+        <a href="{{ bts.url }}" class="text-decoration-none">{{ bts.card_title }}</a>
+      </h4>
+    </a>
+  {% else %}
+    <div class="bts-title">
+      <a href="{{ bts.url }}" class="text-decoration-none">{{ bts.card_title }}</a>
+    </div>
+  {% endif %}
+
+  <div class="bts-body">
+    {% if bts.card_summary %}
+      <p class="bts-text">{{ bts.card_summary }}</p>
+    {% endif %}
+    <a href="{{ bts.url }}" class="bts-cta">Read the BTS →</a>
+  </div>
+</article>

@@ -39,11 +39,11 @@
 </head>
 
 <body class="{% block body_class %}{% endblock %}">
-    {% wagtailuserbar %}
   <!-- Loading Overlay -->
     <div id="loading-overlay" class="loading-overlay">
-        <img src="{% static 'images/logo.png' %}" alt="Logo" loading="lazy" class="loading-logo">
+        <img src="{% static 'images/logo.png' %}" alt="{% trans 'Logo' %}" alt="Logo" loading="lazy" class="loading-logo">
     </div>
+  {% wagtailuserbar %}
 
   {# ========== Sticky side menu (override this block to hide on welcome page) ========== #}
   {% block side_menu %}
@@ -146,21 +146,6 @@
 
   <!-- Global JS (submenu toggle, etc.) -->
   <script src="{% static 'js/miriamgradel.js' %}"></script>
-
-  <!-- Custom JavaScript for Loading Overlay -->
-    <script>
-    window.addEventListener('load', function () {
-        var overlay = document.getElementById('loading-overlay');
-        
-        // Fade out the overlay
-        overlay.style.opacity = 0;
-    
-        overlay.addEventListener('transitionend', function() {
-            overlay.style.display = 'none';
-            document.querySelector('.content').style.display = 'block';
-        });
-    });
-    </script>
 
   {% block extra_js %}{% endblock %}
 </body>
