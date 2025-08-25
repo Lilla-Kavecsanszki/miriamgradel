@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static wagtailcore_tags wagtailembeds_tags wagtailimages_tags bts_tags %}
 
-{% block body_class %}template-audio{% endblock %}
+{% block body_class %}template-video{% endblock %}
 
 {% block extra_css %}
   <link rel="stylesheet" href="{% static 'css/journalism.css' %}">
@@ -16,8 +16,8 @@
     <div class="col-12 col-lg-8">
       <div class="written-hero mb-3">
         <span class="cap" aria-hidden="true"></span>
-        <div class="block-title" style="color: #73f0fa">I also produce audio stories & podcasts</div>
-        <p>Here’s a selection of my audio work: interviews, features and sound-rich stories.</p>
+        <div class="block-title" style="color: #73f0fa">As a multimedia Journalist I also do Videos</div>
+        <p>For some clients, I had to film and produce videos. Here’s a glimpse at my multimedia work.</p>
       </div>
 
       {% if page.intro %}
@@ -30,7 +30,7 @@
       <aside class="bts-aside">
         <h3 class="section-title">Behind the Scenes</h3>
 
-        {% bts_teasers_for 'audio' 3 as bts_teasers %}
+        {% bts_teasers_for 'video' 3 as bts_teasers %}
         {% if bts_teasers %}
           <ul class="list-unstyled">
             {% for bts in bts_teasers %}
@@ -38,7 +38,7 @@
                 <article class="bts-card d-flex">
                   {% if bts.teaser_image %}
                     <a href="{{ bts.url }}" class="me-3" style="width: 120px;">
-                      {% image bts.teaser_image fill-120x68 class="rounded w-100" loading="lazy" decoding="async" alt=bts.card_title %}
+                      {% image bts.teaser_image fill-120x68 class="rounded w-100" alt=bts.card_title %}
                     </a>
                   {% endif %}
                   <div class="flex-grow-1">
@@ -61,21 +61,81 @@
     </div>
   </div>
 
-  {# FEATURED PLAYER (single) #}
+  {# FEATURED PLAYER #}
+  {# FEATURED PLAYER #}
+{% if featured %}
+  <section class="featured mb-5">
+    <h2 class="section-title"><span>My last video in {{ current_year }}</span></h2>
+
+    <div class="featured__grid">
+      <div class="featured__media">
+        <div id="video-player" class="embed">
+          {% embed featured.embed_url %}
+        </div>
+      </div>
+
+      <aside class="featured__meta">
+        <p class="meta__date" id="meta-date">
+          {{ featured.video_date|date:"d/m/Y" }}
+        </p>
+
+        <h3 class="meta__title" id="meta-title">
+          {{ featured.standfirst|default:"Untitled" }}
+        </h3>
+
+        {% if featured.description %}
+          <div class="meta__body richtext" id="meta-desc">{{ featured.description|richtext }}</div>
+        {% else %}
+          <div class="meta__body richtext" id="meta-desc"></div>
+        {% endif %}
+
+        <div class="meta__credits" id="meta-credits">
+          {% if featured.produced_by %}
+            Produced by <strong>{{ featured.produced_by }}</strong>{% if featured.produced_for %} for: <strong>{{ featured.produced_for }}</strong>{% endif %}
+          {% elif featured.produced_for %}
+            Produced for: <strong>{{ featured.produced_for }}</strong>
+          {% endif %}
+        </div>
+
+        {% if featured.external_url %}
+          <a class="btn" id="meta-link" href="{{ featured.external_url }}" target="_blank" rel="noopener">Open video</a>
+        {% else %}
+          <a class="btn disabled" id="meta-link" tabindex="-1" aria-disabled="true">Open video</a>
+        {% endif %}
+      </aside>
+    </div>
+
+    {# 👇 stash the current featured embed + meta for swaps #}
+    <template id="tpl-featured-current">{% embed featured.embed_url %}</template>
+    <div id="featured-meta-store"
+         data-title="{{ featured.standfirst|default:'Untitled'|escape }}"
+         data-date="{{ featured.video_date|date:'d/m/Y' }}"
+         data-produced-by="{{ featured.produced_by|default_if_none:''|escape }}"
+         data-produced-for="{{ featured.produced_for|default_if_none:''|escape }}"
+         data-external-url="{{ featured.external_url|default_if_none:''|escape }}"
+         hidden></div>
+  </section>
+{% endif %}
+
   {% if featured %}
     <section class="featured mb-5">
-      <h2 class="section-title"><span>My latest audio in {{ current_year }}</span></h2>
+      <h2 class="section-title"><span>My last video in {{ current_year }}</span></h2>
 
       <div class="featured__grid">
         <div class="featured__media">
-          <div id="audio-player" class="embed" aria-live="polite">
+          <div id="video-player" class="embed">
             {% embed featured.embed_url %}
           </div>
         </div>
 
         <aside class="featured__meta">
-          <p class="meta__date" id="meta-date">{{ featured.audio_date|date:"d/m/Y" }}</p>
-          <h3 class="meta__title" id="meta-title">{{ featured.title|default:"Untitled" }}</h3>
+          <p class="meta__date" id="meta-date">
+            {{ featured.video_date|date:"d/m/Y" }}
+          </p>
+
+          <h3 class="meta__title" id="meta-title">
+            {{ featured.standfirst|default:"Untitled" }}
+          </h3>
 
           {% if featured.description %}
             <div class="meta__body richtext" id="meta-desc">{{ featured.description|richtext }}</div>
@@ -91,111 +151,87 @@
             {% endif %}
           </div>
 
-          <div class="meta__share">
-            <span>Share it</span>
-            {% with u=request.build_absolute_uri|urlencode t=featured.title|default:"Untitled"|urlencode %}
-              <a aria-label="Share to X" href="https://twitter.com/intent/tweet?url={{ u }}&text={{ t }}" target="_blank" rel="noopener">X</a>
-              <a aria-label="Share to Facebook" href="https://www.facebook.com/sharer/sharer.php?u={{ u }}" target="_blank" rel="noopener">FB</a>
-              <a aria-label="Share to LinkedIn" href="https://www.linkedin.com/sharing/share-offsite/?url={{ u }}" target="_blank" rel="noopener">IN</a>
-            {% endwith %}
-          </div>
-
           {% if featured.external_url %}
-            <a class="btn" id="meta-link" href="{{ featured.external_url }}" target="_blank" rel="noopener">Open audio</a>
+            <a class="btn" id="meta-link" href="{{ featured.external_url }}" target="_blank" rel="noopener">Open video</a>
           {% else %}
-            <a class="btn disabled" id="meta-link" tabindex="-1" aria-disabled="true">Open audio</a>
+            <a class="btn disabled" id="meta-link" tabindex="-1" aria-disabled="true">Open video</a>
           {% endif %}
         </aside>
       </div>
-
-      {# stash the current featured embed + meta for swaps #}
-      <template id="tpl-audio-featured-current">{% embed featured.embed_url %}</template>
-      <div id="featured-audio-meta-store"
-           data-title="{{ featured.title|default:'Untitled'|escape }}"
-           data-date="{{ featured.audio_date|date:'d/m/Y' }}"
-           data-produced-by="{{ featured.produced_by|default_if_none:''|escape }}"
-           data-produced-for="{{ featured.produced_for|default_if_none:''|escape }}"
-           data-external-url="{{ featured.external_url|default_if_none:''|escape }}"
-           data-desc="{{ featured.description|richtext|striptags|escape }}"
-           hidden></div>
     </section>
   {% endif %}
 
-  {# ALL AUDIO (click to load into player) #}
-  <section class="all-audio">
-    <h2 class="section-title"><span>All my audio</span></h2>
+  {# ALL VIDEOS GRID (click to load into player) #}
+  <section class="all-videos">
+    <h2 class="section-title"><span>All my videos</span></h2>
 
-    <div class="cards" id="audio-cards">
-      {% for a in audios %}
+    <div class="cards" id="video-cards">
+      {% for v in videos %}
         <article class="card">
           <button
-            class="card__media play-audio-in-hero"
+            class="card__media play-in-hero"
             type="button"
-            aria-label="Play {{ a.title|default:'Untitled' }} in player"
-            data-title="{{ a.title|default:'Untitled'|escape }}"
-            data-date="{{ a.audio_date|date:'d/m/Y' }}"
-            data-produced-by="{{ a.produced_by|default_if_none:''|escape }}"
-            data-produced-for="{{ a.produced_for|default_if_none:''|escape }}"
-            data-external-url="{{ a.external_url|default_if_none:''|escape }}"
-            data-desc="{{ a.description|richtext|striptags|escape }}"
-            data-tpl-id="tpl-a-{{ forloop.counter0 }}"
+            aria-label="Play {{ v.standfirst|default:'Untitled' }} in player"
+            data-title="{{ v.standfirst|default:'Untitled'|escape }}"
+            data-date="{{ v.video_date|date:'d/m/Y' }}"
+            data-produced-by="{{ v.produced_by|default_if_none:''|escape }}"
+            data-produced-for="{{ v.produced_for|default_if_none:''|escape }}"
+            data-external-url="{{ v.external_url|default_if_none:''|escape }}"
+            data-tpl-id="tpl-{{ forloop.counter0 }}"
           >
-            <div class="embed embed--thumb">{% embed a.embed_url %}</div>
+            <div class="embed embed--thumb">{% embed v.embed_url %}</div>
           </button>
 
           <div class="card__body">
             <h3 class="card__title">
               <button
-                class="link-unstyled play-audio-in-hero"
+                class="link-unstyled play-in-hero"
                 type="button"
-                data-title="{{ a.title|default:'Untitled'|escape }}"
-                data-date="{{ a.audio_date|date:'d/m/Y' }}"
-                data-produced-by="{{ a.produced_by|default_if_none:''|escape }}"
-                data-produced-for="{{ a.produced_for|default_if_none:''|escape }}"
-                data-external-url="{{ a.external_url|default_if_none:''|escape }}"
-                data-desc="{{ a.description|richtext|striptags|escape }}"
-                data-tpl-id="tpl-a-{{ forloop.counter0 }}"
+                data-title="{{ v.standfirst|default:'Untitled'|escape }}"
+                data-date="{{ v.video_date|date:'d/m/Y' }}"
+                data-produced-by="{{ v.produced_by|default_if_none:''|escape }}"
+                data-produced-for="{{ v.produced_for|default_if_none:''|escape }}"
+                data-external-url="{{ v.external_url|default_if_none:''|escape }}"
+                data-tpl-id="tpl-{{ forloop.counter0 }}"
               >
-                {{ a.title|default:"Untitled" }}
+                {{ v.standfirst|default:"Untitled" }}
               </button>
             </h3>
-            {% if a.standfirst %}<p class="card__dek">{{ a.standfirst }}</p>{% endif %}
+            {% if v.standfirst %}<p class="card__dek">{{ v.standfirst }}</p>{% endif %}
           </div>
 
-          {# store fully rendered embed for instant swap #}
-          <template id="tpl-a-{{ forloop.counter0 }}">
-            {% embed a.embed_url %}
+          <template id="tpl-{{ forloop.counter0 }}">
+            {% embed v.embed_url %}
           </template>
         </article>
       {% empty %}
-        <p>No audio yet.</p>
+        <p>No videos yet.</p>
       {% endfor %}
     </div>
   </section>
 </section>
 
-{# Player swap-back logic (mirrors video) #}
+{# Player swap logic #}
 <script>
 (function () {
-  const player = document.getElementById('audio-player');
+  const player = document.getElementById('video-player');
   const metaTitle = document.getElementById('meta-title');
   const metaDate = document.getElementById('meta-date');
   const metaDesc = document.getElementById('meta-desc');
   const metaCredits = document.getElementById('meta-credits');
   const metaLink = document.getElementById('meta-link');
 
-  const featuredTpl = document.getElementById('tpl-audio-featured-current');
-  const featuredStore = document.getElementById('featured-audio-meta-store');
+  const featuredTpl = document.getElementById('tpl-featured-current');
+  const featuredStore = document.getElementById('featured-meta-store');
 
-  // Cache the initially-featured audio so we can demote it into a card
+  // Keep the "currently-featured" payload here for swapping back into a card
   let prevFeatured = {
     embedHTML: featuredTpl ? featuredTpl.innerHTML : '',
     title: featuredStore ? featuredStore.dataset.title : '',
     date: featuredStore ? featuredStore.dataset.date : '',
     producedBy: featuredStore ? featuredStore.dataset.producedBy : '',
     producedFor: featuredStore ? featuredStore.dataset.producedFor : '',
-    externalUrl: featuredStore ? featuredStore.dataset.externalUrl : '',
-    desc: featuredStore ? featuredStore.dataset.desc : ''
+    externalUrl: featuredStore ? featuredStore.dataset.externalUrl : ''
   };
 
   function setText(el, html) { if (el) el.innerHTML = html || ''; }
@@ -230,22 +266,23 @@
 
   // Update both the media button and the title button inside a card
   function updateCardButtons(cardEl, data) {
-    const buttons = cardEl.querySelectorAll('.play-audio-in-hero');
+    const buttons = cardEl.querySelectorAll('.play-in-hero');
     buttons.forEach(btn => {
       btn.setAttribute('data-title', data.title || 'Untitled');
       btn.setAttribute('data-date', data.date || '');
       btn.setAttribute('data-produced-by', data.producedBy || '');
       btn.setAttribute('data-produced-for', data.producedFor || '');
       btn.setAttribute('data-external-url', data.externalUrl || '');
-      btn.setAttribute('data-desc', data.desc || '');
     });
-    const titleBtn = cardEl.querySelector('.card__title .play-audio-in-hero');
+    // Visible title/dek (optional: keep using standfirst as title)
+    const titleBtn = cardEl.querySelector('.card__title .play-in-hero');
     if (titleBtn) titleBtn.textContent = data.title || 'Untitled';
-    // We leave .card__dek (standfirst) unchanged to preserve the original grid copy
+    const dek = cardEl.querySelector('.card__dek');
+    if (dek) dek.textContent = data.title || ''; // or keep previous dek if you prefer
   }
 
   document.addEventListener('click', function (e) {
-    const btn = e.target.closest('.play-audio-in-hero');
+    const btn = e.target.closest('.play-in-hero');
     if (!btn) return;
 
     const card = btn.closest('.card');
@@ -255,36 +292,38 @@
 
     if (!tpl || !player || !card) return;
 
-    // This clicked audio becomes the new featured
+    // Gather clicked card data (this will become the new featured)
     const clicked = {
       embedHTML: tpl.innerHTML,
       title: btn.getAttribute('data-title') || 'Untitled',
       date: btn.getAttribute('data-date') || '',
       producedBy: btn.getAttribute('data-produced-by') || '',
       producedFor: btn.getAttribute('data-produced-for') || '',
-      externalUrl: btn.getAttribute('data-external-url') || '',
-      desc: btn.getAttribute('data-desc') || ''
+      externalUrl: btn.getAttribute('data-external-url') || ''
     };
 
-    // 1) Promote clicked to FEATURED
+    // 1) Put the clicked video into the FEATURED player + meta
     player.innerHTML = clicked.embedHTML;
     setText(metaTitle, clicked.title);
     setText(metaDate, clicked.date);
-    setText(metaDesc, clicked.desc);
+    setText(metaDesc, '');              // clear desc on swap (as per your current behavior)
     setCredits(clicked.producedBy, clicked.producedFor);
     setLink(clicked.externalUrl);
 
-    // 2) Demote previous featured back into the clicked CARD
+    // 2) Put the PREVIOUS featured back into the CLICKED CARD
+    //    - update the visible thumb
     if (cardThumb && prevFeatured.embedHTML) {
       cardThumb.innerHTML = prevFeatured.embedHTML;
     }
+    //    - update the card’s hidden template to the previous featured
     tpl.innerHTML = prevFeatured.embedHTML;
+    //    - update the card’s buttons data + visible title/dek
     updateCardButtons(card, prevFeatured);
 
-    // 3) Update cache
+    // 3) Update our "prevFeatured" cache to the one we just promoted
     prevFeatured = clicked;
 
-    // Smooth scroll to player on small screens
+    // Scroll to player on small screens
     player.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 })();

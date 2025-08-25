@@ -61,7 +61,7 @@
     </div>
   </div>
 
-  {# FEATURED PLAYER (single) #}
+  {# FEATURED PLAYER #}
   {% if featured %}
     <section class="featured mb-5">
       <h2 class="section-title"><span>My last video in {{ current_year }}</span></h2>
@@ -74,8 +74,13 @@
         </div>
 
         <aside class="featured__meta">
-          <p class="meta__date" id="meta-date">{{ featured.video_date|date:"d/m/Y" }}</p>
-          <h3 class="meta__title" id="meta-title">{{ featured.standfirst|default:"Untitled" }}</h3>
+          <p class="meta__date" id="meta-date">
+            {{ featured.video_date|date:"d/m/Y" }}
+          </p>
+
+          <h3 class="meta__title" id="meta-title">
+            {{ featured.standfirst|default:"Untitled" }}
+          </h3>
 
           {% if featured.description %}
             <div class="meta__body richtext" id="meta-desc">{{ featured.description|richtext }}</div>
@@ -98,16 +103,6 @@
           {% endif %}
         </aside>
       </div>
-
-      {# stash the current featured embed + meta for swaps #}
-      <template id="tpl-featured-current">{% embed featured.embed_url %}</template>
-      <div id="featured-meta-store"
-           data-title="{{ featured.standfirst|default:'Untitled'|escape }}"
-           data-date="{{ featured.video_date|date:'d/m/Y' }}"
-           data-produced-by="{{ featured.produced_by|default_if_none:''|escape }}"
-           data-produced-for="{{ featured.produced_for|default_if_none:''|escape }}"
-           data-external-url="{{ featured.external_url|default_if_none:''|escape }}"
-           hidden></div>
     </section>
   {% endif %}
 
@@ -171,19 +166,11 @@
   const metaCredits = document.getElementById('meta-credits');
   const metaLink = document.getElementById('meta-link');
 
-  const featuredTpl = document.getElementById('tpl-featured-current');
-  const featuredStore = document.getElementById('featured-meta-store');
+  function setText(el, html) {
+    if (!el) return;
+    el.innerHTML = html || '';
+  }
 
-  let prevFeatured = {
-    embedHTML: featuredTpl ? featuredTpl.innerHTML : '',
-    title: featuredStore ? featuredStore.dataset.title : '',
-    date: featuredStore ? featuredStore.dataset.date : '',
-    producedBy: featuredStore ? featuredStore.dataset.producedBy : '',
-    producedFor: featuredStore ? featuredStore.dataset.producedFor : '',
-    externalUrl: featuredStore ? featuredStore.dataset.externalUrl : ''
-  };
-
-  function setText(el, html) { if (el) el.innerHTML = html || ''; }
   function setCredits(by, forWho) {
     if (!metaCredits) return;
     if (by && forWho) {
@@ -196,6 +183,7 @@
       metaCredits.innerHTML = '';
     }
   }
+
   function setLink(url) {
     if (!metaLink) return;
     if (url) {
@@ -210,58 +198,28 @@
       metaLink.setAttribute('tabindex', '-1');
     }
   }
-  function updateCardButtons(cardEl, data) {
-    const buttons = cardEl.querySelectorAll('.play-in-hero');
-    buttons.forEach(btn => {
-      btn.setAttribute('data-title', data.title || 'Untitled');
-      btn.setAttribute('data-date', data.date || '');
-      btn.setAttribute('data-produced-by', data.producedBy || '');
-      btn.setAttribute('data-produced-for', data.producedFor || '');
-      btn.setAttribute('data-external-url', data.externalUrl || '');
-    });
-    const titleBtn = cardEl.querySelector('.card__title .play-in-hero');
-    if (titleBtn) titleBtn.textContent = data.title || 'Untitled';
-    const dek = cardEl.querySelector('.card__dek');
-    if (dek) dek.textContent = data.title || '';
-  }
 
   document.addEventListener('click', function (e) {
     const btn = e.target.closest('.play-in-hero');
     if (!btn) return;
 
-    const card = btn.closest('.card');
     const tplId = btn.getAttribute('data-tpl-id');
-    const tpl = tplId ? document.getElementById(tplId) : null;
-    const cardThumb = card ? card.querySelector('.embed.embed--thumb') : null;
+    const tpl = document.getElementById(tplId);
+    if (!tpl || !player) return;
 
-    if (!tpl || !player || !card) return;
+    player.innerHTML = tpl.innerHTML;
 
-    const clicked = {
-      embedHTML: tpl.innerHTML,
-      title: btn.getAttribute('data-title') || 'Untitled',
-      date: btn.getAttribute('data-date') || '',
-      producedBy: btn.getAttribute('data-produced-by') || '',
-      producedFor: btn.getAttribute('data-produced-for') || '',
-      externalUrl: btn.getAttribute('data-external-url') || ''
-    };
+    const title = btn.getAttribute('data-title') || 'Untitled';
+    const date = btn.getAttribute('data-date') || '';
+    const by = btn.getAttribute('data-produced-by') || '';
+    const forWho = btn.getAttribute('data-produced-for') || '';
+    const external = btn.getAttribute('data-external-url') || '';
 
-    // Promote clicked to featured
-    player.innerHTML = clicked.embedHTML;
-    setText(metaTitle, clicked.title);
-    setText(metaDate, clicked.date);
+    setText(metaTitle, title);
+    setText(metaDate, date);
     setText(metaDesc, '');
-    setCredits(clicked.producedBy, clicked.producedFor);
-    setLink(clicked.externalUrl);
-
-    // Demote previous featured back into the clicked card
-    if (cardThumb && prevFeatured.embedHTML) {
-      cardThumb.innerHTML = prevFeatured.embedHTML;
-    }
-    tpl.innerHTML = prevFeatured.embedHTML;
-    updateCardButtons(card, prevFeatured);
-
-    // New "previous" is the one we just promoted
-    prevFeatured = clicked;
+    setCredits(by, forWho);
+    setLink(external);
 
     player.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
