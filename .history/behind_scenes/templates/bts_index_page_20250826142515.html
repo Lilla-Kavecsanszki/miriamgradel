@@ -16,7 +16,9 @@
     {% endif %}
   </header>
 
-  {# One unified grid; same card markup & CTA; no category sections #}
-  {% include "_teaser_group.html" with items=all_teasers %}
+  {% include "_teaser_group.html" with title="Written" items=written_teasers %}
+  {% include "_teaser_group.html" with title="Audio"   items=audio_teasers %}
+  {% include "_teaser_group.html" with title="Video"   items=video_teasers %}
+  {% include "_teaser_group.html" with title="Communication"   items=communication_teasers %}
 </section>
 {% endblock %}

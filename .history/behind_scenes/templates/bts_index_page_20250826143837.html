@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load static wagtailcore_tags wagtailimages_tags %}
+
+{% block body_class %}template-bts-onepage{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/bts.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+<section class="container my-5">
+  <header class="mb-5 text-center">
+    <h1 class="mb-3">{{ page.intro_heading|default:page.title }}</h1>
+    {% if page.intro_body %}
+      <div class="lead mx-auto" style="max-width:60ch">{{ page.intro_body|richtext }}</div>
+    {% endif %}
+  </header>
+
+    <div class="row g-4 row-cols-1 row-cols-sm-2 row-cols-lg-3">
+    {% for bts in all_teasers %}
+      <div class="col">
+        {% include "_teaser_card.html" with bts=bts only %}
+      </div>
+    {% empty %}
+      <p class="text-muted">No BTS items yet.</p>
+    {% endfor %}
+  </div>
+
+  {% include "_teaser_group.html" with title="Written" items=written_teasers %}
+  {% include "_teaser_group.html" with title="Audio"   items=audio_teasers %}
+  {% include "_teaser_group.html" with title="Video"   items=video_teasers %}
+  {% include "_teaser_group.html" with title="Communication"   items=communication_teasers %}
+</section>
+{% endblock %}

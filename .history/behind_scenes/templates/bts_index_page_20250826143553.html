@@ -1,3 +1,4 @@
+{# templates/bts_index_page.html #}
 {% extends "base.html" %}
 {% load static wagtailcore_tags wagtailimages_tags %}
 
@@ -16,7 +17,14 @@
     {% endif %}
   </header>
 
-  {# One unified grid; same card markup & CTA; no category sections #}
-  {% include "_teaser_group.html" with items=all_teasers %}
+  <div class="row g-4 row-cols-1 row-cols-sm-2 row-cols-lg-3">
+    {% for bts in all_teasers %}
+      <div class="col">
+        {% include "_teaser_card.html" with bts=bts only %}
+      </div>
+    {% empty %}
+      <p class="text-muted">No BTS items yet.</p>
+    {% endfor %}
+  </div>
 </section>
 {% endblock %}

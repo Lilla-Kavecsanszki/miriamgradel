@@ -16,7 +16,7 @@
     {% endif %}
   </header>
 
-  {# One unified grid; same card markup & CTA; no category sections #}
-  {% include "_teaser_group.html" with items=all_teasers %}
+  {# One grid with all cards; 3 per row on lg via your Bootstrap classes #}
+  {% include "_teaser_group.html" with title=None items=all_teasers %}
 </section>
 {% endblock %}

@@ -1,6 +1,6 @@
 {% load wagtailimages_tags %}
 <section class="bts-section mb-5">
-  {% comment %} <h2 class="h4 mb-3 text-uppercase">{{ title }}</h2> {% endcomment %}
+  <h2 class="h4 mb-3 text-uppercase">{{ title }}</h2>
 
   {% if items %}
     <div class="row g-4 row-cols-1 row-cols-sm-2 row-cols-lg-3">
@@ -22,7 +22,6 @@
               {% if bts.card_summary %}
                 <p class="bts-text">{{ bts.card_summary }}</p>
               {% endif %}
-                <p class="bts-category">{{ bts.get_category_display }}</p>
               <a href="{{ bts.url }}" class="bts-cta">Discover what happened!</a>
             </div>
           </article>
