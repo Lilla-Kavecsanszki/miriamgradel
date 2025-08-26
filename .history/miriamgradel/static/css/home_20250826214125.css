@@ -10,7 +10,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  font-size: clamp(3rem, 8vw, 7rem);
+  font-size: clamp(2.5rem, 6vw, 5rem); /* responsive scaling */
   line-height: 1.05;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -18,53 +18,6 @@
     3px 3px 0 #73f0fa,
     3px 3px 0 #73f0fa;
 }
-
-/* ===== HERO (reuse) ===== */
-.home-hero {
-  position: relative;
-  color: #fff;
-  padding: 8px 18px;          /* smaller top/bottom padding */
-  margin-bottom: 16px;
-  margin-left: -15px;
-  margin-right: 500px;
-  overflow: visible;
-
-  display: flex;              /* make ribbon flex container */
-  align-items: center;        /* vertically center content */
-}
-
-.home-hero::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: #000;
-  clip-path: polygon(0 0, 100% 0, calc(100% - 28px) 100%, 0 100%);
-  z-index: 1;
-}
-
-.home-hero::after {
-  content: "";
-  position: absolute;
-  top: 0; bottom: 0; right: 0;
-  width: 20px;
-  background: #73f0fa;
-  transform: skewX(-26deg);
-  z-index: 0;
-}
-
-.home-hero > * {
-  position: relative;
-  z-index: 2;
-}
-
-.home-hero .block-title {
-  font-weight: 800;
-  line-height: 1.2;
-  margin: 0;
-  font-size: 1.15rem;   /* just a touch bigger */
-  letter-spacing: 0.3px;
-}
-
 
 /* ===== Horizontal scroll (carousel) ===== */
 .hscroll{ position:relative; }
@@ -108,9 +61,9 @@
 
 /* ===== Reviews: cyan accent on the left (like brand) ===== */
 .review-card{
-  background:#73f0fa; border:transparent;
+  background:#fff; border:1px solid #e9eef2;
   box-shadow:6px 0 0 #73f0fa;
-  border-radius:1px;
+  border-radius:6px;
 }
 .review-card__img{ height:140px; overflow:hidden; }
 .review-card__img img{ object-fit:cover; height:100%; width:100%; }

@@ -48,7 +48,7 @@
   top: 0; bottom: 0; right: 0;
   width: 20px;
   background: #73f0fa;
-  transform: skewX(-26deg);
+  transform: skewX(-17deg);
   z-index: 0;
 }
 
@@ -108,9 +108,9 @@
 
 /* ===== Reviews: cyan accent on the left (like brand) ===== */
 .review-card{
-  background:#73f0fa; border:transparent;
+  background:#fff; border:1px solid #e9eef2;
   box-shadow:6px 0 0 #73f0fa;
-  border-radius:1px;
+  border-radius:6px;
 }
 .review-card__img{ height:140px; overflow:hidden; }
 .review-card__img img{ object-fit:cover; height:100%; width:100%; }
