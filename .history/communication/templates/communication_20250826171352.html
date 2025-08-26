@@ -109,7 +109,9 @@
     <div class="col-12 col-lg-4 mt-4 mt-lg-0">
       <aside class="bts-aside">
         <h3 class="section-title">Behind the Scenes</h3>
-        
+
+        {# Use the category that best fits Communication. 
+           If you later add 'communication' to BTS_CATEGORIES, change 'written' to 'communication'. #}
         {% bts_teasers_for 'communication' 3 as bts_teasers %}
 
         {% if bts_teasers %}

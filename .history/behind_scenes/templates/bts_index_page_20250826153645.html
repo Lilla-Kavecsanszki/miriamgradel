@@ -4,13 +4,13 @@
 {% block body_class %}template-bts-onepage{% endblock %}
 
 {% block extra_css %}
-  <link rel="stylesheet" href="{% static 'css/journalism.css' %}">
   <link rel="stylesheet" href="{% static 'css/bts.css' %}">
+  <link rel="stylesheet" href="{% static 'css/journalism.css' %}">
 {% endblock extra_css %}
 
 {% block content %}
 <section class="container my-5">
-  <header class="written-hero" style="margin-left:0;margin-right:0;max-width:none;text-align:left">
+  <header class="written-hero text-start">
     <span class="cap" aria-hidden="true"></span>
     <h1 class="block-title" style="color: #73f0fa">
       {{ page.intro_heading|default:page.title }}
