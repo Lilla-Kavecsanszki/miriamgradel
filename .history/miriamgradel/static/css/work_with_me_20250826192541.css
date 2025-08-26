@@ -73,23 +73,18 @@
   border-radius: 0;
 }
 
-/* === QR: centered block with cyan border === */
+/* === QR: same cyan fin + reduced size === */
 .wme-qr{
-  display: block;                       /* full block so we can center it */
-  border-right: 12px solid #73f0fa;     /* cyan stripe */
-  width: max-content;                   /* shrink to QR size + stripe */
-  margin: 0 auto;                       /* <-- centers the whole thing */
+  display: inline-block;
+  border-right: 12px solid #73f0fa;    /* same stripe as portrait */
   padding-right: 0;
-  text-align: center;                   /* ensure svg inside is centered */
 }
-
 .wme-qr svg{
   display: block;
-  max-width: 180px;
+  max-width: 180px;                    /* smaller than before */
   height: auto;
-  margin: 0 auto;                       /* keep svg centered */
+  margin: 0 auto;
 }
-
 @media (max-width: 576px){
   .wme-qr svg{ max-width: 150px; }
 }
@@ -105,72 +100,4 @@
   line-height: 1;
   font-weight: 800; /* bold @ glyph */
   color: #000;
-}
-
-/* Make portrait flush with the left edge of the sidebar (past the 15px padding) */
-.wme-portrait{
-  position: relative;
-  overflow: hidden;
-  margin-left: -15px;                 /* pull to the border line */
-  width: calc(100% + 15px);           /* keep full visual width */
-  border-right: 12px solid #73f0fa;   /* cyan stripe */
-  box-shadow: 0 4px 12px rgba(0,0,0,.08);
-}
-@media (min-width: 992px){
-  .contact_aside{ position: sticky; top: 24px; }
-}
-
-/* Center the QR block and keep the cyan fin */
-.wme-qr{
-  display: inline-block;
-  border-right: 12px solid #73f0fa;
-  padding-right: 0;
-  text-align: center;                 /* inner content centered too */
-}
-.wme-qr svg{
-  display: block;
-  max-width: 180px;
-  height: auto;
-  margin: 0 auto;
-}
-
-/* Center helper */
-.wme-center{ text-align: center; }
-
-/* Contacts: center the list; black links; tidy icons */
-.wme-contacts{
-  text-align: center;
-  margin: 0; padding: 0;
-}
-.wme-contacts li{ list-style: none; }
-.wme-contacts a{ color: #000; text-decoration: none; }
-.wme-contacts a:hover{ text-decoration: underline; }
-.wme-ico{
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px; height: 20px;
-  margin-right: 6px;
-  font-weight: 800;
-  color: #000;
-}
-
-/* vCard button: outlined cyan, fills darker on hover */
-.btn-brand-outline{
-  background: transparent;
-  color: #000;
-  border: 2px solid #73f0fa;
-  border-radius: 4px;
-  font-weight: 800;
-  padding: .35rem .75rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,.06);
-  transition: background .2s ease, color .2s ease, transform .05s ease-in-out;
-}
-.btn-brand-outline:hover,
-.btn-brand-outline:focus{
-  background: #1fb7c3;  /* darker cyan */
-  color: #fff;
-}
-.btn-brand-outline:active{
-  transform: translateY(1px);
 }

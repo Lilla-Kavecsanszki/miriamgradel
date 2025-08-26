@@ -1,0 +1,18 @@
+{% load static form_extras %}
+
+<div class="form-group">
+  <label class="form-label mb-1" for="{{ field.id_for_label }}">
+    {{ field.label }}{% if field.field.required %}<span style="color: #000;">*</span>{% endif %}
+  </label>
+
+  {% with r=rows|default:'' %}
+    {% if r %}
+      {% render_field field class="form-control wme-input" rows=r placeholder=field.label %}
+    {% else %}
+      {% render_field field class="form-control wme-input" placeholder=field.label %}
+    {% endif %}
+  {% endwith %}
+
+  {% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}
+  {% for error in field.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+</div>

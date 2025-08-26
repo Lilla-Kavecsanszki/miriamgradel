@@ -2,7 +2,7 @@
 
 <div class="form-group">
   <label class="form-label mb-1" for="{{ field.id_for_label }}">
-    {{ field.label }}{% if field.field.required %}<span style="color: #000;">*</span>{% endif %}
+    {{ field.label }}{% if field.field.required %}<span class="text-danger">*</span>{% endif %}
   </label>
 
   {% with r=rows|default:'' hp=field.help_text|default_if_none:'' %}

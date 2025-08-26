@@ -1,0 +1,25 @@
+/* ===== Work With Me (scoped) ===== */
+body.template-work-with-me {}
+
+/* Inputs */
+.wme-input{ border:2px solid #B9F2FA; box-shadow:none!important; }
+.wme-input:focus{ border-color:#73f0fa; outline:none; }
+
+/* Sidebar like on other pages */
+.contact_aside{
+  border-left:3px solid rgba(0,0,0,.4);
+  padding-left:15px;
+}
+@media (min-width:992px){
+  .contact_aside{ position:sticky; top:24px; }
+}
+
+/* Portrait & QR */
+.wme-portrait img{ object-fit:cover; }
+.wme-qr svg{ max-width:260px; height:auto; display:inline-block; }
+@media (max-width:576px){
+  .wme-qr svg{ max-width:200px; }
+}
+
+/* Optional: subtle spacing harmony */
+.contact-hero{ margin-bottom:1.25rem; }

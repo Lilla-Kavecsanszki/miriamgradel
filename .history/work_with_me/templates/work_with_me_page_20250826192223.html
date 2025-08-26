@@ -72,50 +72,51 @@
 
     </div>
 
-  <!-- ================= RIGHT: sidebar (col-4) ================= -->
-  <div class="col-12 col-lg-4 mt-4 mt-lg-0">
-    <aside class="bts-aside contact_aside">
+    <!-- ================= RIGHT: sidebar (col-4) ================= -->
+    <div class="col-12 col-lg-4 mt-4 mt-lg-0">
+      <aside class="bts-aside contact_aside">
+        {% if page.portrait %}
+          <div class="wme-portrait mb-3">
+            {% image page.portrait fill-720x900 class="img-fluid w-100" alt="Portrait" %}
+          </div>
+        {% endif %}
 
-      {% if page.portrait %}
-        <div class="wme-portrait mb-3">
-          {% image page.portrait fill-720x900 class="img-fluid w-100" alt="Portrait" %}
-        </div>
-      {% endif %}
+        <h3 class="section-title qr-title">Scan the QR code or see below</h3>
 
-      <h3 class="section-title qr-title">Scan the QR code or see below</h3>
-
-      <div class="mb-3 center">
         {% wme_qr_svg page.get_qr_payload page.qr_scale as qr_svg %}
         {% if qr_svg %}
-          <div class="wme-qr mb-2 text-center">{{ qr_svg }}</div>
+          <div class="wme-qr mb-3 text-center">
+            {{ qr_svg }}
+          </div>
           {% if page.vcard_file %}
-            <p class="mb-3 wme-center">
-              <a class="btn btn-brand-outline btn-sm wme-vcard" href="{{ page.vcard_file.url }}" download>
+            <p class="text-center mb-4">
+              <a class="small text-decoration-underline" href="{{ page.vcard_file.url }}" download>
                 Download vCard (.vcf)
               </a>
             </p>
           {% endif %}
         {% endif %}
-      </div>
 
-      <ul class="list-unstyled small wme-contacts">
-        {% if page.phone_number %}
-          <li class="mb-2">
-            <span class="wme-ico">📞</span>
-            <a href="tel:{{ page.phone_number|cut:' ' }}">{{ page.phone_number }}</a>
-          </li>
-        {% endif %}
-        {% if page.contact_email or page.to_address %}
-          <li class="mb-2">
-            <span class="wme-ico">@</span>
-            <a href="mailto:{% firstof page.contact_email page.to_address %}">
-              {% firstof page.contact_email page.to_address %}
-            </a>
-          </li>
-        {% endif %}
-      </ul>
-
-    </aside>
-  </div>
+        <ul class="list-unstyled wme-contacts">
+          {% if page.phone_number %}
+            <li class="mb-2 d-flex align-items-center">
+              <span class="wme-ico me-2" aria-hidden="true">
+                <!-- tiny phone svg -->
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.02-.24 11.36 11.36 0 003.56.57 1 1 0 011 1v3.72a1 1 0 01-.9 1 18 18 0 01-8.01-2.36 18.24 18.24 0 01-6.52-6.52A18 18 0 014 3.91a1 1 0 011-0.9H8.7a1 1 0 011 1 11.36 11.36 0 00.57 3.56 1 1 0 01-.24 1.02l-2.2 2.2z"/></svg>
+              </span>
+              <a href="tel:{{ page.phone_number|cut:' ' }}">{{ page.phone_number }}</a>
+            </li>
+          {% endif %}
+          {% if page.contact_email or page.to_address %}
+            <li class="mb-2 d-flex align-items-center">
+              <span class="wme-ico me-2" aria-hidden="true">@</span>
+              <a href="mailto:{% firstof page.contact_email page.to_address %}">
+                {% firstof page.contact_email page.to_address %}
+              </a>
+            </li>
+          {% endif %}
+        </ul>
+      </aside>
+    </div>
     </div>
 {% endblock %}

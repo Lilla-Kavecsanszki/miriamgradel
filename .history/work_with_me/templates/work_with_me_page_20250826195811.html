@@ -87,7 +87,7 @@
       <div class="mb-3 center">
         {% wme_qr_svg page.get_qr_payload page.qr_scale as qr_svg %}
         {% if qr_svg %}
-          <div class="wme-qr mb-2 text-center">{{ qr_svg }}</div>
+          <div class="wme-qr mb-3">{{ qr_svg }}</div>
           {% if page.vcard_file %}
             <p class="mb-3 wme-center">
               <a class="btn btn-brand-outline btn-sm wme-vcard" href="{{ page.vcard_file.url }}" download>

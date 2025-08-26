@@ -73,21 +73,25 @@
   border-radius: 0;
 }
 
-/* === QR: centered block with cyan border === */
+/* === QR container: centers the whole thing === */
 .wme-qr{
-  display: block;                       /* full block so we can center it */
-  border-right: 12px solid #73f0fa;     /* cyan stripe */
-  width: max-content;                   /* shrink to QR size + stripe */
-  margin: 0 auto;                       /* <-- centers the whole thing */
-  padding-right: 0;
-  text-align: center;                   /* ensure svg inside is centered */
+  display: flex;
+  justify-content: center;              /* center horizontally */
+  margin: 1rem 0;
 }
 
+/* Inner block with cyan stripe */
+.wme-qr-inner{
+  display: inline-block;
+  border-right: 12px solid #73f0fa;     /* cyan stripe */
+  padding-right: 0;
+}
+
+/* QR image inside */
 .wme-qr svg{
   display: block;
   max-width: 180px;
   height: auto;
-  margin: 0 auto;                       /* keep svg centered */
 }
 
 @media (max-width: 576px){
