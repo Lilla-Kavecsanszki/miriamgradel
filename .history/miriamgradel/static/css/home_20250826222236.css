@@ -67,63 +67,28 @@
 
 
 /* ===== Horizontal scroll (carousel) ===== */
-.hscroll {
-  position: relative;
-}
-
-.hscroll__track {
-  display: flex;
-  gap: 20px;
-  overflow-x: auto;
-  padding: 8px 12px 16px;
-  scroll-snap-type: x mandatory;
-  scroll-padding-left: 12px;
+.hscroll{ position:relative; }
+.hscroll__track{
+  display:flex; gap:18px; overflow-x:auto; padding: 6px 10px 14px;
+  scroll-snap-type:x mandatory; scroll-padding-left:10px;
   -webkit-overflow-scrolling: touch;
 }
+.hscroll__track::-webkit-scrollbar{ height:8px; }
+.hscroll__track::-webkit-scrollbar-thumb{ background:#e4fafd; border-radius:8px; }
 
-.hscroll__track::-webkit-scrollbar {
-  height: 8px;
+/* One tile ~ like your mock */
+.hscroll__item{ flex:0 0 280px; scroll-snap-align:start; }
+
+/* Arrows: thin black chevrons hugging the edges */
+.hscroll__btn{
+  position:absolute; top:50%; transform:translateY(-50%);
+  width:36px; height:36px; border:none; border-radius:50%;
+  background: transparent; color:#000; font-weight:900; line-height:36px;
+  box-shadow:none; padding:0; cursor:pointer;
 }
-.hscroll__track::-webkit-scrollbar-thumb {
-  background: #73f0fa;   /* brand cyan instead of pale grey */
-  border-radius: 0;      /* flat edges to match card style */
-}
-
-/* One tile ~ matches card style */
-.hscroll__item {
-  flex: 0 0 280px;
-  scroll-snap-align: start;
-}
-
-/* Arrows: bold, flat black-on-cyan buttons */
-.hscroll__btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 40px;
-  height: 40px;
-  border: 2px solid #000;   /* black frame */
-  border-radius: 0;         /* flat square, no round */
-  background: #73f0fa;      /* brand cyan */
-  color: #000;
-  font-size: 1.4rem;
-  font-weight: 900;
-  line-height: 36px;
-  cursor: pointer;
-  box-shadow: 4px 4px 0 #000;  /* offset shadow, like cards */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: transform .15s ease;
-}
-
-.hscroll__btn--prev { left: -18px; }
-.hscroll__btn--next { right: -18px; }
-
-.hscroll__btn:hover {
-  transform: translateY(-50%) scale(1.08);
-}
-
+.hscroll__btn--prev{ left:-14px; }
+.hscroll__btn--next{ right:-14px; }
+.hscroll__btn:hover{ filter:none; transform:translateY(-50%) scale(1.06); }
 
 /* ===== Service tile: cyan plate + inner shadow ===== */
 .service-card {

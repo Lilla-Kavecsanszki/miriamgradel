@@ -67,63 +67,28 @@
 
 
 /* ===== Horizontal scroll (carousel) ===== */
-.hscroll {
-  position: relative;
-}
-
-.hscroll__track {
-  display: flex;
-  gap: 20px;
-  overflow-x: auto;
-  padding: 8px 12px 16px;
-  scroll-snap-type: x mandatory;
-  scroll-padding-left: 12px;
+.hscroll{ position:relative; }
+.hscroll__track{
+  display:flex; gap:18px; overflow-x:auto; padding: 6px 10px 14px;
+  scroll-snap-type:x mandatory; scroll-padding-left:10px;
   -webkit-overflow-scrolling: touch;
 }
+.hscroll__track::-webkit-scrollbar{ height:8px; }
+.hscroll__track::-webkit-scrollbar-thumb{ background:#e4fafd; border-radius:8px; }
 
-.hscroll__track::-webkit-scrollbar {
-  height: 8px;
+/* One tile ~ like your mock */
+.hscroll__item{ flex:0 0 280px; scroll-snap-align:start; }
+
+/* Arrows: thin black chevrons hugging the edges */
+.hscroll__btn{
+  position:absolute; top:50%; transform:translateY(-50%);
+  width:36px; height:36px; border:none; border-radius:50%;
+  background: transparent; color:#000; font-weight:900; line-height:36px;
+  box-shadow:none; padding:0; cursor:pointer;
 }
-.hscroll__track::-webkit-scrollbar-thumb {
-  background: #73f0fa;   /* brand cyan instead of pale grey */
-  border-radius: 0;      /* flat edges to match card style */
-}
-
-/* One tile ~ matches card style */
-.hscroll__item {
-  flex: 0 0 280px;
-  scroll-snap-align: start;
-}
-
-/* Arrows: bold, flat black-on-cyan buttons */
-.hscroll__btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 40px;
-  height: 40px;
-  border: 2px solid #000;   /* black frame */
-  border-radius: 0;         /* flat square, no round */
-  background: #73f0fa;      /* brand cyan */
-  color: #000;
-  font-size: 1.4rem;
-  font-weight: 900;
-  line-height: 36px;
-  cursor: pointer;
-  box-shadow: 4px 4px 0 #000;  /* offset shadow, like cards */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: transform .15s ease;
-}
-
-.hscroll__btn--prev { left: -18px; }
-.hscroll__btn--next { right: -18px; }
-
-.hscroll__btn:hover {
-  transform: translateY(-50%) scale(1.08);
-}
-
+.hscroll__btn--prev{ left:-14px; }
+.hscroll__btn--next{ right:-14px; }
+.hscroll__btn:hover{ filter:none; transform:translateY(-50%) scale(1.06); }
 
 /* ===== Service tile: cyan plate + inner shadow ===== */
 .service-card {
@@ -140,7 +105,8 @@
 
 .service-card__img {
   height: 120px;
-  overflow: hidden;         /* continues the black frame */
+  overflow: hidden;
+  border-bottom: 2px solid #000;         /* continues the black frame */
 }
 
 .service-card__img img {
@@ -167,47 +133,17 @@
 }
 
 /* ===== Reviews: cyan accent on the left (like brand) ===== */
-.review-card {
-  background: #73f0fa;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  border: 2px solid #000;          /* black frame */
-  border-radius: 0;                /* sharp corners */
-  box-shadow: 4px 4px 0 #000;      /* offset shadow, no blur */
+.review-card{
+  background:#73f0fa; border:transparent;
+  box-shadow:6px 0 0 #73f0fa;
+  border-radius:1px;
 }
-
-.review-card__img {
-  height: 140px;
-  overflow: hidden;
-}
-
-.review-card__img img {
-  object-fit: cover;
-  height: 100%;
-  width: 100%;
-}
-
-.review-card__body {
-  padding: 14px 16px 16px;
-  text-align: center;              /* align like services */
-}
-
-.review-card__quote {
-  margin: 0 0 .75rem;
-  font-style: italic;
-  color: #000;                     /* black text, stronger contrast */
-}
-
-.review-card__name {
-  font-weight: 700;
-}
-
-.review-card__role {
-  color: #000;                     /* unify style */
-  font-size: .92rem;
-}
-
+.review-card__img{ height:140px; overflow:hidden; }
+.review-card__img img{ object-fit:cover; height:100%; width:100%; }
+.review-card__body{ padding:14px 16px 16px; }
+.review-card__quote{ margin:0 0 .75rem; font-style:italic; color:#102a3b; }
+.review-card__name{ font-weight:700; }
+.review-card__role{ color:#6b7280; font-size:.92rem; }
 
 /* ===== About section ===== */
 .about-content{
