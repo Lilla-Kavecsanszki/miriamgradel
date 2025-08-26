@@ -239,21 +239,12 @@
   .hscroll__item{ flex-basis: 240px; }
 }
 
+
 /* ===== CTA STRIP ===== */
 .cta-strip {
-  width: 100vw;         /* full viewport width */
-  margin-left: calc(-50vw + 50%);  /* cancel container padding */
   background: #000;
-  padding: 32px 0;
-}
-
-.cta-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0 1rem;      /* small breathing room inside */
+  padding: 28px 0;
+  text-align: center;
 }
 
 .cta-text {
@@ -268,9 +259,12 @@
   color: #000;
   font-weight: 700;
   padding: 8px 16px;
-  margin-left: 12px;
+  margin-left: 10px;
   text-decoration: none;
   box-shadow: 4px 4px 0 #000;
   transition: transform .15s ease;
 }
-.cta-btn:hover { transform: scale(1.05); }
+
+.cta-btn:hover {
+  transform: scale(1.05);
+}
