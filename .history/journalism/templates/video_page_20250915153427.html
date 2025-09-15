@@ -14,17 +14,16 @@
     <div class="col-12 col-lg-8">
 
       {# HERO / INTRO #}
-      <div class="video-hero mb-3">
+      <div class="written-hero mb-3">
         <span class="cap" aria-hidden="true"></span>
         <div class="block-title" style="color: #73f0fa">As a multimedia Journalist I also do Videos</div>
         <p>For some clients, I had to film and produce videos. Here’s a glimpse at my multimedia work.</p>
       </div>
-
       {% if page.intro %}
         <div class="mb-3">{{ page.intro|richtext }}</div>
       {% endif %}
 
-      {# ===== FEATURED PLAYER ===== #}
+      {# ===== FEATURED PLAYER (inside left column) ===== #}
       {% if featured %}
         <section class="featured mb-5">
           <h2 class="section-title"><span>Selected Episode</span></h2>
@@ -54,22 +53,6 @@
                 {% endif %}
               </div>
 
-              {# --- Share row (present on video page) --- #}
-              <div class="meta__share" id="meta-share">
-                <span>Share it</span>
-                {% with u=featured.external_url|default:request.build_absolute_uri t=featured.standfirst|default:"Untitled" %}
-                  <a id="share-x"  aria-label="Share to X"
-                     href="https://twitter.com/intent/tweet?url={{ u|urlencode }}&text={{ t|urlencode }}"
-                     target="_blank" rel="noopener">X</a>
-                  <a id="share-fb" aria-label="Share to Facebook"
-                     href="https://www.facebook.com/sharer/sharer.php?u={{ u|urlencode }}"
-                     target="_blank" rel="noopener">FB</a>
-                  <a id="share-in" aria-label="Share to LinkedIn"
-                     href="https://www.linkedin.com/sharing/share-offsite/?url={{ u|urlencode }}"
-                     target="_blank" rel="noopener">IN</a>
-                {% endwith %}
-              </div>
-
               {% if featured.external_url %}
                 <a class="btn" id="meta-link" href="{{ featured.external_url }}" target="_blank" rel="noopener">Open video</a>
               {% else %}
@@ -90,7 +73,7 @@
         </section>
       {% endif %}
 
-      {# ===== ALL VIDEOS GRID ===== #}
+      {# ===== ALL VIDEOS GRID (inside left column) ===== #}
       <section class="all-videos">
         <h2 class="section-title"><span>All my videos</span></h2>
 
@@ -181,29 +164,24 @@
   </div>
 </section>
 
-{# Player swap-back JS + share syncing #}
+{# Player swap-back JS (unchanged) #}
 <script>
 (function () {
-  const player      = document.getElementById('video-player');
-  const metaTitle   = document.getElementById('meta-title');
-  const metaDate    = document.getElementById('meta-date');
-  const metaDesc    = document.getElementById('meta-desc');
+  const player = document.getElementById('video-player');
+  const metaTitle = document.getElementById('meta-title');
+  const metaDate = document.getElementById('meta-date');
+  const metaDesc = document.getElementById('meta-desc');
   const metaCredits = document.getElementById('meta-credits');
-  const metaLink    = document.getElementById('meta-link');
+  const metaLink = document.getElementById('meta-link');
 
-  // Share anchors (present on video page)
-  const shareX  = document.getElementById('share-x');
-  const shareFB = document.getElementById('share-fb');
-  const shareIN = document.getElementById('share-in');
-
-  const featuredTpl   = document.getElementById('tpl-featured-current');
+  const featuredTpl = document.getElementById('tpl-featured-current');
   const featuredStore = document.getElementById('featured-meta-store');
 
   let prevFeatured = {
-    embedHTML:   featuredTpl ? featuredTpl.innerHTML : '',
-    title:       featuredStore ? featuredStore.dataset.title : '',
-    date:        featuredStore ? featuredStore.dataset.date : '',
-    producedBy:  featuredStore ? featuredStore.dataset.producedBy : '',
+    embedHTML: featuredTpl ? featuredTpl.innerHTML : '',
+    title: featuredStore ? featuredStore.dataset.title : '',
+    date: featuredStore ? featuredStore.dataset.date : '',
+    producedBy: featuredStore ? featuredStore.dataset.producedBy : '',
     producedFor: featuredStore ? featuredStore.dataset.producedFor : '',
     externalUrl: featuredStore ? featuredStore.dataset.externalUrl : ''
   };
@@ -235,17 +213,6 @@
       metaLink.setAttribute('tabindex', '-1');
     }
   }
-  function setShare(url, title) {
-    const shareUrl = url || window.location.href;
-    const text = title || 'Untitled';
-    if (shareX)  shareX.href  = `https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(text)}`;
-    if (shareFB) shareFB.href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
-    if (shareIN) shareIN.href = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`;
-  }
-
-  // Initialize share links for initial featured
-  setShare(prevFeatured.externalUrl, prevFeatured.title);
-
   function updateCardButtons(cardEl, data) {
     const buttons = cardEl.querySelectorAll('.play-in-hero');
     buttons.forEach(btn => {
@@ -273,10 +240,10 @@
     if (!tpl || !player || !card) return;
 
     const clicked = {
-      embedHTML:   tpl.innerHTML,
-      title:       btn.getAttribute('data-title') || 'Untitled',
-      date:        btn.getAttribute('data-date') || '',
-      producedBy:  btn.getAttribute('data-produced-by') || '',
+      embedHTML: tpl.innerHTML,
+      title: btn.getAttribute('data-title') || 'Untitled',
+      date: btn.getAttribute('data-date') || '',
+      producedBy: btn.getAttribute('data-produced-by') || '',
       producedFor: btn.getAttribute('data-produced-for') || '',
       externalUrl: btn.getAttribute('data-external-url') || ''
     };
@@ -284,11 +251,10 @@
     // Promote clicked to featured
     player.innerHTML = clicked.embedHTML;
     setText(metaTitle, clicked.title);
-    setText(metaDate,  clicked.date);
-    setText(metaDesc,  '');  // clear desc; add if you store per-card desc
+    setText(metaDate, clicked.date);
+    setText(metaDesc, '');
     setCredits(clicked.producedBy, clicked.producedFor);
     setLink(clicked.externalUrl);
-    setShare(clicked.externalUrl, clicked.title);  // keep share in sync
 
     // Demote previous featured back into the clicked card
     if (cardThumb && prevFeatured.embedHTML) {
