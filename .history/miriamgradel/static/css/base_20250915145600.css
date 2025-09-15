@@ -343,10 +343,10 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
 .footer-inner{
   max-width: 1200px;                  /* align to your content width */
   margin: 0 auto;
-  padding: 50px 40px 50px 40px;   
+  padding: 18px 40px 40px;
   display: grid;
   grid-template-columns: 1.2fr 0.8fr 0.8fr 1fr;   /* meta | nav | nav | legal */
-  /* gap: 24px; */
+  gap: 24px;
   align-items: start;
 }
 

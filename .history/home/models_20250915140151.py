@@ -98,11 +98,6 @@ class HomePage(Page):
         use_json_field=True,
     )
     
-    about = StreamField(
-        [("about_item", AboutBlock())],
-        null=True, blank=True, use_json_field=True,
-    )
-    
     about_image = models.ForeignKey(
         "wagtailimages.Image",
         null=True, blank=True,
@@ -117,5 +112,5 @@ class HomePage(Page):
         FieldPanel("services"),
         FieldPanel("reviews"),
         FieldPanel("about"),
-        FieldPanel("about_image")
+        FieldPanel("about_image"),  # NEW
     ]

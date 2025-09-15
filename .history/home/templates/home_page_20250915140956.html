@@ -8,7 +8,7 @@
 {% endblock extra_css %}
 
 {% block content %}
-<div class="container-fluid">
+<div class="container-fluid py-4">
   <div class="octopus-bg mt-4 mb-4">
     <h1 class="octopus" aria-label="Not your average octopus">
       <span class="octo-line from-left">Not Your</span>
@@ -131,24 +131,6 @@
   </div>
 </section>
 
-<!-- Animation for the octopus title -->
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const el = document.querySelector('.octopus');
-    if (!el) return;
-
-    const io = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          el.classList.add('in-view');
-          io.disconnect(); // run once
-        }
-      });
-    }, { threshold: 0.4 });
-
-    io.observe(el);
-  });
-</script>
 
 <!-- Helper for the carousel buttons -->
 <script>

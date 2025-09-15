@@ -30,7 +30,7 @@
 /* Optional: improve contrast on bright images */
 .bts-card .thumb::after{
   content:""; position:absolute; left:0; right:0; bottom:0; height:40%;
-  background: linear-gradient(to top, rgba(115,240,250,.92), rgba(115,240,250,0));
+  background: linear-gradient(to top, rgba(255,255,255,.9), rgba(255,255,255,0));
   z-index:4;
 }
 

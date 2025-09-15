@@ -8,15 +8,10 @@
 {% endblock extra_css %}
 
 {% block content %}
-<div class="container-fluid">
+<div class="container-fluid py-4">
   <div class="octopus-bg mt-4 mb-4">
-    <h1 class="octopus" aria-label="Not your average octopus">
-      <span class="octo-line from-left">Not Your</span>
-      <span class="octo-line from-right">Average</span>
-      <span class="octo-line from-left">Octopus</span>
-    </h1>
+    <h1 class="octopus">NOT YOUR AVERAGE OCTOPUS</h1>
   </div>
-
   <!-- TOP -->
   <div class="home-hero mb-3">
     <span class="cap" aria-hidden="true"></span>
@@ -95,7 +90,7 @@
   <h3 class="section-title"><span>Want to know more about me?</span></h3>
 
   <div class="about-layout">
-    <!-- LEFT: text -->
+    <!-- LEFT: text blocks -->
     <div class="about-content">
       {% for blk in page.about %}
         {% if blk.block_type == "about_item" %}
@@ -112,13 +107,25 @@
     </div>
 
     <!-- RIGHT: optional photo -->
-    {% if page.about_image %}
     <aside class="about-photo">
-      <figure class="about-photo__frame">
-        {% image page.about_image fill-720x880 class="w-100 h-auto" loading="lazy" decoding="async" %}
-      </figure>
+      {# Option A: a dedicated field on the page model #}
+      {% if page.about_image %}
+        <figure class="about-photo__frame">
+          {% image page.about_image fill-800x1000 class="w-100 h-auto" loading="lazy" decoding="async" %}
+        </figure>
+      {% endif %}
+
+      {# Option B (optional): if you later add an image block to the StreamField
+         called "about_image", this will work without breaking now. #}
+      {% for blk in page.about %}
+        {% if blk.block_type == "about_image" %}
+          <figure class="about-photo__frame">
+            {% image blk.value image fill-800x1000 class="w-100 h-auto" loading="lazy" decoding="async" %}
+          </figure>
+          {% break %}
+        {% endif %}
+      {% endfor %}
     </aside>
-    {% endif %}
   </div>
 </section>
 {% endif %}
@@ -131,24 +138,6 @@
   </div>
 </section>
 
-<!-- Animation for the octopus title -->
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const el = document.querySelector('.octopus');
-    if (!el) return;
-
-    const io = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          el.classList.add('in-view');
-          io.disconnect(); // run once
-        }
-      });
-    }, { threshold: 0.4 });
-
-    io.observe(el);
-  });
-</script>
 
 <!-- Helper for the carousel buttons -->
 <script>

@@ -373,8 +373,7 @@
   width: 100vw;         /* full viewport width */
   margin-left: calc(-50vw + 50%);  /* cancel container padding */
   background: #000;
-  padding-top: 32px;
-  padding-bottom: 32px;
+  padding: 32px 0;
 }
 
 .cta-inner {

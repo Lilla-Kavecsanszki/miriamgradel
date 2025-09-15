@@ -1,11 +1,5 @@
-/* ===== OCTOPUS headline (final) ===== */
-:root{
-  --octo-cyan: #73f0fa;          /* shadow color */
-  --octo-slide: 160px;            /* travel distance */
-  --octo-overshoot: 12px;         /* little settle past target */
-  --octo-duration: 3s;            /* animation speed */
-  --octo-gap: clamp(.5rem, 3vw, 2.2rem); /* space between lines */
-}
+/* ===== OCTOPUS ===== */
+:root { --cyan: #73f0fa; }
 
 .octopus{
   font-family: 'Designer', sans-serif;
@@ -13,89 +7,39 @@
   font-weight:700;
   text-transform:uppercase;
   letter-spacing:1px;
+  line-height:1.05;
   font-size:clamp(3rem, 8vw, 7rem);
+  /* three-line layout */
+  display:grid;
+  gap: .16em;
+  /* cyan drop shadow */
+  text-shadow: 3px 3px 0 var(--cyan);
   margin:0;
   padding:1rem 0;
-  row-gap: 0 !important;   /* no extra space between lines */
-  line-height: 1;          /* keep each line tight */
-
-  /* layout & spacing */
-  display:grid;
-  justify-items:stretch;          /* each line sets its own alignment */
-  text-align:left;                /* default for left-aligned lines */
-
-  /* cyan drop shadow */
-  text-shadow:3px 3px 0 var(--octo-cyan);
 }
 
-/* === Hero headline gutters (left/right “safe area”) === */
-.octopus-bg{
-  /* tweak this to match the comp exactly */
-  --octo-side-pad: clamp(32px, 7vw, 120px);  /* min → responsive → max */
-  padding-inline: var(--octo-side-pad);
-  /* optional vertical breathing room */
-  padding-block: clamp(8px, 2vw, 24px);
-}
+.octo-line{ display:block; will-change: transform, opacity; }
+.from-left{ transform:translateX(-40px); opacity:0; }
+.from-right{ transform:translateX(40px);  opacity:0; }
 
-/* If you want a firm max content width too (optional) */
-@media (min-width: 1400px){
-  .octopus-bg{
-    max-width: 1320px;        /* adjust to taste */
-    margin-inline: auto;      /* centers the block */
-  }
-}
+/* when in view, animate */
+.octopus.in-view .from-left  { animation: octo-in-left  .8s cubic-bezier(.22,1,.36,1) forwards; }
+.octopus.in-view .from-right { animation: octo-in-right .8s cubic-bezier(.22,1,.36,1) forwards; }
 
-/* start state */
-.octo-line{ display:block; opacity:0; will-change:transform,opacity; }
+/* stagger for nice rhythm */
+.octopus.in-view .octo-line:nth-child(1){ animation-delay: .05s; }
+.octopus.in-view .octo-line:nth-child(2){ animation-delay: .20s; }
+.octopus.in-view .octo-line:nth-child(3){ animation-delay: .35s; }
 
-/* Line 1 & 3: left-aligned, slide in from left */
-.from-left{
-  justify-self:start;
-  text-align:left;
-  transform:translateX(calc(-1 * var(--octo-slide)));
-}
+@keyframes octo-in-left  { to { transform:translateX(0); opacity:1; } }
+@keyframes octo-in-right { to { transform:translateX(0); opacity:1; } }
 
-/* Line 2: right-aligned, slide in from right */
-.from-right{
-  justify-self:end;
-  text-align:right;
-  transform:translateX(var(--octo-slide));
-}
-
-/* Center the 3rd line ("Octopus") */
-.octopus .octo-line:nth-child(3){
-  justify-self: center !important;
-  text-align: center !important;
-}
-
-/* animate when in view (IntersectionObserver adds .in-view) */
-.octopus.in-view .from-left  { animation:octo-in-left  var(--octo-duration) cubic-bezier(.16,1,.3,1) forwards; }
-.octopus.in-view .from-right { animation:octo-in-right var(--octo-duration) cubic-bezier(.16,1,.3,1) forwards; }
-
-/* stagger */
-.octopus.in-view .octo-line:nth-child(1){ animation-delay:.10s; }
-.octopus.in-view .octo-line:nth-child(2){ animation-delay:.80s; }
-.octopus.in-view .octo-line:nth-child(3){ animation-delay:1.50s; }
-
-/* keyframes: overshoot then settle */
-@keyframes octo-in-left{
-  0%   { transform:translateX(calc(-1 * var(--octo-slide))); opacity:0; }
-  75%  { transform:translateX(var(--octo-overshoot));        opacity:1; }
-  100% { transform:translateX(0);                            opacity:1; }
-}
-@keyframes octo-in-right{
-  0%   { transform:translateX(var(--octo-slide));            opacity:0; }
-  75%  { transform:translateX(calc(-1 * var(--octo-overshoot))); opacity:1; }
-  100% { transform:translateX(0);                            opacity:1; }
-}
-
-/* accessibility */
+/* Respect reduced motion */
 @media (prefers-reduced-motion: reduce){
-  .from-left,.from-right{ transform:none !important; opacity:1 !important; }
+  .from-left,.from-right{ transform:none; opacity:1; }
   .octopus.in-view .from-left,
-  .octopus.in-view .from-right{ animation:none !important; }
+  .octopus.in-view .from-right{ animation:none; }
 }
-
 
 /* ===== HERO (reuse) ===== */
 .home-hero {
@@ -373,8 +317,7 @@
   width: 100vw;         /* full viewport width */
   margin-left: calc(-50vw + 50%);  /* cancel container padding */
   background: #000;
-  padding-top: 32px;
-  padding-bottom: 32px;
+  padding: 32px 0;
 }
 
 .cta-inner {

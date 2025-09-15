@@ -1,0 +1,119 @@
+/* ===== BTS INDEX & DETAIL (scoped) ===== */
+:root { --accent-cyan: #73f0fa; }
+
+.template-bts-onepage h1,
+.template-bts-onepage h2 {
+  font-family: 'Designer', sans-serif;
+  letter-spacing: .4px;
+}
+
+/* HERO: same cyan “brand” shadow as other sections */
+.template-bts-onepage .written-hero .block-title {
+  color: var(--accent-cyan);
+  /* soft cyan drop/offset shadow – tweak to taste */
+  text-shadow:
+    -4px 4px 0 rgba(115, 240, 250, 0.55),
+     0   0   1px rgba(0, 0, 0, 0.25);
+}
+
+/* optional: keep the hero’s look consistent, remove odd right margin */
+.template-bts-onepage .written-hero { margin-right: 0; }
+
+/* SECTION separators */
+.bts-section + .bts-section {
+  border-top: 1px solid #eee;
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+}
+
+/* ===== CARD ===== */
+.bts-card{
+  background:#fff;
+  border:1px solid #e9eef2;
+  overflow:hidden;
+  position:relative;
+  border-radius:0;
+  transition:transform .15s ease, box-shadow .15s ease;
+  margin-top:5%;
+  /* layered shadows incl. cyan edge on right */
+  box-shadow:
+    -4px 4px 12px rgba(0,0,0,.06),
+     0   4px 12px rgba(0,0,0,.08),
+     6px  0   0   var(--accent-cyan);
+}
+.bts-card:hover{
+  transform: translateY(-2px);
+  box-shadow:
+    -6px 10px 16px rgba(0,0,0,.08),
+     0    8px 16px rgba(0,0,0,.12),
+     6px   0   0  var(--accent-cyan);
+}
+
+/* media */
+.bts-card .thumb{ position:relative; display:block; }
+.bts-card .thumb img{
+  display:block; width:100%; height:220px; object-fit:cover;
+}
+@media (max-width: 991.98px){ .bts-card .thumb img{ height:240px; } }
+
+/* subtle light gradient so text stays readable on bright images */
+.bts-card .thumb::after{
+  content:""; position:absolute; left:0; right:0; bottom:0; height:40%;
+  background: linear-gradient(to top, rgba(255,255,255,.92), rgba(255,255,255,0));
+  z-index:4;
+}
+
+/* title overlay */
+.bts-title{
+  position:absolute; left:0; right:0; bottom:0;
+  margin:0; padding:12px 16px;
+  font: 800 1.2rem/1.25 'Inter', sans-serif;
+  color:#000; z-index:5;
+}
+.bts-title a{ color:inherit; text-decoration:none; }
+.bts-title a:hover{ text-decoration:underline; }
+
+/* body under the image with cyan glow */
+.bts-body{
+  background:#fff;
+  padding:14px 16px 16px;
+  position:relative; z-index:1;
+  box-shadow: 0 -24px 30px var(--accent-cyan);
+}
+.bts-text{
+  margin:.9rem 0 1rem;
+  color:#2b3b45;
+  font-size:.98rem;
+  font-family:'TT Chocolates', sans-serif;
+}
+.bts-text strong{
+  display:block; font-weight:800; color:#072431; margin-bottom:.25rem;
+}
+.bts-cta{
+  display:inline-block;
+  background:var(--accent-cyan); color:#000; font-weight:800;
+  text-decoration:none; padding:10px 16px; border-radius:0;
+  box-shadow: inset 0 -2px 0 rgba(0,0,0,.06);
+}
+.bts-cta:hover{ filter:brightness(.96); }
+
+/* ===== DETAIL PAGE ===== */
+.template-bts-detail .page-title,
+.template-bts-detail h1 {
+  /* cyan brand shadow for detail title as well */
+  text-shadow:
+    -4px 4px 0 rgba(115, 240, 250, 0.55),
+     0   0   1px rgba(0, 0, 0, 0.25);
+}
+
+.btn-brand {
+  background:var(--accent-cyan);
+  color:#000; font-weight:800; border:none; border-radius:0;
+}
+.btn-brand:hover,.btn-brand:focus{ filter:brightness(.96); color:#000; }
+
+.bts-backbar{
+  background:#F7F7F7; border-left:3px solid rgba(0,0,0,.4);
+  padding:.5rem .75rem; margin-bottom:1rem;
+}
+@media (min-width:992px){ .bts-backbar{ margin-bottom:1.25rem; } }

@@ -30,12 +30,12 @@
 /* Optional: improve contrast on bright images */
 .bts-card .thumb::after{
   content:""; position:absolute; left:0; right:0; bottom:0; height:40%;
-  background: linear-gradient(to top, rgba(115,240,250,.92), rgba(115,240,250,0));
+  background: linear-gradient(to top, rgba(255,255,255,.9), rgba(255,255,255,0));
   z-index:4;
 }
 
 /* Body panel under the image */
-/* .bts-body{
+.bts-body{
   background:#fff;
   padding:14px 16px 16px;
   position:relative; z-index:1;
@@ -43,7 +43,7 @@
 }
 .bts-text{ margin:.9rem 0 1rem; color:#2b3b45; font-size:.98rem; font-family:'TT Chocolates', sans-serif; }
 .bts-cta{ display:inline-block; background:#73f0fa; color:#000; font-weight:800; text-decoration:none; padding:10px 16px; border-radius:0; box-shadow: inset 0 -2px 0 rgba(0,0,0,.06); }
-.bts-cta:hover{ filter:brightness(.96); } */ */
+.bts-cta:hover{ filter:brightness(.96); } */
 
 
 /* cards */

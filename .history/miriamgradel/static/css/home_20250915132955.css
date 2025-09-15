@@ -1,101 +1,23 @@
-/* ===== OCTOPUS headline (final) ===== */
-:root{
-  --octo-cyan: #73f0fa;          /* shadow color */
-  --octo-slide: 160px;            /* travel distance */
-  --octo-overshoot: 12px;         /* little settle past target */
-  --octo-duration: 3s;            /* animation speed */
-  --octo-gap: clamp(.5rem, 3vw, 2.2rem); /* space between lines */
-}
-
-.octopus{
+/* ===== HERO (leave as you have) ===== */
+.octopus {
   font-family: 'Designer', sans-serif;
-  color:#000;
-  font-weight:700;
-  text-transform:uppercase;
-  letter-spacing:1px;
-  font-size:clamp(3rem, 8vw, 7rem);
-  margin:0;
-  padding:1rem 0;
-  row-gap: 0 !important;   /* no extra space between lines */
-  line-height: 1;          /* keep each line tight */
-
-  /* layout & spacing */
-  display:grid;
-  justify-items:stretch;          /* each line sets its own alignment */
-  text-align:left;                /* default for left-aligned lines */
-
-  /* cyan drop shadow */
-  text-shadow:3px 3px 0 var(--octo-cyan);
+  color: #000;
+  font-weight: 700;
+  padding: 1rem;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  font-size: clamp(3rem, 8vw, 7rem);
+  line-height: 1.05;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-shadow:
+    3px 3px 0 #73f0fa,
+    3px 3px 0 #73f0fa;
 }
-
-/* === Hero headline gutters (left/right “safe area”) === */
-.octopus-bg{
-  /* tweak this to match the comp exactly */
-  --octo-side-pad: clamp(32px, 7vw, 120px);  /* min → responsive → max */
-  padding-inline: var(--octo-side-pad);
-  /* optional vertical breathing room */
-  padding-block: clamp(8px, 2vw, 24px);
-}
-
-/* If you want a firm max content width too (optional) */
-@media (min-width: 1400px){
-  .octopus-bg{
-    max-width: 1320px;        /* adjust to taste */
-    margin-inline: auto;      /* centers the block */
-  }
-}
-
-/* start state */
-.octo-line{ display:block; opacity:0; will-change:transform,opacity; }
-
-/* Line 1 & 3: left-aligned, slide in from left */
-.from-left{
-  justify-self:start;
-  text-align:left;
-  transform:translateX(calc(-1 * var(--octo-slide)));
-}
-
-/* Line 2: right-aligned, slide in from right */
-.from-right{
-  justify-self:end;
-  text-align:right;
-  transform:translateX(var(--octo-slide));
-}
-
-/* Center the 3rd line ("Octopus") */
-.octopus .octo-line:nth-child(3){
-  justify-self: center !important;
-  text-align: center !important;
-}
-
-/* animate when in view (IntersectionObserver adds .in-view) */
-.octopus.in-view .from-left  { animation:octo-in-left  var(--octo-duration) cubic-bezier(.16,1,.3,1) forwards; }
-.octopus.in-view .from-right { animation:octo-in-right var(--octo-duration) cubic-bezier(.16,1,.3,1) forwards; }
-
-/* stagger */
-.octopus.in-view .octo-line:nth-child(1){ animation-delay:.10s; }
-.octopus.in-view .octo-line:nth-child(2){ animation-delay:.80s; }
-.octopus.in-view .octo-line:nth-child(3){ animation-delay:1.50s; }
-
-/* keyframes: overshoot then settle */
-@keyframes octo-in-left{
-  0%   { transform:translateX(calc(-1 * var(--octo-slide))); opacity:0; }
-  75%  { transform:translateX(var(--octo-overshoot));        opacity:1; }
-  100% { transform:translateX(0);                            opacity:1; }
-}
-@keyframes octo-in-right{
-  0%   { transform:translateX(var(--octo-slide));            opacity:0; }
-  75%  { transform:translateX(calc(-1 * var(--octo-overshoot))); opacity:1; }
-  100% { transform:translateX(0);                            opacity:1; }
-}
-
-/* accessibility */
-@media (prefers-reduced-motion: reduce){
-  .from-left,.from-right{ transform:none !important; opacity:1 !important; }
-  .octopus.in-view .from-left,
-  .octopus.in-view .from-right{ animation:none !important; }
-}
-
 
 /* ===== HERO (reuse) ===== */
 .home-hero {
@@ -170,7 +92,7 @@
   /* tweak these if you change dot size/spacing */
   --dot-size: 8px;
   --dot-gap: 8px;
-  --dot-margin-top: 0px;
+  --dot-margin-top: -5px;
   /* clearance above the dots so arrows sit at the bottom of the cards */
   --arrow-bottom: calc(var(--dot-size) + var(--dot-gap) + var(--dot-margin-top));
 }
@@ -180,7 +102,7 @@
   top: auto;                    /* stop centering */
   bottom: var(--arrow-bottom);  /* anchor near bottom of cards */
   transform: none;              /* no vertical translate */
-  width: 30px;
+  width: 40px;
   height: 40px;
   border: none;
   background: transparent;
@@ -201,12 +123,11 @@
   border-style: solid;
 }
 #services .hscroll__btn--prev::before {
-  border-width: 26px 16px 26px 0;   /* taller (26px), narrower base (16px) */
+  border-width: 20px 24px 20px 0;
   border-color: transparent #000 transparent transparent;
 }
-
 #services .hscroll__btn--next::before {
-  border-width: 26px 0 26px 16px;
+  border-width: 20px 0 20px 24px;
   border-color: transparent transparent transparent #000;
 }
 
@@ -287,79 +208,28 @@
 }
 
 
-/* ===== About layout (like the screenshot) ===== */
-#about .about-layout{
-  display:grid;
-  grid-template-columns:1fr;
-  gap:24px;
-}
-@media (min-width: 992px){
-  #about .about-layout{
-    grid-template-columns:minmax(0,1fr) 380px; /* text / photo */
-    align-items:start;
-  }
+/* ===== About section ===== */
+.about-content{
+  max-width: 800px;
+  margin: 0 auto;
 }
 
-/* Title as cyan tag with black slash */
-#about .about-title{ margin-bottom: 14px; }
-#about .about-title span{
-  position:relative;
-  display:inline-block;
-  background:#73f0fa;
-  color:#000;
-  font-weight:800;
-  padding:6px 14px;
-}
-#about .about-title span::after{
-  /* little black slash on the right */
-  content:"";
-  position:absolute;
-  right:-10px; top:50%;
-  width:8px; height:22px;
-  background:#000;
-  transform:translateY(-50%) skewX(-18deg);
+.about-item + .about-item{ margin-top: 1.25rem; }
+
+.about-subtitle{
+  margin: 0 0 .5rem;
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: #102a3b;
 }
 
-/* Left column text (keep your existing typography) */
-#about .about-content{ max-width:none; margin:0; display:grid; gap:18px; }
-#about .about-item{ padding:0; border:0; box-shadow:none; background:transparent; }
-#about .about-subtitle{ margin:0 0 .5rem; font-weight:700; font-size:1.15rem; color:#102a3b; }
-#about .about-text{ font-size:1.05rem; line-height:1.65; color:#374151; }
-#about .about-text p{ margin:0 0 1rem; }
-#about .about-text p:last-child{ margin-bottom:0; }
+.about-text{
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: #374151;
+}
 
-/* Right column photo with cyan accents on top & right */
-#about .about-photo{ display:none; }
-@media (min-width: 992px){ #about .about-photo{ display:block; } }
-
-#about .about-photo__frame{
-  margin:0;
-  position:relative;
-  border:2px solid #000;        /* black frame */
-  overflow:hidden;
-}
-#about .about-photo__frame::before{
-  /* cyan top bar (inside the frame) */
-  content:"";
-  position:absolute;
-  left:6px; right:6px; top:6px;
-  height:4px;
-  background:#73f0fa;
-}
-#about .about-photo__frame::after{
-  /* cyan right bar (inside the frame) */
-  content:"";
-  position:absolute;
-  top:6px; right:6px; bottom:6px;
-  width:4px;
-  background:#73f0fa;
-}
-#about .about-photo__frame img{
-  display:block;
-  width:100%;
-  height:auto;
-  object-fit:cover;
-}
+.about-text p{ margin-bottom: 1rem; }
 
 /* Small screens */
 @media (max-width:575.98px){
@@ -373,8 +243,7 @@
   width: 100vw;         /* full viewport width */
   margin-left: calc(-50vw + 50%);  /* cancel container padding */
   background: #000;
-  padding-top: 32px;
-  padding-bottom: 32px;
+  padding: 32px 0;
 }
 
 .cta-inner {

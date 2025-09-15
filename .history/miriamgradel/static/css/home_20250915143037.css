@@ -13,36 +13,19 @@
   font-weight:700;
   text-transform:uppercase;
   letter-spacing:1px;
+  line-height:1.05;
   font-size:clamp(3rem, 8vw, 7rem);
   margin:0;
   padding:1rem 0;
-  row-gap: 0 !important;   /* no extra space between lines */
-  line-height: 1;          /* keep each line tight */
 
   /* layout & spacing */
   display:grid;
   justify-items:stretch;          /* each line sets its own alignment */
+  row-gap:var(--octo-gap);
   text-align:left;                /* default for left-aligned lines */
 
   /* cyan drop shadow */
   text-shadow:3px 3px 0 var(--octo-cyan);
-}
-
-/* === Hero headline gutters (left/right “safe area”) === */
-.octopus-bg{
-  /* tweak this to match the comp exactly */
-  --octo-side-pad: clamp(32px, 7vw, 120px);  /* min → responsive → max */
-  padding-inline: var(--octo-side-pad);
-  /* optional vertical breathing room */
-  padding-block: clamp(8px, 2vw, 24px);
-}
-
-/* If you want a firm max content width too (optional) */
-@media (min-width: 1400px){
-  .octopus-bg{
-    max-width: 1320px;        /* adjust to taste */
-    margin-inline: auto;      /* centers the block */
-  }
 }
 
 /* start state */
@@ -60,12 +43,6 @@
   justify-self:end;
   text-align:right;
   transform:translateX(var(--octo-slide));
-}
-
-/* Center the 3rd line ("Octopus") */
-.octopus .octo-line:nth-child(3){
-  justify-self: center !important;
-  text-align: center !important;
 }
 
 /* animate when in view (IntersectionObserver adds .in-view) */
@@ -373,8 +350,7 @@
   width: 100vw;         /* full viewport width */
   margin-left: calc(-50vw + 50%);  /* cancel container padding */
   background: #000;
-  padding-top: 32px;
-  padding-bottom: 32px;
+  padding: 32px 0;
 }
 
 .cta-inner {

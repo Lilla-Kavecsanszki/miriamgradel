@@ -369,6 +369,10 @@
 }
 
 /* ===== CTA STRIP ===== */
+/* remove the bottom padding */
+.template-homepage .container-fluid.py-4 { padding-bottom: 0; }
+.cta-strip { overflow: clip; } /* clips the button’s box shadow so it can’t peek out */
+
 .cta-strip {
   width: 100vw;         /* full viewport width */
   margin-left: calc(-50vw + 50%);  /* cancel container padding */

@@ -338,15 +338,22 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
   background: #73f0fa;               /* cyan strip */
   color: #000;
 }
+.site-footer::before{                 /* thin black bar on top */
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 12px;
+  background: #000;
+}
 
 /* inner grid */
 .footer-inner{
   max-width: 1200px;                  /* align to your content width */
   margin: 0 auto;
-  padding: 50px 40px 50px 40px;   
+  padding: 18px 20px 20px;
   display: grid;
   grid-template-columns: 1.2fr 0.8fr 0.8fr 1fr;   /* meta | nav | nav | legal */
-  /* gap: 24px; */
+  gap: 24px;
   align-items: start;
 }
 
@@ -373,7 +380,7 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
 /* legal small + dev credit */
 .footer-legal{
   justify-self: end;
-  text-align: left;
+  text-align: right;
   color: rgba(0,0,0,.65);
   font-size: 0.9rem;
 }

@@ -346,7 +346,7 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
   padding: 50px 40px 50px 40px;   
   display: grid;
   grid-template-columns: 1.2fr 0.8fr 0.8fr 1fr;   /* meta | nav | nav | legal */
-  /* gap: 24px; */
+  gap: 24px;
   align-items: start;
 }
 

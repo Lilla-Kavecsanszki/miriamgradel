@@ -13,15 +13,15 @@
   font-weight:700;
   text-transform:uppercase;
   letter-spacing:1px;
+  line-height:1.05;
   font-size:clamp(3rem, 8vw, 7rem);
   margin:0;
   padding:1rem 0;
-  row-gap: 0 !important;   /* no extra space between lines */
-  line-height: 1;          /* keep each line tight */
 
   /* layout & spacing */
   display:grid;
   justify-items:stretch;          /* each line sets its own alignment */
+  row-gap:var(--octo-gap);
   text-align:left;                /* default for left-aligned lines */
 
   /* cyan drop shadow */
@@ -60,12 +60,6 @@
   justify-self:end;
   text-align:right;
   transform:translateX(var(--octo-slide));
-}
-
-/* Center the 3rd line ("Octopus") */
-.octopus .octo-line:nth-child(3){
-  justify-self: center !important;
-  text-align: center !important;
 }
 
 /* animate when in view (IntersectionObserver adds .in-view) */
@@ -373,8 +367,7 @@
   width: 100vw;         /* full viewport width */
   margin-left: calc(-50vw + 50%);  /* cancel container padding */
   background: #000;
-  padding-top: 32px;
-  padding-bottom: 32px;
+  padding: 32px 0;
 }
 
 .cta-inner {
