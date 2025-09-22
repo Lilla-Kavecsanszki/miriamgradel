@@ -343,7 +343,6 @@
   background: #F7F7F7;
   border-top: 3px solid rgba(0, 0, 0, 0.4); 
   border-bottom: 3px solid rgba(0, 0, 0, 0.4);
-  padding-bottom: 1%;
 }
 
 .featured__meta{ padding:6px 0; }
@@ -436,19 +435,14 @@
   border-radius: 0;
   overflow: hidden;
   background: #fff;
-  border: none !important;
   box-shadow:
-    0 2px 0 0 #73f0fa,                    /* bottom line (saturated) */
-    0 10px 14px -8px rgba(115,240,250,.75),/* bottom glow (tight) */
-    8px 0 12px -9px rgba(115,240,250,.60); /* right glow (tight) */
+    0 10px 20px rgba(115, 240, 250, .45),  /* downward glow */
+    10px 0 18px rgba(115, 240, 250, .35);  /* right-side glow */
   transition: transform .15s ease, box-shadow .15s ease;
 }
 .all-videos .card:hover{
   transform: translateY(-2px);
-  box-shadow:
-    0 3px 0 0 #73f0fa,                     /* a touch thicker on hover */
-    0 12px 18px -8px rgba(115,240,250,.85),
-    10px 0 16px -10px rgba(115,240,250,.70);
+  box-shadow:0 14px 26px #73f0fa;
 }
 
 /* Media area (16:9 grey with play triangle) */
@@ -459,7 +453,6 @@
 .all-videos .card .embed{
   aspect-ratio: 16 / 9;
   background: #d9d9d9;            /* grey placeholder */
-  border: none !important;
 }
 .all-videos .card__media::after{
   content: "";
@@ -467,7 +460,7 @@
   left: 50%; top: 50%;
   transform: translate(-50%, -50%);
   width: 0; height: 0;             /* play triangle */
-  border-left: 18px solid rgba(255,255,255,.9);   
+  border-left: 18px solid rgba(255,255,255,.9);
   border-top: 12px solid transparent;
   border-bottom: 12px solid transparent;
   pointer-events: none;
@@ -479,6 +472,7 @@
   left: 0; right: 0; bottom: 0;
   background: #fff;
   padding: 10px 12px;
+  border-top: 1px solid rgba(0,0,0,.06);
   box-shadow: 0 3px 0 #73f0fa;     /* cyan “lip” under the strip */
 }
 
@@ -497,153 +491,59 @@
   .all-videos .cards{ grid-template-columns: 1fr; }
 }
 
-/* Reset button chrome for media + title buttons */
-.play-in-hero,
-.link-unstyled{
-  -webkit-appearance: none;
+/* --- Reset button defaults inside cards --- */
+.all-videos .card__media,
+.all-videos .link-unstyled {
   appearance: none;
-  background: transparent;
+  -webkit-appearance: none;
   border: 0;
-  outline: 0;
+  background: transparent;
   padding: 0;
   margin: 0;
-  box-shadow: none;
   color: inherit;
   font: inherit;
   text-align: inherit;
   cursor: pointer;
-  -webkit-tap-highlight-color: transparent; /* iOS */
 }
 
-/* Layout fixes */
-.card__media.play-in-hero{ display:block; width:100%; }
-.link-unstyled{ display:inline; }
-
-/* Remove Firefox inner focus border */
-.play-in-hero::-moz-focus-inner,
-.link-unstyled::-moz-focus-inner{ border:0; padding:0; }
-
-/* Accessible focus only when keyboard navigating */
-.play-in-hero:focus-visible,
-.link-unstyled:focus-visible{
+/* Accessible focus (only when tabbing) */
+.all-videos .play-in-hero:focus-visible,
+.all-videos .link-unstyled:focus-visible {
   outline: 2px solid #73f0fa;
   outline-offset: 2px;
-  border-radius: 0;
 }
 
-/* Ensure embeds never draw borders */
-.embed,
-.embed iframe,
-.embed video{
-  display:block;
-  border: 0 !important;
-  outline: 0 !important;
+/* Make sure the iframe doesn’t add gaps or borders */
+.all-videos .card .embed iframe,
+.all-videos .card .embed video {
+  display: block;
+  border: 0;
 }
 
-/* ===================== ALL AUDIO — mirror video cards ===================== */
-
-/* 2-up grid like videos */
-.all-audio .cards{
-  display: grid;
-  grid-template-columns: repeat(2, minmax(260px, 1fr));
-  gap: 18px;
-}
-
-/* Card container with tight cyan halo + saturated bottom line */
-.all-audio .card{
-  position: relative;
+/* Cyan glow like the mock */
+.all-videos .card{
   border: 0;
   border-radius: 0;
   overflow: hidden;
   background: #fff;
   box-shadow:
-    0 2px 0 0 #73f0fa,                      /* crisp cyan bottom line */
-    0 10px 14px -8px rgba(115,240,250,.75), /* bottom glow (tight)   */
-    8px 0 12px -9px rgba(115,240,250,.60);  /* right glow (tight)    */
+    0 10px 20px rgba(115,240,250,.45), /* bottom glow */
+    10px 0 18px rgba(115,240,250,.35); /* right glow */
   transition: transform .15s ease, box-shadow .15s ease;
 }
-.all-audio .card:hover{
+.all-videos .card:hover{
   transform: translateY(-2px);
   box-shadow:
-    0 3px 0 0 #73f0fa,
-    0 12px 18px -8px rgba(115,240,250,.85),
-    10px 0 16px -10px rgba(115,240,250,.70);
+    0 14px 26px rgba(115,240,250,.55),
+    12px 0 24px rgba(115,240,250,.45);
 }
 
-/* Reset button chrome (prevents black borders around media/title) */
-.all-audio .card__media,
-.all-audio .link-unstyled{
-  -webkit-appearance: none;
-  appearance: none;
-  background: transparent;
-  border: 0;
-  outline: 0;
-  padding: 0;
-  margin: 0;
-  box-shadow: none;
-  color: inherit;
-  font: inherit;
-  text-align: inherit;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-}
-.all-audio .card__media.play-audio-in-hero{ display:block; width:100%; }
-.all-audio .link-unstyled{ display:inline; }
-.all-audio .play-audio-in-hero:focus-visible,
-.all-audio .link-unstyled:focus-visible{
-  outline: 2px solid #73f0fa;
-  outline-offset: 2px;
-}
-
-/* Media area — same 16:9 grey box; keep an overlay play triangle */
-.all-audio .card__media{ position: relative; display: block; }
-.all-audio .card .embed{
-  aspect-ratio: 16 / 9;
-  background: #d9d9d9;
-}
-.all-audio .card__media::after{
-  content: "";
-  position: absolute;
-  left: 50%; top: 50%;
-  transform: translate(-50%, -50%);
-  width: 0; height: 0;                 /* play triangle */
-  border-left: 18px solid rgba(255,255,255,.9);
-  border-top: 12px solid transparent;
-  border-bottom: 12px solid transparent;
-  pointer-events: none;
-}
-
-/* Make sure any embed draws cleanly and fills the box */
-.all-audio .card .embed iframe,
-.all-audio .card .embed video,
-.all-audio .card .embed audio{
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  border: 0 !important;
-  display: block;
-}
-
-/* Caption strip pinned to bottom with cyan underline */
-.all-audio .card__body{
+/* Caption strip overlay stays clean (no borders) */
+.all-videos .card__body{
   position: absolute;
   left: 0; right: 0; bottom: 0;
   background: #fff;
   padding: 10px 12px;
   border: 0;
-  box-shadow: 0 2px 0 #73f0fa;  /* cyan lip to match videos */
-}
-.all-audio .card__title{
-  margin: 0;
-  font-size: 15px;
-  line-height: 1.25;
-  font-weight: 700;
-  color: #000;
-}
-.all-audio .card__dek{ display: none; }
-
-/* Responsive: single column under 900px (same as videos) */
-@media (max-width: 900px){
-  .all-audio .cards{ grid-template-columns: 1fr; }
+  box-shadow: 0 3px 0 #73f0fa; /* cyan lip */
 }

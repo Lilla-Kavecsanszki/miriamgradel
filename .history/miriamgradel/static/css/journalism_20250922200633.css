@@ -1,0 +1,188 @@
+/* ===== WRITTEN + VIDEO PAGES (CLEAN, CONSOLIDATED) ===== */
+
+/* ---------- HERO: black trapezoid + cyan fin ---------- */
+.written-hero,
+.video-hero{
+  position: relative;
+  color:#fff;
+  padding:18px 22px 16px;
+  margin:0 140px 16px -15px; /* left nudge + cyan fin room on right */
+  overflow:visible;          /* allow cyan fin to overhang */
+}
+.written-hero::before,
+.video-hero::before{
+  content:"";
+  position:absolute;
+  inset:0;                   /* fill the box */
+  background:#000;
+  clip-path: polygon(0 0, 100% 0, calc(100% - 28px) 100%, 0 100%);
+  z-index:1;                 /* above fin, below text */
+}
+.written-hero::after,
+.video-hero::after{
+  content:"";
+  position:absolute;
+  top:0; bottom:0; right:0;
+  width:20px;
+  background:#73f0fa;
+  transform:skewX(-15deg);
+  z-index:0;
+}
+.written-hero > *,
+.video-hero > *{ position:relative; z-index:2; }
+.video-hero .block-title,
+.written-hero .block-title{
+  font-weight:800; line-height:1.1; margin:0 0 .35rem; font-size:1.12rem; letter-spacing:.2px;
+}
+.written-hero p{ margin:0; opacity:.95; }
+
+/* ---------- SECTION TITLES: cyan ribbon + dark fin ---------- */
+:root{
+  --st-cut: 15px;     /* depth of the angled cut */
+  --st-edgeW: 12px;   /* thickness of fin (kept for reference) */
+}
+.section-title{
+  position: relative;
+  display: inline-block;
+  margin: 18px 0 12px;
+  padding: 6px 18px;
+  line-height: 1.1;
+  margin-left: -15px; /* align with hero */
+  color:#000;
+  overflow: visible;
+  isolation: isolate; /* keep pseudo layers behind text */
+}
+.section-title > span,
+.section-title > .band,
+.section-title > *{ position:relative; z-index:2; }
+
+.section-title::before{
+  content:"";
+  position:absolute; inset:0;
+  background:#73f0fa;
+  clip-path: polygon(0 0, 100% 0, calc(100% - var(--st-cut)) 100%, 0 100%);
+  z-index:-1;
+}
+.section-title::after{
+  content:"";
+  position:absolute; top:0; bottom:0; right:0;
+  width:20px;
+  background:#000;
+  transform:skewX(-23deg);
+  z-index:-2;
+}
+
+@media (max-width:575.98px){
+  .section-title{ padding:6px 14px; }
+  :root{ --st-cut: 20px; }
+  .video-hero{ margin-right:20px; }
+}
+
+/* ---------- ARTICLE LISTS ---------- */
+.written-item{ font-size: small; }
+.written-item a{ color:#000; text-decoration:none; font-weight:bold; }
+.written-item time, .written-item span{ font-style:italic; margin-bottom:12px; color:gray; }
+
+/* ---------- BTS ASIDE (unchanged style) ---------- */
+.bts-aside{
+  background:#F7F7F7;
+  border-left:3px solid rgba(0,0,0,.4);
+  padding-left:15px;
+}
+
+/* ===== VIDEO PAGE ===== */
+
+/* ---------- Featured block (stacked: player then meta) ---------- */
+.featured{
+  background:#F7F7F7;
+  border-top:3px solid rgba(0,0,0,.4);
+  border-bottom:3px solid rgba(0,0,0,.4);
+}
+.featured__grid{
+  display:grid;
+  grid-template-columns:1fr;   /* single column per final design */
+  row-gap:16px;
+  padding:0 2%;
+}
+.featured__media{ position:relative; z-index:0; }
+.featured__meta{ position:relative; z-index:1; padding:6px 0; }
+
+.meta__date{ color:#6b7280; font-size:14px; font-style:italic; }
+.meta__title{ margin:0 0 8px; font-size:18px; color:#000; text-decoration:none; }
+.meta__body{ color:#374151; }
+.meta__credits{ margin-top:10px; color:#374151; font-size:14px; }
+.meta__share{ display:flex; gap:10px; align-items:center; margin:12px 0 0; }
+.meta__share a{
+  display:inline-block; border:1px solid #e5e7eb; border-radius:6px;
+  padding:4px 8px; text-decoration:none; color:#111827; font-size:12px;
+}
+.btn{
+  display:inline-block; margin-top:8px; background:#73f0fa; color:#000;
+  padding:8px 12px; text-decoration:none; font-weight:800; border-radius:0;
+}
+
+/* ---------- Responsive 16:9 embeds ---------- */
+.embed{ position:relative; width:100%; aspect-ratio:16/9; background:#d1d5db; }
+.embed iframe,
+.embed video{ position:absolute; inset:0; width:100%; height:100%; border:0; }
+
+/* ---------- “All my videos” grid — match mock across the site ---------- */
+.all-videos .cards{
+  display:grid;
+  grid-template-columns: repeat(2, minmax(260px, 1fr));
+  gap:18px;
+}
+.all-videos .card{
+  position:relative;
+  border:0;
+  border-radius:0;
+  overflow:hidden;
+  background:#fff;
+  box-shadow:0 10px 20px rgba(0,0,0,.08);
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+.all-videos .card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 14px 26px rgba(0,0,0,.12);
+}
+
+/* Media: grey 16:9 with centered play */
+.all-videos .card__media{ position:relative; display:block; }
+.all-videos .card .embed{ aspect-ratio:16/9; background:#d9d9d9; }
+.all-videos .card__media::after{
+  content:"";
+  position:absolute; left:50%; top:50%;
+  transform:translate(-50%,-50%);
+  width:0; height:0;
+  border-left:18px solid rgba(255,255,255,.9);
+  border-top:12px solid transparent;
+  border-bottom:12px solid transparent;
+  pointer-events:none;
+}
+
+/* Caption strip on bottom with cyan underline */
+.all-videos .card__body{
+  position:absolute; left:0; right:0; bottom:0;
+  background:#fff;
+  padding:10px 12px;
+  border-top:1px solid rgba(0,0,0,.06);
+  box-shadow:0 3px 0 #73f0fa;  /* cyan “lip” */
+}
+.all-videos .card__title{
+  margin:0;
+  font-size:15px;
+  line-height:1.25;
+  font-weight:700;
+  color:#000;
+}
+.all-videos .card__dek{ display:none; }
+
+/* ---------- Responsive tweaks ---------- */
+@media (max-width:900px){
+  .all-videos .cards{ grid-template-columns:1fr; }
+}
+@media (max-width:575.98px){
+  .written-hero{ padding:14px 16px; }
+  .written-hero::before{ left:-8px; top:6px; bottom:6px; }
+  .written-hero::after{ right:-14px; top:6px; bottom:6px; }
+}
