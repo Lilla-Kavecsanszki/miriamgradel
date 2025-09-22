@@ -2,8 +2,9 @@
 
 <article class="bts-card">
   <a class="thumb" href="{{ bts.url }}">
-    <span class="bts-badge">{{ bts.get_category_display }}</span>
+    <span class="bts-badge">{{ bts.media_type|default:"Article" }}</span>
     {% if bts.teaser_image %}
+      {# remove rounded-top so corners are square #}
       {% image bts.teaser_image fill-800x450 alt=bts.card_title %}
     {% endif %}
   </a>

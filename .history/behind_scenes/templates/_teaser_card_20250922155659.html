@@ -2,14 +2,16 @@
 
 <article class="bts-card">
   <a class="thumb" href="{{ bts.url }}">
-    <span class="bts-badge">{{ bts.get_category_display }}</span>
+    <span class="bts-badge">{{ bts.media_type|default:"Article" }}</span>
     {% if bts.teaser_image %}
       {% image bts.teaser_image fill-800x450 alt=bts.card_title %}
     {% endif %}
   </a>
 
   <div class="bts-body">
-    <h4 class="bts-title"><a href="{{ bts.url }}">{{ bts.card_title }}</a></h4>
+    <h4 class="bts-title">
+      <a href="{{ bts.url }}">{{ bts.card_title }}</a>
+    </h4>
     {% if bts.card_summary %}
       <p class="bts-text">{{ bts.card_summary }}</p>
     {% endif %}

@@ -12,8 +12,8 @@
   color:#000;
   font-weight:700;
   text-transform:uppercase;
-  letter-spacing:2px;
-  font-size: clamp(4rem, 11vw, 10rem);
+  letter-spacing:1px;
+  font-size:clamp(3rem, 8vw, 7rem);
   margin:0;
   padding:1rem 0;
   row-gap: 0 !important;   /* no extra space between lines */
@@ -52,7 +52,6 @@
 .from-left{
   justify-self:start;
   text-align:left;
-  padding-left: -5px;  /* nudge a bit left to align with octopus */
   transform:translateX(calc(-1 * var(--octo-slide)));
 }
 

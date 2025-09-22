@@ -12,8 +12,8 @@
   color:#000;
   font-weight:700;
   text-transform:uppercase;
-  letter-spacing:2px;
-  font-size: clamp(4rem, 11vw, 10rem);
+  letter-spacing:1px;
+  font-size:clamp(3rem, 8vw, 7rem);
   margin:0;
   padding:1rem 0;
   row-gap: 0 !important;   /* no extra space between lines */
@@ -30,8 +30,8 @@
 
 /* === Hero headline gutters (left/right “safe area”) === */
 .octopus-bg{
-  /* wider gutters → more side space */
-  --octo-side-pad: clamp(48px, 10vw, 200px);
+  /* tweak this to match the comp exactly */
+  --octo-side-pad: clamp(32px, 7vw, 120px);  /* min → responsive → max */
   padding-inline: var(--octo-side-pad);
   /* optional vertical breathing room */
   padding-block: clamp(8px, 2vw, 24px);
@@ -52,7 +52,6 @@
 .from-left{
   justify-self:start;
   text-align:left;
-  padding-left: -5px;  /* nudge a bit left to align with octopus */
   transform:translateX(calc(-1 * var(--octo-slide)));
 }
 
@@ -250,7 +249,7 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  border: none !important;  /* remove default border */
+  border: 2px solid #000;          /* black frame */
   border-radius: 0;                /* sharp corners */
   box-shadow: 4px 4px 0 #000;      /* offset shadow, no blur */
 }
@@ -335,11 +334,25 @@
 #about .about-photo__frame{
   margin:0;
   position:relative;
-  border: none !important;
-  box-shadow: 8px 0 0 #73f0fa;
+  border:2px solid #000;        /* black frame */
   overflow:hidden;
 }
-
+#about .about-photo__frame::before{
+  /* cyan top bar (inside the frame) */
+  content:"";
+  position:absolute;
+  left:6px; right:6px; top:6px;
+  height:4px;
+  background:#73f0fa;
+}
+#about .about-photo__frame::after{
+  /* cyan right bar (inside the frame) */
+  content:"";
+  position:absolute;
+  top:6px; right:6px; bottom:6px;
+  width:4px;
+  background:#73f0fa;
+}
 #about .about-photo__frame img{
   display:block;
   width:100%;

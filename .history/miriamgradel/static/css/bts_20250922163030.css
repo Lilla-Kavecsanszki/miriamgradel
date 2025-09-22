@@ -1,0 +1,115 @@
+/* ================= BTS INDEX LAYOUT ================ */
+.template-bts-onepage h1,
+.template-bts-onepage h2 {
+  font-family: 'Designer', sans-serif;
+  letter-spacing: .4px;
+}
+
+.bts-section + .bts-section {
+  border-top: 1px solid #eee;
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+}
+
+/* ================= BTS CARD ================= */
+.bts-card {
+  background: #fff;
+  border: none;
+  border-radius: 0;                 /* square corners like the mock */
+  overflow: hidden;
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.bts-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 10px 0 0 #73f0fa;     /* slightly thicker on hover */
+}
+
+/* Image area */
+.bts-card .thumb {
+  position: relative;               /* host for the badge */
+  display: block;
+  line-height: 0;                   /* remove image baseline gap */
+}
+.bts-card .thumb img {
+  display: block;
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 0;                 /* ensure square corners */
+}
+
+/* Category badge — pinned to top-left of the image */
+.bts-badge{
+  position: absolute;
+  inset: 0 auto auto 0;             /* top:0; left:0 */
+  margin: 6px;                      /* small inset from edges */
+  padding: 6px 10px;
+  background: #73f0fa;
+  color: #000;
+  font-family: 'Inter', sans-serif; /* or 'Designer' if preferred */
+  font-weight: 800;
+  font-size: .78rem;
+  line-height: 1;
+  border-radius: 4px;
+  white-space: nowrap;
+  z-index: 2;
+  box-shadow: none;
+}
+
+/* Cyan panel with title + summary */
+.bts-body {
+  background: #73f0fa;
+  padding: 14px 16px 16px;
+}
+.bts-title {
+  margin: 0 0 .35rem;
+  font-weight: 800;
+  font-size: 1.05rem;
+  line-height: 1.25;
+}
+.bts-title a {
+  color: #000;
+  text-decoration: none;
+}
+.bts-title a:hover { text-decoration: underline; }
+.bts-text {
+  margin: 0;
+  color: #000;
+  opacity: .9;
+  font-size: .94rem;
+}
+
+/* Remove any legacy overlay title/gradient on the image */
+.bts-card .thumb .bts-title { position: static; padding: 0; display: none; }
+.bts-card .thumb::after { content: none; }
+
+/* ================= DETAIL PAGE ================= */
+.btn-brand {
+  background: #73f0fa;
+  color: #000;
+  font-weight: 800;
+  border: none;
+  border-radius: 0;
+}
+.btn-brand:hover,
+.btn-brand:focus {
+  filter: brightness(.96);
+  color: #000;
+}
+
+.bts-backbar {
+  background: #F7F7F7;
+  border-left: 3px solid rgba(0,0,0,.4);
+  padding: .5rem .75rem;
+  margin-bottom: 1rem;
+}
+@media (min-width: 992px) {
+  .bts-backbar { margin-bottom: 1.25rem; }
+}
+
+/* ============== Optional grid helper ============== */
+.bts-grid {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}

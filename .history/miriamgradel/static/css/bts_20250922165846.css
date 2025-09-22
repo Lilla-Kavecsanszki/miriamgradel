@@ -1,0 +1,130 @@
+/* ================= BTS INDEX LAYOUT ================ */
+.template-bts-onepage h1,
+.template-bts-onepage h2 {
+  font-family: 'Designer', sans-serif;
+  letter-spacing: .4px;
+}
+
+.bts-section + .bts-section {
+  border-top: 1px solid #eee;
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+}
+
+/* ================= BTS CARD ================= */
+/* ===== BTS card ===== */
+.bts-card {
+  background: #fff;
+  border: 0;
+  border-radius: 0;                     /* square corners */
+  overflow: hidden;
+  /* subtle card shadow (no color glow) */
+  box-shadow: 0 10px 20px rgba(0,0,0,.12);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.bts-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 26px rgba(0,0,0,.18);
+}
+
+/* Image area */
+.bts-card .thumb {
+  position: relative;                   /* host for badge */
+  display: block;
+  line-height: 0;
+  filter: none !important;              /* nuke drop-shadow filters */
+}
+.bts-card .thumb img {
+  display: block;
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 0;
+  filter: none !important;              /* no blurs */
+}
+
+/* Kill ANY legacy overlay/gradient on the photo */
+.bts-card .thumb::before,
+.bts-card .thumb::after {
+  content: none !important;
+  background: none !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+/* Category badge (top-left) */
+.bts-badge{
+  position: absolute;
+  inset: 0 auto auto 0;                 /* top:0; left:0 */
+  margin: 6px;
+  padding: 6px 10px;
+  background: #73f0fa;
+  color: #000;
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: .78rem;
+  line-height: 1;
+  border-radius: 4px;
+  white-space: nowrap;
+  z-index: 2;
+  box-shadow: none;
+}
+
+/* Cyan panel (solid, no glow) */
+.bts-body {
+  background: #73f0fa;
+  padding: 14px 16px 16px;
+  box-shadow: none !important;          /* prevent inner cyan glow */
+  filter: none !important;
+}
+
+/* Title + summary */
+.bts-title {
+  margin: 0 0 .35rem;
+  font-weight: 800;
+  font-size: 1.05rem;
+  line-height: 1.25;
+}
+.bts-title a { color: #000; text-decoration: none; }
+.bts-title a:hover { text-decoration: underline; }
+
+.bts-text {
+  margin: 0;
+  color: #000;
+  opacity: .9;
+  font-size: .94rem;
+}
+
+/* Hide legacy overlay title that sits on the image */
+.bts-card .thumb .bts-title { display: none !important; position: static !important; padding: 0 !important; }
+
+/* ================= DETAIL PAGE ================= */
+.btn-brand {
+  background: #73f0fa;
+  color: #000;
+  font-weight: 800;
+  border: none;
+  border-radius: 0;
+}
+.btn-brand:hover,
+.btn-brand:focus {
+  filter: brightness(.96);
+  color: #000;
+}
+
+.bts-backbar {
+  background: #F7F7F7;
+  border-left: 3px solid rgba(0,0,0,.4);
+  padding: .5rem .75rem;
+  margin-bottom: 1rem;
+}
+@media (min-width: 992px) {
+  .bts-backbar { margin-bottom: 1.25rem; }
+}
+
+/* ============== Optional grid helper ============== */
+.bts-grid {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}

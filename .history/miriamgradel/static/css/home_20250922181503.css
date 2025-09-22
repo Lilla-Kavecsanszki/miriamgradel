@@ -67,7 +67,7 @@
 .octopus .octo-line:nth-child(3){
   justify-self: center !important;
   text-align: center !important;
-}
+  
 
 /* animate when in view (IntersectionObserver adds .in-view) */
 .octopus.in-view .from-left  { animation:octo-in-left  var(--octo-duration) cubic-bezier(.16,1,.3,1) forwards; }

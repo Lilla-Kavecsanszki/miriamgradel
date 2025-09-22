@@ -1,71 +1,176 @@
-/* Headline banner (keep only the stripe if you’re using the shared hero) */
-.wme-banner__stripe { height: 8px; width: 58%; background: var(--sidebar-cyan, #00CFEA); transform: skewX(-20deg); }
+/* ===== WORK WITH ME (scoped) ===== */
 
-/* Old banner block kept in case you still use it */
-.wme-banner { position: relative; padding-top: .5rem; }
-.wme-banner__title {
-  font-family: 'Designer', sans-serif;
-  background: #102a3b;
-  color: #fff;
-  display: inline-block;
-  padding: .6rem 1rem .5rem 1rem;
-  margin-top: .3rem;
-  transform: skewX(-10deg);
-}
-.wme-banner__title > * { transform: skewX(10deg); display: inline-block; }
+/* Optional spacing harmony */
+.contact-hero { margin-bottom: 1.25rem; }
 
-/* Section titles (use shared ribbon) */
-:root{ --st-cut:15px; --st-edgeW:12px; --st-overhang:12px; --st-seam:1px; }
-.section-title{
-  position:relative; display:inline-block;
-  margin:18px 0 12px; padding:6px 18px; line-height:1.1;
-  margin-left:-15px; color:#000; font-size:larger; overflow:visible; isolation:isolate;
+/* If you ever print a bold line from the page model */
+.bold_text { font-weight: 800; }
+
+/* === Inputs: lifted cyan glow (bottom + right emphasis) === */
+.wme-input{
+  border: none;
+  border-radius: 2px;
+  background: #fff;
+  box-shadow:
+    2px 3px 10px rgba(115,240,250,.8),  /* cyan glow bottom-right */
+    0 2px 6px rgba(0,0,0,.08);          /* subtle lift */
+  transition: box-shadow .2s ease;
 }
-.section-title > *{ position:relative; z-index:2; }
-.section-title::before{
-  content:""; position:absolute; inset:0; background: var(--sidebar-cyan, #00CFEA);
-  clip-path: polygon(0 0, 100% 0, calc(100% - var(--st-cut)) 100%, 0 100%);
-  z-index:1;
-}
-.section-title::after{
-  content:""; position:absolute; top:0; bottom:0; right:0;
-  width:20px; background:#000; transform:skewX(-23deg); z-index:0;
-}
-@media (max-width:575.98px){
-  .section-title{ padding:6px 14px; }
-  :root{ --st-cut:20px; --st-edgeW:10px; --st-overhang:8px; }
+.wme-input:focus{
+  box-shadow:
+    3px 5px 14px rgba(115,240,250,1),
+    0 4px 10px rgba(0,0,0,.12);
+  outline: none;
 }
 
-/* Shared HERO slab (same as Written/Video) */
-.written-hero, .video-hero, .contact-hero{
-  position:relative; color:#fff;
-  padding:18px 22px 16px; margin-bottom:16px;
-  margin-left:-15px; margin-right:140px; overflow:visible;
+/* === 3D cyan button (darker on hover/press) === */
+.btn-brand{
+  background: #73f0fa;
+  color: #000;
+  font-weight: 800;
+  border: none;
+  border-radius: 4px;
+  box-shadow:
+    inset 0 -2px 0 rgba(0,0,0,.2),
+    0 6px 14px rgba(115,240,250,.4);
+  transition: background .2s ease, transform .05s ease-in-out;
 }
-.written-hero::before, .video-hero::before, .contact-hero::before{
-  content:""; position:absolute; inset:0; background:#000;
-  clip-path: polygon(0 0, 100% 0, calc(100% - 28px) 100%, 0 100%);
-  z-index:1;
+.btn-brand:hover,
+.btn-brand:focus{
+  background: #1fb7c3; /* darker cyan */
+  color: #fff;         /* better contrast */
 }
-.written-hero::after, .video-hero::after, .contact-hero::after{
-  content:""; position:absolute; top:0; bottom:0; right:0;
-  width:20px; background: var(--sidebar-cyan, #00CFEA); transform:skewX(-15deg); z-index:0;
+.btn-brand:active{
+  transform: translateY(1px);
+  background: #148a93; /* darkest cyan */
+  box-shadow:
+    inset 0 -1px 0 rgba(0,0,0,.25),
+    0 4px 10px rgba(0,0,0,.25);
 }
-.contact-hero > *{ position:relative; z-index:2; }
-.contact-hero .block-title{ font-weight:800; line-height:1.1; margin:0; font-size:1.12rem; }
-@media (max-width:575.98px){ .contact-hero{ margin-right:20px; } }
 
-/* Inputs */
-.wme-input { border:2px solid #B9F2FA; box-shadow:none !important; }
-.wme-input:focus { border-color: var(--sidebar-cyan, #00CFEA); outline:none; }
-
-/* Portrait & QR */
-.wme-portrait img{ object-fit:cover; }
-.wme-qr img, .wme-qr svg { max-width:260px; height:auto; }
-
-/* Sidebar styling (apply this class on your aside) */
+/* === Sidebar like other pages === */
 .contact_aside{
-  background:#F7F7F7;
-  border-left:3px solid rgba(0,0,0,.4);
-  padding-left:15px;
+  border-left: 3px solid rgba(0,0,0,.4);
+  padding-left: 15px;
+}
+@media (min-width: 992px){
+  .contact_aside{ position: sticky; top: 24px; }
+}
+
+/* === Portrait: flush left, solid cyan fin on the RIGHT === */
+.wme-portrait{
+  position: relative;
+  overflow: hidden;
+  margin-left: 0;                      /* flush with sidebar */
+  border-right: 12px solid #73f0fa;    /* cyan stripe */
+  box-shadow: 0 4px 12px rgba(0,0,0,.08);
+}
+.wme-portrait img{
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 0;
+}
+
+/* === QR: centered block with cyan border === */
+.wme-qr{
+  display: block;                       /* full block so we can center it */
+  border-right: 12px solid #73f0fa;     /* cyan stripe */
+  width: max-content;                   /* shrink to QR size + stripe */
+  margin: 0 auto;                       /* <-- centers the whole thing */
+  padding-right: 0;
+  text-align: center;                   /* ensure svg inside is centered */
+}
+
+.wme-qr svg{
+  display: block;
+  max-width: 180px;
+  height: auto;
+  margin: 0 auto;                       /* keep svg centered */
+}
+
+@media (max-width: 576px){
+  .wme-qr svg{ max-width: 150px; }
+}
+
+/* === Contact list: black text + tidy icons === */
+.wme-contacts a{ color: #000; text-decoration: none; }
+.wme-contacts a:hover{ text-decoration: underline; }
+.wme-ico{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px; height: 20px;
+  line-height: 1;
+  font-weight: 800; /* bold @ glyph */
+  color: #000;
+}
+
+/* Make portrait flush with the left edge of the sidebar (past the 15px padding) */
+.wme-portrait{
+  position: relative;
+  overflow: hidden;
+  margin-left: -15px;                 /* pull to the border line */
+  width: calc(100% + 15px);           /* keep full visual width */
+  border-right: 12px solid #73f0fa;   /* cyan stripe */
+  box-shadow: 0 4px 12px rgba(0,0,0,.08);
+}
+@media (min-width: 992px){
+  .contact_aside{ position: sticky; top: 24px; }
+}
+
+/* Center the QR block and keep the cyan fin */
+.wme-qr{
+  display: inline-block;
+  border-right: 12px solid #73f0fa;
+  padding-right: 0;
+  text-align: center;                 /* inner content centered too */
+}
+.wme-qr svg{
+  display: block;
+  max-width: 180px;
+  height: auto;
+  margin: 0 auto;
+}
+
+/* Center helper */
+.wme-center{ text-align: center; }
+
+/* Contacts: center the list; black links; tidy icons */
+.wme-contacts{
+  text-align: center;
+  margin: 0; padding: 0;
+}
+.wme-contacts li{ list-style: none; }
+.wme-contacts a{ color: #000; text-decoration: none; }
+.wme-contacts a:hover{ text-decoration: underline; }
+.wme-ico{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px; height: 20px;
+  margin-right: 6px;
+  font-weight: 800;
+  color: #000;
+}
+
+/* vCard button: outlined cyan, fills darker on hover */
+.btn-brand-outline{
+  background: transparent;
+  color: #000;
+  border: 2px solid #73f0fa;
+  border-radius: 4px;
+  font-weight: 800;
+  padding: .35rem .75rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,.06);
+  transition: background .2s ease, color .2s ease, transform .05s ease-in-out;
+}
+.btn-brand-outline:hover,
+.btn-brand-outline:focus{
+  background: #1fb7c3;  /* darker cyan */
+  color: #fff;
+}
+.btn-brand-outline:active{
+  transform: translateY(1px);
 }

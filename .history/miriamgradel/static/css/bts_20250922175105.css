@@ -1,0 +1,153 @@
+/* ================= THEME ================= */
+:root {
+  --bts-cyan: #73f0fa;
+}
+
+/* ================= BTS INDEX LAYOUT ================ */
+.template-bts-onepage h1,
+.template-bts-onepage h2 {
+  font-family: 'Designer', sans-serif;
+  letter-spacing: .4px;
+}
+
+.bts-section + .bts-section {
+  border-top: 1px solid #eee;
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+}
+
+/* ================= BTS CARD ================= */
+.bts-card {
+  background: #fff;
+  border: 0;
+  border-radius: 0;
+  overflow: hidden;
+  box-shadow: 0 10px 20px rgba(0,0,0,.12);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.bts-card:hover {
+  transform: translateY(-2px);
+  /* stronger lift + cyan left accent in a single declaration */
+  box-shadow:
+    0 14px 26px rgba(0,0,0,.18),
+    10px 0 0 var(--bts-cyan);
+}
+
+/* Image area */
+.bts-card .thumb {
+  position: relative; /* host for badge */
+  display: block;
+  line-height: 0;
+  filter: none !important;
+}
+.bts-card .thumb img {
+  display: block;
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 0;
+  filter: none !important;
+}
+
+/* Kill ANY legacy overlay/gradient on the photo */
+.bts-card .thumb::before,
+.bts-card .thumb::after {
+  content: none !important;
+  background: none !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+/* Category badge (top-left) */
+.bts-badge {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  margin-top: 10px;
+  padding: 6px 10px;
+  background: var(--bts-cyan);
+  color: #000;
+  font-family: 'Inter', sans-serif; /* or 'Designer' if preferred */
+  font-weight: 800;
+  font-size: .78rem;
+  line-height: 1;
+  white-space: nowrap;
+  z-index: 2;
+  box-shadow: none;
+}
+
+/* Cyan panel (solid, no inner glow) */
+.bts-body {
+  background: var(--bts-cyan);
+  padding: 18px 20px 20px;
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+/* Title — ONLY inside the panel */
+.bts-title {
+  margin: 0;
+  padding: 0;
+  font-family: 'Designer', sans-serif;
+  font-weight: 700;          /* chunky */
+  font-size: 1.35rem;        /* bigger like the mock */
+  line-height: 1.2;
+  letter-spacing: .2px;
+  color: #000;
+}
+.bts-title a {
+  display: block;            /* aligns with text below */
+  color: #000;
+  text-decoration: none;
+}
+.bts-title a:hover { text-decoration: underline; }
+
+/* Summary — readable, a touch larger */
+.bts-text {
+  margin: 0;
+  font-family: 'TT Chocolates', sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #000;
+  opacity: .95;              /* strong, not washed out */
+}
+
+/* 🔒 Hide any legacy overlay title on the image, decisively */
+.bts-card .thumb .bts-title {
+  display: none !important;
+  position: static !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  text-shadow: none !important;
+}
+
+/* ================= DETAIL PAGE ================= */
+.btn-brand {
+  background: var(--bts-cyan);
+  color: #000;
+  font-weight: 800;
+  border: none;
+  border-radius: 0;
+}
+.btn-brand:hover,
+.btn-brand:focus {
+  filter: brightness(.96);
+  color: #000;
+}
+
+.bts-backbar {
+  background: #F7F7F7;
+  border-left: 3px solid rgba(0,0,0,.4);
+  padding: .5rem .75rem;
+  margin-bottom: 1rem;
+}
+@media (min-width: 992px) {
+  .bts-backbar { margin-bottom: 1.25rem; }
+}
+
+/* ============== Optional grid helper ============== */
+.bts-grid {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}

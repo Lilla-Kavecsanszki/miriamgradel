@@ -47,27 +47,25 @@
 
 
 /* cards */
-/* ===== BTS card (photo style) ===== */
+/* === BTS card === */
 .bts-card{
   background:#fff;
-  border:1px solid #e9eef2;
-  overflow:hidden;                 
-  position:relative;
-  border-radius:0;
-  transition:transform .15s ease, box-shadow .15s ease;
-  margin-top: 5%;
-
-  /* layered shadows */
-  box-shadow: 
-    -4px 4px 12px rgba(0,0,0,.06),   /* left/bottom soft shadow */
-    0 4px 12px rgba(0,0,0,.08),      /* bottom soft shadow */
-    6px 0 0 #73f0fa;                 /* solid cyan shadow on right */
+  border:0;
+  border-radius:8px;
+  overflow:hidden;
+  box-shadow: 0 10px 20px rgba(0,0,0,.12);         /* soft right/bottom shadow */
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.bts-card:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 14px 26px rgba(0,0,0,.16);
 }
 
-/* image wrapper */
+/* image area */
 .bts-card .thumb{
   position:relative;
   display:block;
+  line-height:0;     /* remove gap under image */
 }
 .bts-card .thumb img{
   display:block;
@@ -76,69 +74,48 @@
   object-fit:cover;
 }
 
-/* Title overlay on the image */
-.bts-title{
+/* small badge top-left on the image */
+.bts-badge{
   position:absolute;
-  color: #000000;
-  font-family: 'Inter', sans-serif;
-  left:0;
-  right:0;
-  bottom:0;
-  margin:0;
-  padding:12px 16px;
+  top:10px; left:10px;
+  background:#73f0fa;
+  color:#000;
   font-weight:800;
-  font-size:1.2rem;
-  line-height:1.25;
-  z-index: 5;
+  font-size:.75rem;
+  line-height:1;
+  padding:6px 8px;
+  border-radius:4px;
+  text-transform:none;
+  z-index:2;
 }
 
+/* cyan bottom panel with title + summary */
+.bts-body{
+  background:#73f0fa;
+  padding:14px 16px 16px;
+}
+.bts-title{
+  margin:0 0 .35rem;
+  font-weight:800;
+  font-size:1.05rem;
+  line-height:1.25;
+}
 .bts-title a{
   color:#000;
   text-decoration:none;
-  font-family: 'Inter', sans-serif;
 }
+.bts-title a:hover{ text-decoration:underline; }
 
-.bts-title a:hover{
-  cursor:pointer;
-}
-
-/* image wrapper */
-.bts-card .thumb {
-  position: relative;  /* ensures .bts-title positions against this */
-  display: block;
-}
-
-.bts-card .thumb img {
-  display: block;
-  width: 100%;
-  height: 220px;
-  object-fit: cover;
-}
-
-/* body */
-.bts-body{
-  background:#fff;
-  padding:14px 16px 16px;
-  position:relative;
-  z-index:1;
-  /* cyan glow instead of cyan fill */
-  box-shadow: 0 -24px 30px #73f0fa;
-}
-
-/* blurb */
 .bts-text{
-  margin:.9rem 0 1rem;
-  color:#2b3b45;
-  font-size:.98rem;
-  font-family: 'TT Chocolates', sans-serif;
+  margin:0;
+  color:#000;
+  opacity:.9;                  /* like the mock’s lighter copy */
+  font-size:.94rem;
 }
 
-.bts-text strong{
-  display:block;
-  font-weight:800;
-  color:#072431;
-  margin-bottom:.25rem;
-}
+/* (cleanup of old overlay style if it still exists) */
+.bts-card .thumb .bts-title{ position:static; padding:0; }
+
 
 /* DETAIL PAGE */
 .btn-brand {

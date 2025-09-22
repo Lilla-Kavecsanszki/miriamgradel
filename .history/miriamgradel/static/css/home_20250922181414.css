@@ -52,7 +52,7 @@
 .from-left{
   justify-self:start;
   text-align:left;
-  padding-left: -5px;  /* nudge a bit left to align with octopus */
+  padding-left: 5px;   /* little breathing room on the left */
   transform:translateX(calc(-1 * var(--octo-slide)));
 }
 
@@ -67,6 +67,7 @@
 .octopus .octo-line:nth-child(3){
   justify-self: center !important;
   text-align: center !important;
+  padding-left: 10px;  /* little breathing room on the left */
 }
 
 /* animate when in view (IntersectionObserver adds .in-view) */

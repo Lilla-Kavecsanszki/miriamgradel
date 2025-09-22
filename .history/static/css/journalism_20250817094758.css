@@ -1,4 +1,0 @@
-.faded-card { opacity: .96; transition: opacity .2s, transform .2s; }
-.faded-card:hover { opacity: 1; transform: translateY(-2px); }
-
-.ratio.ratio-9x16 { --bs-aspect-ratio: calc(100% * 16 / 9); } /* fallback if needed */

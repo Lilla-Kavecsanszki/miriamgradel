@@ -1,0 +1,15 @@
+{% load wagtailimages_tags %}
+
+<section class="bts-section mb-5">
+  {% if items %}
+    <div class="row g-4 row-cols-1 row-cols-sm-2 row-cols-lg-3">
+      {% for bts in items %}
+        <div class="col">
+          {% include "teaser_card.html" with bts=bts %}
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="text-muted mb-0">No BTS items yet.</p>
+  {% endif %}
+</section>

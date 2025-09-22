@@ -43,7 +43,7 @@
   cursor: pointer;
   font-size: 2rem;
   line-height: 1;
-  color: #7DF2FF;
+  color: #73f0fa;
   z-index: 10;
   transition: transform 0.3s ease, opacity 0.3s ease;
 }
@@ -56,14 +56,14 @@
 
 /* Accessible outline only when keyboard-tabbing */
 .enter-btn:focus-visible {
-  outline: 2px solid #7DF2FF;
+  outline: 2px solid #73f0fa;
   outline-offset: 4px;
 }
 
 /* When fading out, also block interaction */
 .fade-out {
   opacity: 0;
-  transition: opacity 0.6s ease;
+  transition: opacity 0.3s ease;
   pointer-events: none;
 }
 
@@ -83,7 +83,7 @@
 /* ================== HERO TEXT ================== */
 .hero-text {
   font-family: 'Designer', sans-serif;
-  color: #7DF2FF;
+  color: #73f0fa;
   font-weight: bold;
   padding: 1rem;
   height: 100%;

@@ -1,0 +1,107 @@
+/* ================= BTS INDEX LAYOUT ================ */
+.template-bts-onepage h1,
+.template-bts-onepage h2 {
+  font-family: 'Designer', sans-serif;
+  letter-spacing: .4px;
+}
+
+.bts-section + .bts-section {
+  border-top: 1px solid #eee;
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+}
+
+/* ================= BTS CARD ================= */
+.bts-card {
+  background: #fff;
+  border: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  /* solid cyan “shadow” only on right side (no blur) */
+  box-shadow: 8px 0 0 #73f0fa;
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.bts-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 10px 0 0 #73f0fa;
+}
+
+/* image area */
+.bts-card .thumb {
+  position: relative;
+  display: block;
+  line-height: 0;            /* remove image baseline gap */
+}
+.bts-card .thumb img {
+  display: block;
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}
+
+/* small badge on image */
+.bts-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #73f0fa;
+  color: #000;
+  font-weight: 800;
+  font-size: .75rem;
+  line-height: 1;
+  padding: 6px 8px;
+  border-radius: 4px;
+  z-index: 2;
+}
+
+/* cyan panel with title + summary */
+.bts-body {
+  background: #73f0fa;
+  padding: 14px 16px 16px;
+}
+.bts-title {
+  margin: 0 0 .35rem;
+  font-weight: 800;
+  font-size: 1.05rem;
+  line-height: 1.25;
+}
+.bts-title a {
+  color: #000;
+  text-decoration: none;
+}
+.bts-title a:hover { text-decoration: underline; }
+
+.bts-text {
+  margin: 0;
+  color: #000;
+  opacity: .9;
+  font-size: .94rem;
+}
+
+/* ===== remove any legacy overlay title/gradient on image ===== */
+.bts-card .thumb .bts-title { position: static; padding: 0; }
+.bts-card .thumb::after { content: none; }
+
+/* ================= DETAIL PAGE (deduped) ================ */
+.btn-brand {
+  background: #73f0fa;
+  color: #000;
+  font-weight: 800;
+  border: none;
+  border-radius: 0;
+}
+.btn-brand:hover,
+.btn-brand:focus {
+  filter: brightness(.96);
+  color: #000;
+}
+
+.bts-backbar {
+  background: #F7F7F7;
+  border-left: 3px solid rgba(0,0,0,.4);
+  padding: .5rem .75rem;
+  margin-bottom: 1rem;
+}
+@media (min-width: 992px) {
+  .bts-backbar { margin-bottom: 1.25rem; }
+}

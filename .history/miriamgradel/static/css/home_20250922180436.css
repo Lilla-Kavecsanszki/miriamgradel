@@ -7,13 +7,45 @@
   --octo-gap: clamp(.5rem, 3vw, 2.2rem); /* space between lines */
 }
 
+/* knobs */
+:root{
+  --octo-cyan: #73f0fa; /* if not already set */
+  /* wider gutters */
+  --octo-side-pad: clamp(48px, 10vw, 180px);
+  /* narrower headline column */
+  --octo-max: clamp(520px, 58vw, 980px);
+}
+
+/* hero gutters */
+.octopus-bg{
+  padding-inline: var(--octo-side-pad);
+  padding-block: clamp(8px, 2vw, 24px);
+  /* optional: hard max on the whole hero band */
+  max-width: 1400px;
+  margin-inline: auto;
+}
+
+/* squeeze the text column */
+.octopus{
+  inline-size: var(--octo-max);
+  margin-inline: auto;             /* centers the column */
+}
+
+/* XL+ screens: even more side space */
+@media (min-width: 1400px){
+  :root{
+    --octo-side-pad: clamp(120px, 12vw, 260px);
+    --octo-max: 880px;             /* keep it tight on very wide viewports */
+  }
+}
+
 .octopus{
   font-family: 'Designer', sans-serif;
   color:#000;
   font-weight:700;
   text-transform:uppercase;
-  letter-spacing:2px;
-  font-size: clamp(4rem, 11vw, 10rem);
+  letter-spacing:1px;
+  font-size:clamp(3rem, 8vw, 7rem);
   margin:0;
   padding:1rem 0;
   row-gap: 0 !important;   /* no extra space between lines */
@@ -30,8 +62,8 @@
 
 /* === Hero headline gutters (left/right “safe area”) === */
 .octopus-bg{
-  /* wider gutters → more side space */
-  --octo-side-pad: clamp(48px, 10vw, 200px);
+  /* tweak this to match the comp exactly */
+  --octo-side-pad: clamp(32px, 7vw, 120px);  /* min → responsive → max */
   padding-inline: var(--octo-side-pad);
   /* optional vertical breathing room */
   padding-block: clamp(8px, 2vw, 24px);
@@ -52,7 +84,6 @@
 .from-left{
   justify-self:start;
   text-align:left;
-  padding-left: -5px;  /* nudge a bit left to align with octopus */
   transform:translateX(calc(-1 * var(--octo-slide)));
 }
 
