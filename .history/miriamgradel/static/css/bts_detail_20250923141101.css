@@ -1,0 +1,149 @@
+.bts-backbar {
+  background: #F7F7F7;
+  border-left: 3px solid rgba(0,0,0,.4);
+  padding: .5rem .75rem;
+  margin-bottom: 1rem;
+}
+@media (min-width: 992px) {
+  .bts-backbar { margin-bottom: 1.25rem; }
+}
+
+.btn-brand {
+  background: #73f0fa;
+  color: #000;
+  font-weight: 800;
+  border: none;
+  border-radius: 4px;
+  box-shadow:
+    inset 0 -2px 0 rgba(0,0,0,.2),
+    0 6px 14px rgba(115,240,250,.4);
+  transition: background .2s ease, transform .05s ease-in-out;
+  padding-left: 2%;
+  padding: 0.5rem 1rem;
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 1000;
+  display: inline-block;
+  text-decoration: none;
+}
+
+.btn-brand:hover,
+.btn-brand:focus {
+  transform: translate(-2px, -2px);
+  background: #1fb7c3; /* darker cyan */
+  color: #fff;         /* better contrast */
+}
+
+.btn-brand:active {
+  transform: translateY(1px);
+  background: #148a93; /* darkest cyan */
+  box-shadow:
+    inset 0 -1px 0 rgba(0,0,0,.25),
+    0 4px 10px rgba(0,0,0,.25);
+}
+
+okay.. so far: {% extends "base.html" %}
+{% load static wagtailcore_tags wagtailimages_tags %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/journalism.css' %}">
+  <link rel="stylesheet" href="{% static 'css/bts.css' %}">
+  <link rel="stylesheet" href="{% static 'css/bts_detail.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+<div class="container-fluid py-4">
+
+  <article class="bts-article">
+
+  {# Page header ribbon (not the article title) #}
+  <div class="written-hero mb-3">
+    <span class="cap" aria-hidden="true"></span>
+    <div class="block-title" style="color:#73f0fa">
+      {{ page.get_category_display }}
+    </div>
+  </div>
+
+    {# Article title and intro snippet #}
+    <header class="mb-4">
+      <h1 class="mb-2">{{ page.intro_title|default:page.title }}</h1>
+      {% if page.intro_body %}
+        <div class="lead" style="max-width: 70ch;">
+          {{ page.intro_body|richtext }}
+        </div>
+      {% endif %}
+    </header>
+
+    {# Optional teaser image #}
+    {% if page.teaser_image %}
+      <figure class="mb-4">
+        {% image page.teaser_image fill-1200x675 class="img-fluid rounded w-100" %}
+      </figure>
+    {% endif %}
+
+    {# Main article body #}
+    {% if page.body %}
+      <div class="article-body">
+        {% for block in page.body %}
+          <div class="mb-3 mb-lg-4">
+            {% include_block block %}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {# Back link #}
+    <div class="mt-5 border-top pt-3">
+      <a href="{{ page.get_parent.url }}" class="btn btn-brand">
+        ← Back to Behind the Scenes
+      </a>
+    </div>
+
+  </article>
+
+</div>
+{% endblock %}  ...bts-backbar {
+  background: #F7F7F7;
+  border-left: 3px solid rgba(0,0,0,.4);
+  padding: .5rem .75rem;
+  margin-bottom: 1rem;
+}
+@media (min-width: 992px) {
+  .bts-backbar { margin-bottom: 1.25rem; }
+}
+
+.btn-brand {
+  background: #73f0fa;
+  color: #000;
+  font-weight: 800;
+  border: none;
+  border-radius: 4px;
+  box-shadow:
+    inset 0 -2px 0 rgba(0,0,0,.2),
+    0 6px 14px rgba(115,240,250,.4);
+  transition: background .2s ease, transform .05s ease-in-out;
+  padding-left: 2%;
+  padding: 0.5rem 1rem;
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 1000;
+  display: inline-block;
+  text-decoration: none;
+}
+
+.btn-brand:hover,
+.btn-brand:focus {
+  transform: translate(-2px, -2px);
+  background: #1fb7c3; /* darker cyan */
+  color: #fff;         /* better contrast */
+}
+
+.btn-brand:active {
+  transform: translateY(1px);
+  background: #148a93; /* darkest cyan */
+  box-shadow:
+    inset 0 -1px 0 rgba(0,0,0,.25),
+    0 4px 10px rgba(0,0,0,.25);
+} .. the rest, under the ribbon needs to look like a digital article fancy!

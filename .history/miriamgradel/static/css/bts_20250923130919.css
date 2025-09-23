@@ -61,7 +61,7 @@
   padding: 6px 10px;
   background: #73f0fa;
   color: #000;
-  font-family: 'Inter', sans-serif;
+  font-family: 'TT Chocolates';
   font-weight: 800;
   font-size: .78rem;
   line-height: 1;
@@ -82,9 +82,9 @@
 .bts-title{
   margin: 0;
   padding-bottom: 1.5rem;
-  font-family: 'TT Chocolates', sans-serif;
-  font-weight: 500;
-  font-size: 1.35rem;
+  font-family: 'TT Chocolates';
+  font-weight: 500;                      /* really chunky */
+  font-size: 1.35rem;                    /* bigger like the mock */
   line-height: 1.2;
   letter-spacing: .2px;
 }
@@ -130,7 +130,7 @@
   display: block !important;
   position: static !important;   /* override any absolute rules from older CSS */
   margin: 0;
-  font-family: 'TT Chocolates', sans-serif;
+  font-family: 'Designer', sans-serif;
   font-weight: 700;
   font-size: 1.35rem;
   line-height: 1.2;
@@ -154,7 +154,7 @@
 .bts-card .bts-body .bts-title{
   margin: 0;                 /* no extra margin */
   padding: 0;
-  font-family: 'TT Chocolates', sans-serif;
+  font-family: 'Designer', sans-serif;
   font-weight: 700;          /* or 900 if you want chunkier */
   font-size: 1.35rem;
   line-height: 1.2;
@@ -166,6 +166,30 @@
   text-decoration:none;
 }
 .bts-card .bts-body .bts-title a:hover{ text-decoration:underline; }
+
+/* ================= DETAIL PAGE ================= */
+.btn-brand {
+  background: #73f0fa;
+  color: #000;
+  font-weight: 800;
+  border: none;
+  border-radius: 0;
+}
+.btn-brand:hover,
+.btn-brand:focus {
+  filter: brightness(.96);
+  color: #000;
+}
+
+.bts-backbar {
+  background: #F7F7F7;
+  border-left: 3px solid rgba(0,0,0,.4);
+  padding: .5rem .75rem;
+  margin-bottom: 1rem;
+}
+@media (min-width: 992px) {
+  .bts-backbar { margin-bottom: 1.25rem; }
+}
 
 /* ============== Optional grid helper ============== */
 .bts-grid {

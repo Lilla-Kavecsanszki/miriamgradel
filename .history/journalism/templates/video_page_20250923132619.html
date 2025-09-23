@@ -73,9 +73,8 @@
                   Line
                 </a>
               </div>
-
-              {# --- External link button --- #}
-              {# If no external URL, disable button and make it non-focusable --- #}
+                {% endwith %}
+              </div>
 
               {% if featured.external_url %}
                 <a class="btn" id="meta-link" href="{{ featured.external_url }}" target="_blank" rel="noopener">Open video</a>

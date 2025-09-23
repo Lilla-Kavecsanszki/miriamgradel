@@ -57,25 +57,30 @@
               {# --- Share row (present on video page) --- #}
               <div class="meta__share">
                 <span>Share it</span>
-                <a aria-label="Share to LinkedIn"
-                  href="https://www.linkedin.com/sharing/share-offsite/?url={{ request.build_absolute_uri|urlencode }}"
-                  target="_blank" rel="noopener">
-                  LinkedIn
-                </a>
-                <a aria-label="Share to Bluesky"
-                  href="https://bsky.app/intent/compose?text={{ featured.title|default:'Untitled'|urlencode }}%20{{ request.build_absolute_uri|urlencode }}"
-                  target="_blank" rel="noopener">
-                  Bluesky
-                </a>
-                <a aria-label="Share to Line"
-                  href="https://social-plugins.line.me/lineit/share?url={{ request.build_absolute_uri|urlencode }}"
-                  target="_blank" rel="noopener">
-                  Line
-                </a>
-              </div>
+                {% with u=request.build_absolute_uri|urlencode
+                      t=featured.title|default:"Untitled"|urlencode %}
+                  <!-- Share to LinkedIn -->
+                  <a aria-label="Share to LinkedIn"
+                    href="https://www.linkedin.com/sharing/share-offsite/?url={{ u }}"
+                    target="_blank" rel="noopener">
+                    LinkedIn
+                  </a>
 
-              {# --- External link button --- #}
-              {# If no external URL, disable button and make it non-focusable --- #}
+                  <!-- Share to Bluesky: uses the compose intent with encoded text and URL -->
+                  <a aria-label="Share to Bluesky"
+                    href="https://bsky.app/intent/compose?text={{ t }}%20{{ u }}"
+                    target="_blank" rel="noopener">
+                    Bluesky
+                  </a>
+
+                  <!-- Share to LINE: use Line’s social plugin URL -->
+                  <a aria-label="Share to Line"
+                    href="https://social-plugins.line.me/lineit/share?url={{ u }}"
+                    target="_blank" rel="noopener">
+                    Line
+                  </a>
+                {% endwith %}
+              </div>
 
               {% if featured.external_url %}
                 <a class="btn" id="meta-link" href="{{ featured.external_url }}" target="_blank" rel="noopener">Open video</a>

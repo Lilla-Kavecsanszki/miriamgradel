@@ -4,7 +4,6 @@
 {% block extra_css %}
   <link rel="stylesheet" href="{% static 'css/journalism.css' %}">
   <link rel="stylesheet" href="{% static 'css/bts.css' %}">
-  <link rel="stylesheet" href="{% static 'css/bts_detail.css' %}">
 {% endblock extra_css %}
 
 {% block content %}
@@ -12,13 +11,13 @@
 
   <article class="bts-article">
 
-    {# Page header ribbon (shows the category) #}
-    <div class="written-hero mb-3">
-      <span class="cap" aria-hidden="true"></span>
-      <div class="block-title" style="color:#73f0fa">
-        {{ page.get_category_display }}
-      </div>
+  {# Page header ribbon (not the article title) #}
+  <div class="written-hero mb-3">
+    <span class="cap" aria-hidden="true"></span>
+    <div class="block-title" style="color:#73f0fa">
+      {{ page.get_category_display }}
     </div>
+  </div>
 
     {# Article title and intro snippet #}
     <header class="mb-4">
@@ -49,7 +48,7 @@
     {% endif %}
 
     {# Back link #}
-    <div class="mt-3">
+    <div class="mt-5 border-top pt-3">
       <a href="{{ page.get_parent.url }}" class="btn btn-brand">
         ← Back to Behind the Scenes
       </a>
