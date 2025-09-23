@@ -303,12 +303,10 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
 /* Brand-specific hover colors */
 .dot.insta:hover   { color: #E4405F; }  /* Instagram pink */
 .dot.linkedin:hover{ color: #0A66C2; }  /* LinkedIn blue */
-.dot.bluesky:hover svg path {
-  fill: #237de3; /* Bluesky blue */
-}
+.dot.bluesky:hover { color: #237de3; }  /* Bluesky blue */
 .dot.signal:hover { color: #3c46f5; }  /* Signal blue */
 .dot.line:hover { color: #5bad43; }  /* Line green */
-.dot.mail:hover    { color: #e53631; }     /* red for email */
+.dot.mail:hover    { color: #666; }     /* Neutral gray for email */
 
 
 /* ========== Mobile: hide sidebar, remove offset ========== */
