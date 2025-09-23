@@ -59,7 +59,7 @@
   content:""; position:absolute; top:0; bottom:0; right:0;
   width:20px; background:#000; transform:skewX(-23deg); z-index:-2;
 }
-.section-title{ font-size: 1.1rem; }
+.section-title{ font-size: 1.25rem; }
 @media (max-width:575.98px){
   .section-title{ padding:6px 14px; }
   :root{ --st-cut: 20px; }

@@ -50,64 +50,6 @@
       </section>
       {% endif %}
 
-      <!-- Service detail sections -->
-      {% for service in page.services %}
-        {% with service.value as svc %}
-        <section id="{{ svc.slug|default:svc.title|slugify }}" class="svc-section mb-5">
-          <div class="svc-header">
-            <h3>{{ svc.title }}</h3>
-          </div>
-          <div class="row gx-3 gy-4 align-items-start">
-            <!-- Left side: description and outputs -->
-            <div class="col-12 col-lg-7">
-              {{ svc.details|richtext }}
-              {% if svc.outputs %}
-              <h4>Outputs:</h4>
-              <ul>
-                {% for output in svc.outputs %}
-                <li>{{ output }}</li>
-                {% endfor %}
-              </ul>
-              {% endif %}
-            </div>
-            <!-- Right side: header image -->
-            <div class="col-12 col-lg-5">
-              {% if svc.image %}
-                {% image svc.image fill-600x400 class="img-fluid" alt=svc.title %}
-              {% endif %}
-            </div>
-          </div>
-
-          <!-- Examples list -->
-          {% if svc.examples %}
-          <div class="svc-examples mt-4">
-            <h4>Examples</h4>
-            <div class="row row-cols-1 row-cols-md-2 g-3">
-              {% for ex in svc.examples %}
-              <div class="col">
-                <article class="example-card p-3 border">
-                  {% if ex.image %}
-                    {% image ex.image fill-600x338 class="img-fluid mb-2" alt=ex.title %}
-                  {% endif %}
-                  <h5>{{ ex.title }}</h5>
-                  {% if ex.description %}
-                  <p>{{ ex.description }}</p>
-                  {% endif %}
-                  {% if ex.link_url %}
-                  <a href="{{ ex.link_url }}" class="example-link">
-                    {{ ex.link_label|default:"Learn more" }}
-                  </a>
-                  {% endif %}
-                </article>
-              </div>
-              {% endfor %}
-            </div>
-          </div>
-          {% endif %}
-        </section>
-        {% endwith %}
-      {% endfor %}
-
       <!-- Optional project highlights row -->
       {% comment %} {% if page.project_highlights %}
       <section class="project-highlights mb-5">
@@ -134,8 +76,8 @@
             {% endwith %}
           {% endfor %}
         </div>
-      </section>
-      {% endif %} {% endcomment %}
+      </section> {% endcomment %}
+      {% endif %}
 
     </div><!-- /col-8 -->
 

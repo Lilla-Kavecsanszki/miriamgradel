@@ -1,0 +1,106 @@
+:root { --cyan:#73f0fa; }
+
+/* clickable tile card */
+.svc-tiles .card.tile{
+  background: var(--cyan) !important;  /* beat .card background */
+  border: 0;
+  border-radius: 0;
+  color:#fff;
+  text-decoration: none;
+  box-shadow: 0 3px 0 #000;            /* thin black underline */
+  transition: transform .12s ease, box-shadow .12s ease;
+  display:block;                       /* full-tile click */
+}
+.svc-tiles .card.tile:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 4px 0 #000, 0 10px 14px -10px rgba(115,240,250,.6);
+  color:#fff;
+}
+/* keyboard focus */
+.svc-tiles .card.tile:focus-visible{
+  outline: 2px solid #000;
+  outline-offset: 2px;
+}
+/* pressed feel */
+.svc-tiles .card.tile:active{
+  transform: translateY(0);
+  box-shadow: 0 2px 0 #000;
+}
+
+/* body */
+
+/* reuse review-card look for service tiles */
+.review-card,
+.template-communication .svc-tiles .card.tile{
+  background:#73f0fa;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-start;
+  border:0 !important;
+  border-radius:0;
+  box-shadow:4px 4px 0 #000;      /* offset shadow, no blur */
+  color:#fff;                      /* readable on cyan */
+  text-decoration:none;
+}
+
+/* tile body sizing (keeps all tiles even) */
+.template-communication .svc-tiles .card.tile .card-body{
+  min-height:120px;
+  padding:16px 18px;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+}
+
+/* title */
+.template-communication .svc-tiles .card.tile .tile-title{
+  font-family:'Designer',sans-serif;
+  font-weight:800;
+  margin:0;
+  line-height:1.15;
+  font-size:clamp(1rem,2.2vw,1.125rem);
+  color:#fff;
+}
+
+/* hover/active/focus for accessibility */
+.template-communication .svc-tiles .card.tile:hover{ transform:translateY(-2px); }
+.template-communication .svc-tiles .card.tile:active{ transform:translateY(0); }
+.template-communication .svc-tiles .card.tile:focus-visible{
+  outline:2px solid #000; outline-offset:2px;
+}
+
+.svc-tiles .card.tile .card-body{
+  min-height: 120px;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  padding: 12px 14px;
+}
+@media (min-width: 768px){
+  .svc-tiles .card.tile .card-body{ padding: 16px 18px; }
+}
+
+/* title */
+.svc-tiles .card.tile .tile-title{
+  font-family: 'Designer', sans-serif;
+  font-weight: 800;
+  letter-spacing:.3px;
+  margin: 0 0 6px;
+  font-size: clamp(1rem, 2.2vw, 1.125rem);
+  line-height: 1.15;
+}
+
+/* keep link text white */
+.svc-tiles .card.tile,
+.svc-tiles .card.tile:hover,
+.svc-tiles .card.tile:active{ color:#fff; }
+
+/* smooth scroll + sticky header offset (if you have one) */
+html { scroll-behavior: smooth; }
+.svc-grid [id] { scroll-margin-top: 80px; }
+
+/* reduced motion */
+@media (prefers-reduced-motion: reduce){
+  .svc-tiles .card.tile{ transition:none; }
+  html { scroll-behavior:auto; }
+}

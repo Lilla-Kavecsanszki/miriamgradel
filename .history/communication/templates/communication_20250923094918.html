@@ -55,7 +55,7 @@
         {% with service.value as svc %}
         <section id="{{ svc.slug|default:svc.title|slugify }}" class="svc-section mb-5">
           <div class="svc-header">
-            <h3>{{ svc.title }}</h3>
+            <h3 class="section-title">{{ svc.title }}</h3>
           </div>
           <div class="row gx-3 gy-4 align-items-start">
             <!-- Left side: description and outputs -->
@@ -109,7 +109,7 @@
       {% endfor %}
 
       <!-- Optional project highlights row -->
-      {% comment %} {% if page.project_highlights %}
+      {% if page.project_highlights %}
       <section class="project-highlights mb-5">
         <h3 class="section-title">Highlights</h3>
         <div class="row row-cols-1 row-cols-md-3 g-3">
@@ -135,7 +135,7 @@
           {% endfor %}
         </div>
       </section>
-      {% endif %} {% endcomment %}
+      {% endif %}
 
     </div><!-- /col-8 -->
 

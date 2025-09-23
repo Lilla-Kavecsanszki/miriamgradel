@@ -59,7 +59,6 @@
   content:""; position:absolute; top:0; bottom:0; right:0;
   width:20px; background:#000; transform:skewX(-23deg); z-index:-2;
 }
-.section-title{ font-size: 1.1rem; }
 @media (max-width:575.98px){
   .section-title{ padding:6px 14px; }
   :root{ --st-cut: 20px; }
@@ -234,4 +233,10 @@
 @media (max-width:900px){
   .all-videos .cards,
   .all-audio .cards{ grid-template-columns:1fr; }
+}
+
+/* restore original heading size for section titles */
+.section-title{
+  font-size: revert;   /* goes back to the UA/site default for the h2 */
+  line-height: normal; /* optional: reset if it looked too tall */
 }

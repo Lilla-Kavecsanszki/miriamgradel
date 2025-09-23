@@ -1,0 +1,51 @@
+:root { --cyan:#73f0fa; }
+
+/* Make the <a class="card tile"> look like the cyan tiles */
+.card-col {
+  display:block;                 /* full-tile click */
+  width:100%;
+  background: var(--cyan);
+  color:#73f0fa;
+  text-decoration:none;
+  border:0 !important;
+  border-radius:0;
+  box-shadow: 4px 4px 0 #000;    /* offset black shadow (no blur) */
+  transition: transform .12s ease;
+}
+
+/* Body sizing: keep tiles even */
+.svc-tiles .card.tile .card-body{
+  min-height: 120px;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  padding: 16px 18px;
+}
+
+/* Title styling */
+.svc-tiles .tile-title{
+  font-family:'Designer', sans-serif;
+  font-weight:800;
+  line-height:1.15;
+  margin:0;
+  font-size: clamp(1rem, 2.2vw, 1.125rem);
+  color:#fff;
+  word-break: normal;
+  overflow-wrap: anywhere; /* nicer wraps on narrow screens */
+}
+
+/* Hover/focus/active */
+.svc-tiles .card.tile:hover{ transform: translateY(-2px); }
+.svc-tiles .card.tile:active{ transform: translateY(0); }
+.svc-tiles .card.tile:focus-visible{
+  outline:2px solid #000; outline-offset:2px;
+}
+
+/* Keep link text white in all states */
+.svc-tiles .card.tile,
+.svc-tiles .card.tile:hover,
+.svc-tiles .card.tile:active{ color:#fff; }
+
+/* Optional: smooth anchor scroll + header offset for targets */
+html { scroll-behavior: smooth; }
+.svc-grid [id] { scroll-margin-top: 80px; } /* adjust if you have a sticky header */

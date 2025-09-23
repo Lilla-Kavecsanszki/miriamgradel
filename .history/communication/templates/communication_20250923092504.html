@@ -5,7 +5,6 @@
 
 {% block extra_css %}
   <link rel="stylesheet" href="{% static 'css/journalism.css' %}">
-  <link rel="stylesheet" href="{% static 'css/communication.css' %}">
 {% endblock extra_css %}
 
 {% block content %}
@@ -109,7 +108,7 @@
       {% endfor %}
 
       <!-- Optional project highlights row -->
-      {% comment %} {% if page.project_highlights %}
+      {% if page.project_highlights %}
       <section class="project-highlights mb-5">
         <h3 class="section-title">Highlights</h3>
         <div class="row row-cols-1 row-cols-md-3 g-3">
@@ -135,7 +134,7 @@
           {% endfor %}
         </div>
       </section>
-      {% endif %} {% endcomment %}
+      {% endif %}
 
     </div><!-- /col-8 -->
 
