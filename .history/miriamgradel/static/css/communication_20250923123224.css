@@ -149,10 +149,9 @@
   right: 2rem;
   z-index: 1000;
   display: inline-block;
-  text-decoration: none;
 }
 
-.to-top-button:hover,
+.to-top-button:hover
 .to-top-button:focus {
   transform: translate(-2px, -2px);
   background: #1fb7c3; /* darker cyan */

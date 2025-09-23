@@ -12,9 +12,9 @@
   text-decoration: none;
   border: none !important;
   border-radius: 0;
+  /* black offset border effect on bottom and right */
   box-shadow: 4px 4px 0 #000;
   transition: transform .12s ease;
-  margin-top: 10%;
 }
 
 .svc-tiles .tile:hover {
@@ -24,34 +24,32 @@
   transform: translateY(0);
 }
 
-/* Ensure tiles are evenly sized and titles centred both vertically and horizontally */
+/* Ensure tiles are evenly sized and vertically centred */
 .card.tile .card-body {
   min-height: 120px;
   display: flex;
   flex-direction: column;
-  justify-content: center; /* vertical centering */
-  align-items: center;    /* horizontal centering */
-  text-align: center;     /* ensure multi-line text is centred */
+  justify-content: center;
   padding: 0.5rem;
 }
 
 /* Tile title typography */
 .tile-title {
-  font-family: 'TT Chocolates';
+  font-family: 'Designer', sans-serif;
   font-weight: 800;
   margin: 0;
   font-size: clamp(1rem, 2.2vw, 1.125rem);
   line-height: 1.15;
+  word-break: break-word; /* allow long words to wrap naturally */
 }
 
 /* ======================== SERVICE SECTIONS ======================== */
-/* Fluid sectionsm */
+/* Fluid sections: no border or box shadow, just spacing and background colour */
 .svc-section {
   padding: 1.5rem 0;        /* vertical spacing around each service */
   border-top: 3px solid rgba(0, 0, 0, 0.4);
   box-shadow: none;
   background-color: #fff; /* default white background */
-  margin-left: -1%;   /* full-width sections */
 }
 
 /* Alternate backgrounds for visual variety: even-numbered sections become light grey */
@@ -63,9 +61,8 @@
 /* If <h3> uses both .svc-header and .section-title, remove any block styling from .svc-header */
 .svc-header {
   background: none;
-  padding-left: 2%;
+  padding: 0;
   margin-bottom: 1rem;
-  padding-left: 2%;
 }
 
 /* Section typography */
@@ -73,16 +70,14 @@
   font-size: 1rem;
   font-weight: 700;
   margin-top: 0.5rem;
-  padding-left: 2%;
 }
 .svc-section p,
 .svc-section li {
   font-size: 0.95rem;
   line-height: 1.4;
-  padding-left: 2%;
 }
 .svc-section ul {
-  padding-left: 5%;
+  padding-left: 1rem;
 }
 
 /* ======================== EXAMPLES ======================== */
@@ -90,85 +85,28 @@
   margin-bottom: 0.5rem;
   font-size: 1rem;
   font-weight: 700;
-  padding-left: 2%;
 }
 .example-card {
-  background-color: transparent;
-  border: transparent !important;
-  padding-left: 2%;
+  background-color: #f7f7f7;
+  border: 1px solid #ddd;
 }
 .example-card h5 {
   font-size: 1rem;
   font-weight: 700;
   margin-top: 0;
   margin-bottom: 0.5rem;
-  padding-left: 2%;
 }
-/* 'Learn more' button */
-.example-button{
-  background: #73f0fa;
-  color: #000;
-  font-weight: 800;
-  border: none;
-  border-radius: 4px;
-  box-shadow:
-    inset 0 -2px 0 rgba(0,0,0,.2),
-    0 6px 14px rgba(115,240,250,.4);
-  transition: background .2s ease, transform .05s ease-in-out;
-  padding-left: 2%;
-  padding: 0.5rem 1rem;
-}
-.example-button:hover,
-.example-button:focus{
-  background: #1fb7c3; /* darker cyan */
-  color: #fff;         /* better contrast */
-}
-.example-button:active{
-  transform: translateY(1px);
-  background: #148a93; /* darkest cyan */
-  box-shadow:
-    inset 0 -1px 0 rgba(0,0,0,.25),
-    0 4px 10px rgba(0,0,0,.25);
-}
-
-/* Back to top button */
-.to-top-button {
-  background: #73f0fa;
-  color: #000;
-  font-weight: 800;
-  border: none;
-  border-radius: 4px;
-  box-shadow:
-    inset 0 -2px 0 rgba(0,0,0,.2),
-    0 6px 14px rgba(115,240,250,.4);
-  transition: background .2s ease, transform .05s ease-in-out;
-  padding-left: 2%;
-  padding: 0.5rem 1rem;
-  position: fixed;
-  bottom: 2rem;
-  right: 2rem;
-  z-index: 1000;
-  display: inline-block;
+.example-link {
+  color: var(--cyan);
+  font-weight: 700;
   text-decoration: none;
 }
-
-.to-top-button:hover,
-.to-top-button:focus {
-  transform: translate(-2px, -2px);
-  background: #1fb7c3; /* darker cyan */
-  color: #fff;         /* better contrast */
-}
-
-.to-top-button:active {
-  transform: translateY(1px);
-  background: #148a93; /* darkest cyan */
-  box-shadow:
-    inset 0 -1px 0 rgba(0,0,0,.25),
-    0 4px 10px rgba(0,0,0,.25);
+.example-link:hover {
+  text-decoration: underline;
 }
 
 /* ======================== PROJECT HIGHLIGHTS ======================== */
-/* .project-highlights .section-title {
+.project-highlights .section-title {
   margin-bottom: 1rem;
 }
 .highlight-card {
@@ -187,4 +125,4 @@
 }
 .highlight-link:hover {
   text-decoration: underline;
-} */
+}
