@@ -46,7 +46,6 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
   width: var(--side-menu-width);
   height: 100vh;
   overflow-y: auto;
-  -webkit-overflow-scrolling: touch; /* smooth iOS scroll */
   z-index: 1040;
   border-right: 3px solid rgba(0, 0, 0, 0.4);
   background: #F7F7F7;
@@ -84,7 +83,7 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
   font: inherit; cursor: pointer; border-radius: 0;
 }
 .menu-toggle .chevron { transition: transform .2s ease; }
-.menu-toggle[aria-expanded="true"] .chevron { transform: rotate(180deg); }
+.has-submenu.open .menu-toggle .chevron { transform: rotate(180deg); }
 .menu-toggle:hover { color: #000; background: var(--sidebar-cyan); }
 .j-dropdown { padding-right: 5%; }
 
@@ -263,21 +262,4 @@ html { scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce) {
   * { scroll-behavior: auto !important; }
   .side-menu, .menu-backdrop, .to-top-button, .loading-overlay { transition: none !important; }
-}
-
-/* ======================== Optional Bootstrap dropdown helpers ======================== */
-.dropdown-toggle::after { display: none; }
-
-@media (max-width: 768px) {
-  .mobile-top-bar .dropdown-menu {
-    width: 100%;
-    box-shadow: none;
-  }
-}
-
-/* center utility (if ever needed) */
-.dropdown-menu-center {
-  left: 50% !important;
-  transform: translateX(-50%) !important;
-  right: auto !important;
 }

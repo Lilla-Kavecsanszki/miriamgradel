@@ -63,4 +63,4 @@ document.addEventListener('DOMContentLoaded', function () {
   if (backdrop) backdrop.addEventListener('click', closeMenu);
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && body.classList.contains('menu-open')) closeMenu();
-  });});
+  });

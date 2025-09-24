@@ -154,12 +154,10 @@
     </div>
     <div class="mobile-actions">
       <!-- Contact + Hamburger (same height) -->
-      <a class="mobile-contact topbar-btn"
-       href="{{ work_url }}#contact"
-       aria-label="{% trans 'Contact' %}">
-      <i class="fa-regular fa-envelope" aria-hidden="true"></i>
+      <button class="mobile-contact topbar-btn" type="button" aria-label="Contact">
+        <i class="fa-regular fa-envelope" aria-hidden="true"></i>
         <span>{% trans 'Contact' %}</span>
-      </a>
+      </button>
       <button class="menu-open topbar-btn" type="button" aria-label="Open menu" aria-expanded="false">
         <i class="fa-solid fa-bars" aria-hidden="true"></i>
       </button>

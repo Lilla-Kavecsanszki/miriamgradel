@@ -34,7 +34,7 @@
       <!-- Service anchor tiles -->
       {% if page.services %}
       <section class="svc-tiles mb-4">
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xxl-5 g-3">
+        <div class="row row-cols-2 row-cols-md-3 row-cols-xl-5 g-3">
           {% for service in page.services %}
             {% with service.value as svc %}
             <div class="col">
@@ -152,7 +152,6 @@
     {% endwith %}
   {% endfor %}
  
-  <!-- Back to top button -->
   <a href="#top" class="to-top-button" aria-label="Back to top">
     <span class="arrow" aria-hidden="true">↑</span>
     <span class="label">Back to top</span>

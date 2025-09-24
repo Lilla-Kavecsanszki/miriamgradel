@@ -63,4 +63,19 @@ document.addEventListener('DOMContentLoaded', function () {
   if (backdrop) backdrop.addEventListener('click', closeMenu);
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && body.classList.contains('menu-open')) closeMenu();
-  });});
+  });
+
+/* =================== Contact button (mobile) =================== */
+const contactBtn = document.querySelector('.mobile-contact');
+if (contactBtn) {
+  contactBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    const target = document.getElementById('contact');
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      window.location.hash = 'contact';
+    }
+  });
+}
+

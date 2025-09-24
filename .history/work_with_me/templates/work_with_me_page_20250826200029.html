@@ -29,7 +29,7 @@
       {% if page.bold_text %}<p class="bold_text">{{ page.bold_text|richtext }}</p>{% endif %}
 
       <!-- Form -->
-      <h3 id="contact" class="section-title mt-4">Let’s talk</span></h3>
+      <h3 class="section-title mt-4">Let’s talk</span></h3>
 
       <form action="{% pageurl page %}" method="post" novalidate>
         {% csrf_token %}

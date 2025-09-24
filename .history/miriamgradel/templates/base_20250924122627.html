@@ -71,7 +71,7 @@
 
       <nav class="main-menu">
         <ul class="menu-root">
-          <!-- Journalism dropdown (handled by miriamgradel.js) -->
+          <!-- Journalism dropdown (original toggle method) -->
           <li class="has-submenu">
             <button
               class="menu-toggle"
@@ -107,11 +107,13 @@
 
       <!-- Bottom: (optional) language + original social buttons -->
       <div class="menu-bottom">
-        {% comment %} <div class="lang-picker">
+        {#
+        <div class="lang-picker">
           <button class="lang-btn" type="button" aria-expanded="false">
             <span>En</span> <span class="chevron">▾</span>
           </button>
-        </div> {% endcomment %}
+        </div>
+        #}
 
         <div class="dot-row" role="group" aria-label="Social links">
           <a class="dot linkedin" href="https://www.linkedin.com/in/miriam-gradel/" target="_blank" rel="noopener" aria-label="LinkedIn">
@@ -154,12 +156,10 @@
     </div>
     <div class="mobile-actions">
       <!-- Contact + Hamburger (same height) -->
-      <a class="mobile-contact topbar-btn"
-       href="{{ work_url }}#contact"
-       aria-label="{% trans 'Contact' %}">
-      <i class="fa-regular fa-envelope" aria-hidden="true"></i>
+      <button class="mobile-contact topbar-btn" type="button" aria-label="Contact">
+        <i class="fa-regular fa-envelope" aria-hidden="true"></i>
         <span>{% trans 'Contact' %}</span>
-      </a>
+      </button>
       <button class="menu-open topbar-btn" type="button" aria-label="Open menu" aria-expanded="false">
         <i class="fa-solid fa-bars" aria-hidden="true"></i>
       </button>
@@ -221,7 +221,7 @@
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-  <!-- Global JS (handles submenu + drawer) -->
+  <!-- Global JS -->
   <script src="{% static 'js/miriamgradel.js' %}"></script>
 
   <!-- Loading overlay fade-out -->
@@ -233,6 +233,73 @@
         overlay.style.display = 'none';
       });
     });
+  </script>
+
+  <!-- Drawer open/close + a11y -->
+  <script>
+    (function () {
+      const body = document.body;
+      const sideMenu = document.getElementById('side-menu');
+      const openBtn = document.querySelector('.menu-open');
+      const closeBtn = document.querySelector('.menu-close');
+      const backdrop = document.querySelector('.menu-backdrop');
+
+      function openMenu() {
+        body.classList.add('menu-open');
+        sideMenu.setAttribute('aria-hidden', 'false');
+        if (openBtn) openBtn.setAttribute('aria-expanded', 'true');
+        backdrop.hidden = false;
+      }
+      function closeMenu() {
+        body.classList.remove('menu-open');
+        sideMenu.setAttribute('aria-hidden', 'true');
+        if (openBtn) openBtn.setAttribute('aria-expanded', 'false');
+        backdrop.hidden = true;
+      }
+      if (openBtn) openBtn.addEventListener('click', openMenu);
+      if (closeBtn) closeBtn.addEventListener('click', closeMenu);
+      if (backdrop) backdrop.addEventListener('click', closeMenu);
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && body.classList.contains('menu-open')) closeMenu();
+      });
+    })();
+  </script>
+
+  <!-- Original-style submenu toggle (no Bootstrap Collapse) -->
+  <script>
+    (function () {
+      // Start closed
+      document.querySelectorAll('.has-submenu').forEach(wrap => {
+        const btn = wrap.querySelector('.menu-toggle');
+        const submenu = wrap.querySelector('.submenu');
+        wrap.classList.remove('open');
+        if (submenu) submenu.hidden = true;
+        if (btn) btn.setAttribute('aria-expanded', 'false');
+      });
+
+      // Click to toggle
+      document.addEventListener('click', function (e) {
+        const btn = e.target.closest('.has-submenu > .menu-toggle');
+        if (!btn) return;
+        const wrap = btn.closest('.has-submenu');
+        const submenu = wrap.querySelector('.submenu');
+        if (!submenu) return;
+
+        const willOpen = submenu.hidden;
+        submenu.hidden = !willOpen;
+        wrap.classList.toggle('open', willOpen);
+        btn.setAttribute('aria-expanded', String(willOpen));
+      });
+
+      // Keyboard support
+      document.addEventListener('keydown', function (e) {
+        if (e.key !== 'Enter' && e.key !== ' ') return;
+        const btn = document.activeElement;
+        if (!btn || !btn.matches('.has-submenu > .menu-toggle')) return;
+        e.preventDefault();
+        btn.click();
+      });
+    })();
   </script>
 
   {% block extra_js %}{% endblock %}

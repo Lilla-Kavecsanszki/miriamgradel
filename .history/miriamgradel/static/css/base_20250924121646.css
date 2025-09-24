@@ -46,7 +46,6 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
   width: var(--side-menu-width);
   height: 100vh;
   overflow-y: auto;
-  -webkit-overflow-scrolling: touch; /* smooth iOS scroll */
   z-index: 1040;
   border-right: 3px solid rgba(0, 0, 0, 0.4);
   background: #F7F7F7;
@@ -265,9 +264,10 @@ html { scroll-behavior: smooth; }
   .side-menu, .menu-backdrop, .to-top-button, .loading-overlay { transition: none !important; }
 }
 
-/* ======================== Optional Bootstrap dropdown helpers ======================== */
+/* Hide Bootstrap caret on dropdown toggles */
 .dropdown-toggle::after { display: none; }
 
+/* Make the dropdown in the mobile top bar behave nicely on very small screens */
 @media (max-width: 768px) {
   .mobile-top-bar .dropdown-menu {
     width: 100%;
@@ -275,7 +275,7 @@ html { scroll-behavior: smooth; }
   }
 }
 
-/* center utility (if ever needed) */
+/* Optional: center a dropdown menu if you ever use .dropdown-menu-center */
 .dropdown-menu-center {
   left: 50% !important;
   transform: translateX(-50%) !important;
