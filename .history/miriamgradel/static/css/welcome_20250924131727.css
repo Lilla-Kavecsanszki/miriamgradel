@@ -1,0 +1,224 @@
+/* ================== FONTS ================== */
+@font-face {
+  font-family: 'Designer';
+  src: url('../fonts/DESIGNER.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* ================== WELCOME HERO ================== */
+/* Fallback to 100vh, then use modern viewport units to avoid iOS URL bar jump */
+.welcome-hero {
+  background: center/cover no-repeat var(--welcome-bg, #000);
+}
+
+.welcome-hero {
+  position: relative;
+  height: 100vh;
+  height: 100svh;
+  height: 100dvh;
+  width: 100%;
+  background: center/cover no-repeat var(--welcome-bg, #000);
+  display: flex;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.welcome-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100%;
+  width: 100%;
+}
+
+/* ================== ENTER BUTTON ================== */
+.enter-btn {
+  position: absolute;
+  bottom: max(2rem, env(safe-area-inset-bottom));
+  left: 50%;
+  transform: translateX(-50%);
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font-size: 2rem;
+  line-height: 1;
+  color: #73f0fa;
+  z-index: 10;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.enter-btn:hover,
+.enter-btn:focus {
+  transform: translateX(-50%) translateY(-4px);
+  opacity: 0.8;
+}
+
+/* Accessible outline only when keyboard-tabbing */
+.enter-btn:focus-visible {
+  outline: 2px solid #73f0fa;
+  outline-offset: 4px;
+}
+
+/* When fading out, also block interaction */
+.fade-out {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+/* ================== HERO SECTION ================== */
+.hero {
+  height: 100vh;
+  height: 100svh;
+  height: 100dvh;
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: stretch;
+  position: relative;
+}
+
+/* ================== HERO TEXT ================== */
+.hero-text {
+  font-family: 'Designer', sans-serif;
+  color: #73f0fa;
+  font-weight: bold;
+  padding: 1rem;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  text-shadow:
+    3px 3px 0 #000,
+    6px 6px 0 #000;
+}
+
+.hero-text .desktop-only {
+  font-size: clamp(5rem, 12vw, 13rem);
+  line-height: 0.85;
+  animation: fadeSlideUp 1.5s ease-out forwards;
+}
+
+.hero-text p { margin: 0; }
+
+/* hide mobile-only by default */
+.hero-text .mobile-only { display: none; }
+
+/* ================== MOBILE HERO TEXT ================== */
+@media (max-width: 576px) {
+  .hero-text {
+    padding: 0;
+    justify-content: space-between;
+    align-items: stretch;
+    text-align: center;
+  }
+
+  .hero-text .desktop-only { display: none; }
+
+  .hero-text .mobile-only {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    width: 100%;
+  }
+
+  .mobile-top,
+  .mobile-bottom {
+    font-size: clamp(2.5rem, 8vw, 4rem);
+    padding: 1rem;
+    width: 100%;
+    text-align: center;
+    line-height: 1.2;
+    opacity: 0;
+    animation: fadeSlideUp 1.5s ease-out forwards;
+  }
+
+  .mobile-top { animation-delay: 0.2s; }
+  .mobile-bottom { animation-delay: 0.5s; }
+}
+
+/* ================== ANIMATION ================== */
+@keyframes fadeSlideUp {
+  0% { opacity: 0; transform: translateY(50px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* ================== ACCESSIBILITY / BEHAVIOR ================== */
+@media (prefers-reduced-motion: reduce) {
+  .enter-btn { transition: none; }
+  .fade-out { transition: none; }
+  .hero-text .desktop-only,
+  .mobile-top,
+  .mobile-bottom { animation: none !important; opacity: 1; transform: none; }
+}
+
+/* Lock scroll on splash */
+html.template-welcome,
+body.template-welcome {
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Hide the mobile top bar on the welcome/splash */
+.template-welcome .mobile-top-bar { 
+  display: none !important; 
+}
+
+/* Remove the global mobile padding added for that top bar */
+.template-welcome main { 
+  padding-top: 0 !important; 
+}
+
+/* Safety: no stray gaps around the hero */
+.template-welcome .welcome-hero { 
+  margin: 0; 
+}
+
+/* ---- MOBILE HERO TEXT: pin top/bottom ---- */
+@media (max-width: 576px) {
+  /* make the text layer fill the viewport */
+  .hero-text { 
+    position: relative; 
+    padding: 0; 
+    text-align: center;
+  }
+
+  .hero-text .desktop-only { display: none; }
+
+  .hero-text .mobile-only {
+    position: absolute;
+    inset: 0;                           /* fill the hero */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;     /* push to top & bottom */
+    align-items: stretch;
+    /* keep clear of notches + leave space for the ▼ button */
+    padding-top: max(0px, env(safe-area-inset-top));
+    padding-bottom: calc(env(safe-area-inset-bottom) + 64px);
+    /* kill any side padding Bootstrap may add via the container */
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  /* text blocks themselves: no extra vertical padding */
+  .mobile-top,
+  .mobile-bottom {
+    margin: 0;
+    padding: 0;
+    font-size: clamp(3rem, 11vw, 5rem);
+    line-height: 0.9;
+    /* small horizontal breathing room; set to 0 if you want true edge-to-edge */
+    padding-inline: clamp(4px, 2vw, 12px);
+  }
+}
+
+/* remove container padding on welcome so text can hug the edges */
+.template-welcome .welcome-inner {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}

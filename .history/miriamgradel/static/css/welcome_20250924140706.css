@@ -1,0 +1,235 @@
+/* ================== FONTS ================== */
+@font-face {
+  font-family: 'Designer';
+  src: url('../fonts/DESIGNER.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* ================== WELCOME HERO ================== */
+.welcome-hero {
+  position: relative;
+  height: 100vh;
+  height: 100svh;     /* modern units avoid iOS URL bar jump */
+  height: 100dvh;
+  width: 100%;
+  background: center/cover no-repeat var(--welcome-bg, #000);
+  display: flex;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.welcome-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100%;
+  width: 100%;
+  padding-left: 0 !important;   /* kill Bootstrap container padding */
+  padding-right: 0 !important;
+}
+
+/* ================== ENTER BUTTON (visible except on phones) ================== */
+.enter-btn {
+  position: absolute;
+  bottom: max(2rem, env(safe-area-inset-bottom));
+  left: 50%;
+  transform: translateX(-50%);
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font-size: 2rem;
+  line-height: 1;
+  color: #73f0fa;
+  z-index: 10;
+  transition: transform .3s ease, opacity .3s ease;
+}
+.enter-btn:hover,
+.enter-btn:focus { transform: translateX(-50%) translateY(-4px); opacity: .8; }
+.enter-btn:focus-visible { outline: 2px solid #73f0fa; outline-offset: 4px; }
+
+/* Fade out on enter */
+.fade-out { opacity: 0; transition: opacity .3s ease; pointer-events: none; }
+
+/* ================== HERO TEXT (desktop) ================== */
+.hero-text {
+  font-family: 'Designer', sans-serif;
+  color: #73f0fa;
+  font-weight: bold;
+  padding: 1rem;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  text-shadow: 3px 3px 0 #000, 6px 6px 0 #000;
+}
+.hero-text .desktop-only {
+  font-size: clamp(5rem, 12vw, 13rem);
+  line-height: .85;
+  animation: fadeSlideUp 1.5s ease-out forwards;
+}
+.hero-text p { margin: 0; }
+.hero-text .mobile-only { display: none; }
+
+/* ================== MOBILE (pin to edges & hide arrow) ================== */
+@media (max-width: 576px) {
+  .hero-text {
+    position: relative !important;
+    padding: 0 !important;
+    text-align: center !important;
+    justify-content: initial !important;
+    align-items: stretch !important;
+  }
+
+  /* show mobile layer, hide desktop one */
+  .hero-text .desktop-only { display: none !important; }
+  .hero-text .mobile-only,
+  .hero-text .mobile-only.mobile-layout {
+    display: block !important;
+    position: absolute !important;
+    inset: 0 !important;            /* fill the hero */
+    z-index: 2;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* pin the two words to exact edges, respect notches */
+  .mobile-top,
+  .mobile-bottom {
+    position: absolute !important;
+    left: 0; right: 0;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: clamp(3.4rem, 12vw, 6rem);
+    line-height: .88;
+    padding-inline: clamp(2px, 2vw, 12px); /* set to 0 for true edge-to-edge */
+    opacity: 1 !important;                /* visible even if animations exist */
+    transform: none !important;
+    animation: none !important;
+  }
+  .mobile-top    { top:    max(0px, env(safe-area-inset-top)) !important; }
+  .mobile-bottom { bottom: max(0px, env(safe-area-inset-bottom)) !important; }
+
+  /* hide the cyan arrow on phones so it doesn't clash with bottom word */
+  .enter-btn { display: none !important; }
+}
+
+/* ================== ANIMATION ================== */
+@keyframes fadeSlideUp {
+  0% { opacity: 0; transform: translateY(50px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* ================== PAGE-SPECIFIC GLOBAL OVERRIDES ================== */
+.template-welcome .mobile-top-bar { display: none !important; } /* no mobile bar */
+.template-welcome main { padding-top: 0 !important; }           /* remove reserved space */
+.template-welcome .welcome-hero { margin: 0; }                  /* safety: no gaps */
+html.template-welcome,
+body.template-welcome { height: 100%; overflow: hidden; }       /* lock scroll on splash */
+
+/* ================== REDUCED MOTION ================== */
+@media (prefers-reduced-motion: reduce) {
+  .enter-btn { transition: none; }
+  .fade-out { transition: none; }
+  .hero-text .desktop-only,
+  .mobile-top, .mobile-bottom { animation: none !important; opacity: 1; transform: none; }
+}
+
+/* ===== FINAL MOBILE PIN FIX: position relative to the hero, not the text box ===== */
+@media (max-width: 576px) {
+  /* Make the hero the positioning context */
+  .template-welcome .welcome-hero { position: relative; }
+
+  /* Let the text box be non-positioned so children anchor to the hero */
+  .template-welcome .hero-text {
+    position: static !important;
+    padding: 0 !important;
+    text-align: center !important;
+    justify-content: initial !important;
+    align-items: stretch !important;
+  }
+
+  /* Show mobile layer, hide desktop one */
+  .template-welcome .hero-text .desktop-only { display: none !important; }
+  .template-welcome .hero-text .mobile-only,
+  .template-welcome .hero-text .mobile-only.mobile-layout {
+    display: block !important;
+    position: absolute !important;   /* now relative to .welcome-hero */
+    inset: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    z-index: 2;
+  }
+
+  /* Pin to exact top/bottom edges; respect notches */
+  .template-welcome .mobile-top,
+  .template-welcome .mobile-bottom {
+    position: absolute !important;
+    left: 0; right: 0;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: clamp(3.4rem, 12vw, 6rem);
+    line-height: .88;
+    padding-inline: clamp(2px, 2vw, 12px); /* set to 0 for true edge-to-edge */
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
+  .template-welcome .mobile-top    { top:    max(0px, env(safe-area-inset-top)) !important; }
+  .template-welcome .mobile-bottom { bottom: max(0px, env(safe-area-inset-bottom)) !important; }
+
+  /* Remove any Bootstrap side gutters that can create white margins */
+  .template-welcome .welcome-inner .row { --bs-gutter-x: 0 !important; }
+  .template-welcome .welcome-inner [class*="col-"] {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  /* Hide the cyan arrow on phones so it can't overlap the bottom word */
+  .template-welcome .enter-btn { display: none !important; }
+}
+
+/* Bigger mobile title */
+@media (max-width: 576px) {
+  .template-welcome .mobile-top,
+  .template-welcome .mobile-bottom {
+    /* was: clamp(3.4rem, 12vw, 6rem) */
+    font-size: clamp(4.25rem, 18vw, 8.5rem);
+    line-height: .84;                     /* a touch tighter so it fits */
+    padding-inline: clamp(0px, 1.25vw, 6px);  /* minimal side padding */
+  }
+}
+
+@media (max-width: 576px) and (min-height: 740px) {
+  .template-welcome .mobile-top,
+  .template-welcome .mobile-bottom {
+    font-size: clamp(4.75rem, 20vw, 9rem);
+    line-height: .82;
+  }
+}
+
+/* Make MIRIAM/GRADEL hug left & right edges on phones */
+@media (max-width: 576px) {
+  .template-welcome .mobile-top,
+  .template-welcome .mobile-bottom {
+    /* Width-driven sizing for 6 letters — tweak if your word changes length */
+    font-size: 22.8vw;           /* ~ perfect fit for 6 chars in this font */
+    line-height: .84;            /* a bit tighter */
+    letter-spacing: -0.02em;     /* pulls glyphs together for max width */
+    padding-inline: 0;           /* no side padding */
+    white-space: nowrap;         /* prevent wrapping */
+    text-align: center;          /* keep nicely centered while fitting width */
+  }
+}
+
+/* Optional: slightly different fit on very narrow/very wide phones */
+@media (max-width: 360px) {
+  .template-welcome .mobile-top,
+  .template-welcome .mobile-bottom { font-size: 23.6vw; }
+}
+@media (min-width: 420px) and (max-width: 576px) {
+  .template-welcome .mobile-top,
+  .template-welcome .mobile-bottom { font-size: 22.2vw; }
+}

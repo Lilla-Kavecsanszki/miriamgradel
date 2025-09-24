@@ -218,9 +218,8 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
 @media (min-width: 992px) { .mobile-top-bar { display: none !important; } }
 @media (max-width: 991.98px) { main { padding-top: 60px; } }
 
-.mobile-contact{
+mobile-contact{
   text-decoration: none;
-  color: inherit;
 }
 
 /* ======================== Footer ======================== */

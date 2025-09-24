@@ -220,7 +220,6 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
 
 .mobile-contact{
   text-decoration: none;
-  color: inherit;
 }
 
 /* ======================== Footer ======================== */

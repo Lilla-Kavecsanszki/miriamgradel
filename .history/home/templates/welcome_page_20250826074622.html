@@ -19,12 +19,10 @@
       <div class="row w-100">
         <div class="col-12 col-md-6 col-lg-4 d-flex align-items-center">
           <div class="hero-text">
-            <!-- Desktop big title from CMS -->
             <div class="desktop-only">
               {{ page.hero_text|safe }}
             </div>
-
-            <!-- Mobile layout: pin top/bottom -->
+            {# Optional mobile override #}
             <div class="mobile-only mobile-layout">
               <div class="mobile-top">MIRIAM</div>
               <div class="mobile-bottom">GRADEL</div>
@@ -32,9 +30,7 @@
           </div>
         </div>
       </div>
-
-      <!-- Cyan arrow (hidden on small screens via welcome.css) -->
-      <button id="enter-button" class="enter-btn" type="button" aria-label="{% trans 'Enter site' %}">▼</button>
+      <button class="enter-btn" type="button" aria-label="{% trans 'Enter site' %}">▼</button>
     </div>
   </section>
 {% endblock %}
@@ -42,27 +38,23 @@
 {% block extra_js %}
 <script>
 (function(){
-  // Destination URL comes from the chosen page in Wagtail
+  // Destination URL comes from the chosen page in Wagtail admin
   const ENTER_URL = "{% if page.destination_page %}{% pageurl page.destination_page %}{% else %}/{% endif %}";
 
   function goHome() {
     const hero = document.querySelector('.welcome-hero');
     if (hero) {
       hero.classList.add('fade-out');
-      setTimeout(() => { window.location.href = ENTER_URL; }, 300); // match CSS transition
+      setTimeout(() => window.location.href = ENTER_URL, 300); // match CSS transition
     } else {
       window.location.href = ENTER_URL;
     }
   }
 
   document.addEventListener('DOMContentLoaded', function(){
-    const btn  = document.querySelector('.enter-btn');
-    const hero = document.querySelector('.welcome-hero');
-
-    // Arrow click (desktop/tablet)
+    const btn = document.querySelector('.enter-btn');
     if (btn) btn.addEventListener('click', goHome);
 
-    // One-shot guard so multiple events don't double-fire
     let fired = false;
     function oneShot() { if (fired) return; fired = true; goHome(); }
 
@@ -72,12 +64,6 @@
     window.addEventListener('keydown', function(e){
       if (['Enter','ArrowDown','PageDown',' '].includes(e.key)) oneShot();
     });
-
-    // Make whole hero tappable/clickable on phones
-    if (hero) {
-      hero.addEventListener('click', oneShot, { passive: true });
-      hero.addEventListener('touchstart', oneShot, { passive: true });
-    }
   });
 })();
 </script>
