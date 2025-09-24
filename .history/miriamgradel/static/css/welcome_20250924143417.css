@@ -16,7 +16,7 @@
 
   /* scroll-like exit motion */
   transform: translateY(0);
-  transition: transform .25s cubic-bezier(.22,.61,.36,1), opacity .25s ease;
+  transition: transform .45s cubic-bezier(.22,.61,.36,1), opacity .30s ease;
   will-change: transform, opacity;
 }
 .welcome-inner{

@@ -16,7 +16,7 @@
 
   /* scroll-like exit motion */
   transform: translateY(0);
-  transition: transform .25s cubic-bezier(.22,.61,.36,1), opacity .25s ease;
+  transition: transform .45s cubic-bezier(.22,.61,.36,1), opacity .45s ease;
   will-change: transform, opacity;
 }
 .welcome-inner{
@@ -59,7 +59,7 @@
 
 /* ================== PINNED LAYOUT (PHONES & TABLETS) ================== */
 /* Up to 1024px: use the pinned mobile layout and hide the desktop text */
-@media (max-width: 1200px){
+@media (max-width: 1024px){
   .template-welcome .welcome-hero{ position: relative; }
 
   /* Make the hero the positioning context; text wrapper non-positioned */
