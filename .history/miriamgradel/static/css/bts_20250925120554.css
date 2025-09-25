@@ -1,0 +1,134 @@
+/* =========================
+   Behind The Scenes — Index
+   ========================= */
+
+/* Headings on the BTS index page */
+.template-bts-onepage h1,
+.template-bts-onepage h2 {
+  font-family: 'Designer', sans-serif;
+  letter-spacing: .4px;
+}
+
+/* Section separators when stacking multiple groups */
+.bts-section + .bts-section {
+  border-top: 1px solid #eee;
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+}
+
+/* =================
+   Card base styles
+   ================= */
+.bts-card {
+  background: #fff;
+  border: 0;
+  border-radius: 0;                   /* square corners */
+  overflow: hidden;
+  box-shadow: 0 10px 20px rgba(0,0,0,.12);
+  transition: transform .15s ease, box-shadow .15s ease;
+  height: 100%;
+}
+
+.bts-card:hover {
+  transform: translateY(-2px);
+  /* your cyan left accent + soft lift */
+  box-shadow: 10px 0 0 #73f0fa, 0 14px 26px rgba(0,0,0,.18);
+}
+
+/* Thumbnail area uses Bootstrap's ratio container */
+.bts-card .thumb {
+  position: relative;                 /* host badge */
+  display: block;
+  line-height: 0;
+  filter: none !important;            /* nuke any old filters */
+}
+
+/* Let Bootstrap's .ratio control height; just cover the box */
+.bts-card .thumb img,
+.ratio > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 0;
+  filter: none !important;
+}
+
+/* Remove any legacy overlays/gradients */
+.bts-card .thumb::before,
+.bts-card .thumb::after {
+  content: none !important;
+  background: none !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+/* Category badge */
+.bts-badge {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  padding: 6px 10px;
+  background: #73f0fa;
+  color: #000;
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: .78rem;
+  line-height: 1;
+  white-space: nowrap;
+  z-index: 2;
+  box-shadow: none;
+}
+
+/* Cyan panel */
+.bts-body {
+  background: #73f0fa;
+  padding: 18px 20px 20px;
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+/* Title inside the cyan panel */
+.bts-title {
+  margin: 0;
+  padding: 0 0 1.5rem 0;              /* space below title */
+  font-family: 'TT Chocolates', sans-serif;
+  font-weight: 700;
+  font-size: 1.35rem;
+  line-height: 1.2;
+  letter-spacing: .2px;
+  color: #000;
+}
+
+.bts-title a {
+  color: #000;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.bts-title a:hover {
+  text-decoration: underline;
+}
+
+/* Summary copy */
+.bts-text {
+  margin: 0;
+  padding-top: 1rem;
+  font-family: 'TT Chocolates', sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #000;
+  opacity: .95;
+}
+
+/* Optional CSS grid helper (not required when using Bootstrap grid) */
+.bts-grid {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+/* Respect reduced motion users */
+@media (prefers-reduced-motion: reduce) {
+  .bts-card { transition: none; }
+}

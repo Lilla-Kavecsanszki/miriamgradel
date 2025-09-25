@@ -1,0 +1,35 @@
+{% load wagtailimages_tags i18n %}
+
+<section class="bts-section mb-5">
+  {% if items %}
+    <div class="row g-4 row-cols-1 row-cols-sm-2 row-cols-lg-3">
+      {% for bts in items %}
+        <div class="col">
+          <article class="bts-card h-100">
+            <a class="thumb d-block ratio ratio-16x9" href="{{ bts.url }}" aria-label="{{ bts.card_title|default:bts.title }}">
+              <span class="bts-badge">{{ bts.get_category_display|default:_("BTS") }}</span>
+              {% if bts.teaser_image %}
+                {% image bts.teaser_image fill-800x450
+                    loading="lazy"
+                    class="w-100 h-100"
+                    srcset="fill-480x270 480w, fill-800x450 800w, fill-1200x675 1200w"
+                    sizes="(min-width:1200px) 33vw, (min-width:576px) 50vw, 100vw"
+                    alt=bts.card_title|default:bts.title %}
+              {% endif %}
+            </a>
+            <div class="bts-body">
+              <h4 class="bts-title">
+                <a href="{{ bts.url }}">{{ bts.card_title|default:bts.title }}</a>
+              </h4>
+              {% if bts.card_summary %}
+                <p class="bts-text">{{ bts.card_summary }}</p>
+              {% endif %}
+            </div>
+          </article>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="text-muted mb-0">{% trans "No BTS items yet." %}</p>
+  {% endif %}
+</section>

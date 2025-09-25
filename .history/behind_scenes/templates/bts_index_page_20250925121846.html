@@ -13,12 +13,12 @@
   <div class="row">
     <div class="col-12">
 
-      <!-- Hero ribbon (same as Written/Communication) -->
+      <!-- Hero ribbon -->
       <div class="written-hero mb-3">
         <span class="cap" aria-hidden="true"></span>
-        <div class="block-title" style="color:#73f0fa">
+        <h1 class="block-title m-0" style="color:#73f0fa">
           {{ page.intro_heading|default:page.title }}
-        </div>
+        </h1>
       </div>
 
       {% if page.intro_body %}
@@ -27,7 +27,20 @@
         </div>
       {% endif %}
 
-      {% include "_teaser_group.html" with items=all_teasers %}
+      {# Prefer queryset from get_context; fallback to live children #}
+      {% if all_teasers %}
+        {% include "behind_scenes/bts/_teaser_group.html" with items=all_teasers only %}
+      {% else %}
+        {% with items=page.get_children.live.specific %}
+          {% if items %}
+            <!-- Fallback used: {{ items|length }} items -->
+            {% include "behind_scenes/bts/_teaser_group.html" with items=items only %}
+          {% else %}
+            <p class="text-muted mb-0">{% trans "No BTS items yet." %}</p>
+          {% endif %}
+        {% endwith %}
+      {% endif %}
+
     </div>
   </div>
 </div>

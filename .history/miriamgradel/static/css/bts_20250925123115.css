@@ -37,7 +37,7 @@
 .bts-card .thumb img {
   display: block;
   width: 100%;
-  height: auto;
+  height: 220px;
   object-fit: cover;
   border-radius: 0;
   filter: none !important;              /* no blurs */

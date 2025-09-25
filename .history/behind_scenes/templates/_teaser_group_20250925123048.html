@@ -1,19 +1,22 @@
 {% load wagtailimages_tags i18n %}
 
+{% load wagtailimages_tags %}
+
 <section class="bts-section mb-5">
   {% if items %}
     <div class="row g-4 row-cols-1 row-cols-sm-2 row-cols-lg-3">
       {% for bts in items %}
         <div class="col">
+          {# you can inline the card (as you did) OR include "teaser_card.html" #}
           <article class="bts-card">
-            <a class="thumb d-block" href="{{ bts.url }}" aria-label="{{ bts.card_title|default:bts.title }}">
-              <span class="bts-badge">{{ bts.get_category_display|default:_("BTS") }}</span>
+            <a class="thumb" href="{{ bts.url }}">
+              <span class="bts-badge">{{ bts.get_category_display }}</span>
               {% if bts.teaser_image %}
-                {% image bts.teaser_image fill-800x450 class="img-fluid w-100" loading="lazy" alt=bts.card_title|default:bts.title %}
+                {% image bts.teaser_image fill-800x450 alt=bts.card_title %}
               {% endif %}
             </a>
             <div class="bts-body">
-              <h4 class="bts-title"><a href="{{ bts.url }}">{{ bts.card_title|default:bts.title }}</a></h4>
+              <h4 class="bts-title"><a href="{{ bts.url }}">{{ bts.card_title }}</a></h4>
               {% if bts.card_summary %}<p class="bts-text">{{ bts.card_summary }}</p>{% endif %}
             </div>
           </article>
@@ -21,6 +24,6 @@
       {% endfor %}
     </div>
   {% else %}
-    <p class="text-muted mb-0">{% trans "No BTS items yet." %}</p>
+    <p class="text-muted mb-0">No BTS items yet.</p>
   {% endif %}
 </section>
