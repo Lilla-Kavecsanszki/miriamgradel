@@ -67,20 +67,6 @@
   :root{ --st-cut: 20px; }
 }
 
-/* subtle underline on hover for links; steady text for mentions */
-.written-list .w-title--link { text-decoration: none; }
-.written-list .w-title--link:hover { text-decoration: underline; }
-
-/* optional: slightly dim non-link titles */
-.written-list .w-title--nolink { opacity: .95; }
-
-/* optional: tiny external indicator for links that open new tab */
-.written-list .w-title--link[target="_blank"]::after {
-  content: "↗";
-  margin-left: .25rem;
-  font-size: .9em;
-}
-
 /* ============== ARTICLE LISTS (Written index) ============== */
 .written-item{ font-size:small; }
 .written-item a{ color:#000; text-decoration:none; font-weight:bold; }

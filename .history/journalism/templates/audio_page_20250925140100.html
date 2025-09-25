@@ -172,7 +172,7 @@
                 <article class="bts-card bts-card--sidebar">
                   <a href="{{ bts.url }}" class="thumb">
                     {% if bts.teaser_image %}
-                      {% image bts.teaser_image fill-600x338 format-webp class="w-100" loading="lazy" decoding="async" alt=bts.card_title %}
+                      {% image bts.teaser_image fill-600x338 class="w-100" loading="lazy" decoding="async" alt=bts.card_title %}
                     {% endif %}
                     <span class="bts-title">{{ bts.card_title }}</span>
                   </a>
