@@ -10,22 +10,15 @@ from pathlib import Path
 # -------------------------------------------------------------------
 # Paths
 # -------------------------------------------------------------------
-BASE_DIR = Path(__file__).resolve().parents[2]    # repo root
-PROJECT_DIR = Path(__file__).resolve().parents[1] # settings/.. (project package)
+BASE_DIR = Path(__file__).resolve().parents[2]   # repo root
+PROJECT_DIR = Path(__file__).resolve().parents[1]  # settings/.. (project package)
 
 # -------------------------------------------------------------------
 # Core flags / env
 # -------------------------------------------------------------------
 DEBUG = os.getenv("DEBUG", "True").lower() in {"1", "true", "yes"}
 SECRET_KEY = os.getenv("SECRET_KEY", "change-me-in-prod")
-ALLOWED_HOSTS = [h.strip() for h in os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",") if h.strip()]
-
-# Optional WhiteNoise availability check (so dev won't crash if not installed yet)
-try:
-    import whitenoise  # noqa: F401
-    _HAS_WHITENOISE = True
-except Exception:
-    _HAS_WHITENOISE = False
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
 
 # -------------------------------------------------------------------
 # Applications
@@ -42,7 +35,7 @@ INSTALLED_APPS = [
     # Wagtail
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",
-    "wagtail.contrib.sitemaps",   # sitemap support
+    "wagtail.contrib.sitemaps",       # <— sitemap support
     "wagtail.sites",
     "wagtail.users",
     "wagtail.snippets",
@@ -60,7 +53,6 @@ INSTALLED_APPS = [
 
     # Django
     "django.contrib.admin",
-    "django.contrib.sitemaps",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -74,12 +66,8 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
 
-    # Use WhiteNoise if available (gzip/brotli + cache busting for static)
-    *(
-        ["whitenoise.middleware.WhiteNoiseMiddleware"]
-        if _HAS_WHITENOISE
-        else []
-    ),
+    # Static files (gzip + brotli + cache busting)
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 
     "django.contrib.sessions.middleware.SessionMiddleware",
 
@@ -105,7 +93,7 @@ WSGI_APPLICATION = "miriamgradel.wsgi.application"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [str(PROJECT_DIR / "templates")],
+        "DIRS": [ str(PROJECT_DIR / "templates") ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -145,27 +133,34 @@ AUTH_PASSWORD_VALIDATORS = [
 # -------------------------------------------------------------------
 # Internationalization / i18n (Wagtail-ready)
 # -------------------------------------------------------------------
-LANGUAGE_CODE = "en"  # plain "en" works best with Wagtail locales
+# Use plain "en" for Wagtail’s locale system (instead of "en-us")
+LANGUAGE_CODE = "en"
 TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
 
+# Languages we’ll support; DA + JA will appear once you add translations
 LANGUAGES = [
     ("en", "English"),
     ("da", "Dansk"),
     ("ja", "日本語"),
 ]
 
+# Optional: restrict the languages shown in Wagtail admin chooser
 WAGTAIL_CONTENT_LANGUAGES = LANGUAGES
+
+# Enable Wagtail’s i18n features
 WAGTAIL_I18N_ENABLED = True
-LOCALE_PATHS = [str(BASE_DIR / "locale")]
+
+# Path for django.po / .mo files
+LOCALE_PATHS = [ str(BASE_DIR / "locale") ]
 
 # -------------------------------------------------------------------
 # Static & Media files
 # -------------------------------------------------------------------
 STATIC_URL = "/static/"
-STATIC_ROOT = str(BASE_DIR / "static")               # collectstatic target
-STATICFILES_DIRS = [str(PROJECT_DIR / "static")]     # project assets
+STATIC_ROOT = str(BASE_DIR / "static")                 # collectstatic target
+STATICFILES_DIRS = [ str(PROJECT_DIR / "static") ]     # your app assets
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = str(BASE_DIR / "media")
@@ -177,21 +172,22 @@ STATICFILES_FINDERS = [
 
 # Django 5 STORAGES API
 STORAGES = {
-    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    # Use WhiteNoise’s compressed manifest storage in prod
     "staticfiles": {
-        "BACKEND": (
-            "whitenoise.storage.CompressedManifestStaticFilesStorage"
-            if (not DEBUG and _HAS_WHITENOISE)
-            else "django.contrib.staticfiles.storage.StaticFilesStorage"
-        )
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"
+        if not DEBUG
+        else "django.contrib.staticfiles.storage.StaticFilesStorage",
     },
 }
 
-# WhiteNoise: cache headers for fingerprinted files (used if installed)
+# WhiteNoise: cache headers for fingerprinted files
 WHITENOISE_MAX_AGE = 60 * 60 * 24 * 365  # 1 year
 
 # -------------------------------------------------------------------
-# Caching (simple local cache; upgrade to Redis in prod if needed)
+# Caching (simple local cache; can swap for Redis in prod)
 # -------------------------------------------------------------------
 CACHES = {
     "default": {
@@ -205,21 +201,26 @@ CACHES = {
 # -------------------------------------------------------------------
 WAGTAIL_SITE_NAME = "miriamgradel"
 
+# Search (DB backend is fine to start)
 WAGTAILSEARCH_BACKENDS = {
     "default": {"BACKEND": "wagtail.search.backends.database"},
 }
 
+# Use env in production (used in absolute URLs in emails, etc.)
 WAGTAILADMIN_BASE_URL = os.getenv("WAGTAILADMIN_BASE_URL", "http://localhost:8000")
 
-WAGTAILDOCS_EXTENSIONS = ["csv", "docx", "key", "odt", "pdf", "pptx", "rtf", "txt", "xlsx", "zip"]
+# Allowed document extensions
+WAGTAILDOCS_EXTENSIONS = [
+    "csv", "docx", "key", "odt", "pdf", "pptx", "rtf", "txt", "xlsx", "zip"
+]
 
+# Editor form field limit
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 10_000
 
 # -------------------------------------------------------------------
-# Security (tighten automatically when DEBUG=False)
+# Security (safe defaults; tighten when DEBUG=False)
 # -------------------------------------------------------------------
-if os.getenv("BEHIND_PROXY"):
-    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https") if os.getenv("BEHIND_PROXY") else None
 
 if not DEBUG:
     SESSION_COOKIE_SECURE = True
@@ -231,4 +232,4 @@ if not DEBUG:
     SECURE_SSL_REDIRECT = os.getenv("SECURE_SSL_REDIRECT", "True").lower() in {"1", "true", "yes"}
     X_FRAME_OPTIONS = "DENY"
     CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "").split()  # space-separated
-    SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
+    REFERRER_POLICY = "strict-origin-when-cross-origin"

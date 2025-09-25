@@ -4,8 +4,7 @@ from django.contrib import admin
 from django.urls import include, path
 from django.conf.urls.i18n import i18n_patterns
 
-# ✅ Import Wagtail's SITEMAP VIEW with an alias
-from wagtail.contrib.sitemaps.views import sitemap as wagtail_sitemap
+from wagtail.contrib.sitemaps.views import sitemap
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail import urls as wagtail_urls
 from wagtail.documents import urls as wagtaildocs_urls
@@ -14,23 +13,24 @@ from search import views as search_views
 from .views import robots_txt
 
 urlpatterns = [
-    # Admins (not localized)
+    # Django & Wagtail admin (not localized)
     path("django-admin/", admin.site.urls),
     path("admin/", include(wagtailadmin_urls)),
+
+    # Wagtail documents app (not localized)
     path("documents/", include(wagtaildocs_urls)),
 
     # Project routes
     path("search/", search_views.search, name="search"),
 
-    # i18n helper (optional)
-    path("django-i18n/", include("django.conf.urls.i18n")),
-
-    # SEO endpoints
-    path("sitemap.xml", wagtail_sitemap),   # ✅ Wagtail auto sitemap
-    path("robots.txt", robots_txt),
+    # i18n helpers & SEO endpoints
+    path("django-i18n/", include("django.conf.urls.i18n")),  # POST to change language (optional UI)                       # auto-generated sitemap
+    path("sitemap.xml", wagtail_sitemap),
+    path("robots.txt", robots_txt),                          # env-aware robots
 ]
 
-# Wagtail page serving (i18n-aware). Default lang has no /en/.
+# Wagtail page serving inside i18n-aware patterns.
+# Default language has no /en/ prefix; translated pages will be /da/... and /ja/...
 urlpatterns += i18n_patterns(
     path("", include(wagtail_urls)),
     prefix_default_language=False,
@@ -39,5 +39,6 @@ urlpatterns += i18n_patterns(
 # Static / media in development only
 if settings.DEBUG:
     from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+
     urlpatterns += staticfiles_urlpatterns()
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

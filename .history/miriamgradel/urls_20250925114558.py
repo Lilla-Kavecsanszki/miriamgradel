@@ -4,8 +4,7 @@ from django.contrib import admin
 from django.urls import include, path
 from django.conf.urls.i18n import i18n_patterns
 
-# ✅ Import Wagtail's SITEMAP VIEW with an alias
-from wagtail.contrib.sitemaps.views import sitemap as wagtail_sitemap
+from wagtail.contrib.sitemaps.views import sitemap as wagtail_sitemap  # <-- alias matches usage
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail import urls as wagtail_urls
 from wagtail.documents import urls as wagtaildocs_urls
@@ -14,19 +13,21 @@ from search import views as search_views
 from .views import robots_txt
 
 urlpatterns = [
-    # Admins (not localized)
+    # Django & Wagtail admin (not localized)
     path("django-admin/", admin.site.urls),
     path("admin/", include(wagtailadmin_urls)),
+
+    # Wagtail documents app (not localized)
     path("documents/", include(wagtaildocs_urls)),
 
     # Project routes
     path("search/", search_views.search, name="search"),
 
-    # i18n helper (optional)
+    # i18n helper (optional, keep if you might POST to change language)
     path("django-i18n/", include("django.conf.urls.i18n")),
 
     # SEO endpoints
-    path("sitemap.xml", wagtail_sitemap),   # ✅ Wagtail auto sitemap
+    path("", include("wagtail.contrib.sitemaps.urls")),
     path("robots.txt", robots_txt),
 ]
 

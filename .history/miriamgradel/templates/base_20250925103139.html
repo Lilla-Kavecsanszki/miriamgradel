@@ -24,7 +24,7 @@
     <link rel="canonical" href="{{ page.full_url|default:request.build_absolute_uri }}">
   {% endif %}
 
-  {# hreflang alternates (current + other translations) #}
+  {# hreflang alternates (include current page + other translations) #}
   {% if page and page.id %}
     <link rel="alternate" hreflang="{{ page.locale.language_code }}" href="{{ page.full_url|default:page.url }}">
     {% for t in page.get_translations %}
@@ -87,15 +87,6 @@
 <body class="{% block body_class %}{% endblock %}">
   {% wagtailuserbar %}
 
-  {# Resolve URLs ONCE, outside cached blocks (used by sidebar, footer, mobile top bar) #}
-  {% slugurl 'home' as home_url %}
-  {% slugurl 'written-page' as written_url %}
-  {% slugurl 'audio-page' as audio_url %}
-  {% slugurl 'video-page' as videos_url %}
-  {% slugurl 'communication' as communication_url %}
-  {% slugurl 'behind-the-scenes' as bts_url %}
-  {% slugurl 'work-with-me' as work_url %}
-
   <!-- Loading Overlay -->
   <div id="loading-overlay" class="loading-overlay d-grid place-items-center">
     <img src="{% static 'images/logo.png' %}" alt="Logo" loading="lazy" class="loading-logo img-fluid">
@@ -114,10 +105,19 @@
     <div class="menu-container d-flex flex-column text-center">
 
       {# Text logo → Home #}
+      {% slugurl 'home' as home_url %}
       <a class="menu-logo text-decoration-none" href="{{ home_url|default:'/' }}">
         <span class="logo-line">Miriam</span><br>
         <span class="logo-line">Gradel</span>
       </a>
+
+      {# Pre-resolve URLs #}
+      {% slugurl 'written-page' as written_url %}
+      {% slugurl 'audio-page' as audio_url %}
+      {% slugurl 'video-page' as videos_url %}
+      {% slugurl 'communication' as communication_url %}
+      {% slugurl 'behind-the-scenes' as bts_url %}
+      {% slugurl 'work-with-me' as work_url %}
 
       <nav class="main-menu mt-3">
         <ul class="menu-root list-unstyled m-0 p-2">
@@ -157,7 +157,7 @@
 
       <!-- Bottom: language (auto) + socials -->
       <div class="menu-bottom mt-auto">
-        {# Language switcher: current page + other translations (only locales that exist) #}
+        {# Language switcher: current page + other translations; only locales that exist #}
         {% if page and page.id %}
           <ul class="list-inline small mb-3">
             <li class="list-inline-item">
@@ -242,6 +242,13 @@
   {# =================== FOOTER =================== #}
   <footer class="site-footer">
     <div class="footer-inner">
+      {% slugurl 'written-page' as written_url %}
+      {% slugurl 'audio-page' as audio_url %}
+      {% slugurl 'video-page' as videos_url %}
+      {% slugurl 'communication' as communication_url %}
+      {% slugurl 'behind-the-scenes' as bts_url %}
+      {% slugurl 'work-with-me' as work_url %}
+
       <div class="footer-col footer-meta">
         <p class="m-0">{% blocktrans %}The website is the property of <strong>Miriam Gradel</strong>.{% endblocktrans %}</p>
         <div class="footer-squares" aria-hidden="true">
@@ -271,8 +278,7 @@
           {% if page and page.last_published_at %}
             {% blocktrans with y=page.last_published_at|date:"Y" %}Updated in {{ y }}.{% endblocktrans %}
           {% else %}
-            {% now "Y" as current_year %}
-            {% blocktrans with y=current_year %}Updated in {{ y }}.{% endblocktrans %}
+            {% blocktrans with y=now|"Y" %}Updated in {{ y }}.{% endblocktrans %}
           {% endif %}
           {% trans "No cookies are used." %}
         </p>
@@ -288,16 +294,15 @@
 
   <script src="{% static 'js/miriamgradel.js' %}" defer></script>
 
-  <!-- Loading overlay fade-out (ensures clicks always pass through) -->
+  <!-- Loading overlay fade-out -->
   <script>
     window.addEventListener('load', function () {
       const overlay = document.getElementById('loading-overlay');
       if (!overlay) return;
-      overlay.style.pointerEvents = 'none';
       overlay.style.opacity = 0;
-      const hide = () => { overlay.style.display = 'none'; };
-      overlay.addEventListener('transitionend', hide, { once: true });
-      setTimeout(hide, 1600);
+      overlay.addEventListener('transitionend', function () {
+        overlay.style.display = 'none';
+      });
     });
   </script>
 

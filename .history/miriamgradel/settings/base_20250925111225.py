@@ -60,7 +60,6 @@ INSTALLED_APPS = [
 
     # Django
     "django.contrib.admin",
-    "django.contrib.sitemaps",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -231,4 +230,4 @@ if not DEBUG:
     SECURE_SSL_REDIRECT = os.getenv("SECURE_SSL_REDIRECT", "True").lower() in {"1", "true", "yes"}
     X_FRAME_OPTIONS = "DENY"
     CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "").split()  # space-separated
-    SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
+    REFERRER_POLICY = "strict-origin-when-cross-origin"

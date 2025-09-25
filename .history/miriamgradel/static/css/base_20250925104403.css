@@ -94,12 +94,6 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
 .menu-toggle:hover { color: #000; background: var(--sidebar-cyan); }
 .j-dropdown { padding-right: 5%; }
 
-/* keep "Journalism" normal weight */
-.main-menu .menu-toggle,
-.main-menu .menu-toggle .j-dropdown { 
-  font-weight: 400; 
-}
-
 /* Submenu */
 .submenu { margin: 2px 0 2px; background: lightgray; border-radius: 4px; }
 .submenu[hidden] { display: none !important; }

@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     # Wagtail
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",
+    "django.contrib.sitemaps"
     "wagtail.contrib.sitemaps",   # sitemap support
     "wagtail.sites",
     "wagtail.users",
@@ -60,7 +61,6 @@ INSTALLED_APPS = [
 
     # Django
     "django.contrib.admin",
-    "django.contrib.sitemaps",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
