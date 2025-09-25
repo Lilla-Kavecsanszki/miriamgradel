@@ -54,7 +54,7 @@
   padding-left: 15px;
 }
 @media (min-width: 992px){
-  .contact_aside{ position: sticky; top: 24px; padding-bottom: 2%;}
+  .contact_aside{ position: sticky; top: 24px; padding bottom: 2%;}
 }
 
 /* === Portrait: flush left, solid cyan fin on the RIGHT === */

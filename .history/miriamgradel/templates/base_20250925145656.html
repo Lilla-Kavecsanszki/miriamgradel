@@ -37,10 +37,9 @@
   {% endif %}
 
   {# --- Performance hints --- #}
+  <!-- Your CDN helpers -->
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-  <link rel="preload" as="font" href="{% static 'fonts/TT Chocolates Trial Regular.otf' %}" type="font/otf" crossorigin>
-  <link rel="preload" as="font" href="{% static 'fonts/TT Chocolates Trial DemiBold.otf' %}" type="font/otf" crossorigin>
   <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
   <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
 
@@ -55,6 +54,12 @@
   <link rel="dns-prefetch" href="//www.youtube-nocookie.com">
   <link rel="dns-prefetch" href="//player.vimeo.com">
   <link rel="dns-prefetch" href="//i.vimeocdn.com">
+
+  <!-- Fonts: prefer WOFF2 if available; keep OTF only if you must -->
+  {# Example WOFF2 (recommended). Replace paths if you export WOFF2 files. #}
+  <link rel="preload" as="font" href="{% static 'fonts/tt-chocolates-regular.woff2' %}" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="{% static 'fonts/tt-chocolates-demibold.woff2' %}" type="font/woff2" crossorigin>
+  {# If you only have OTF for now, leave your current two OTF preloads, but consider converting to WOFF2. #}
 
   {# --- Social / Rich cards --- #}
   {% if page %}
@@ -75,6 +80,8 @@
         crossorigin="anonymous">
   <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkfF9ZqXQWl0A0R3sV0YgG1hHq0Gd9k9e1Yw8e7hVv7Yy8QK8Qx+oz1wA=="
+        crossorigin="anonymous"
         referrerpolicy="no-referrer">
   <link rel="icon" href="{% static 'favicon.ico' %}">
   <link rel="stylesheet" href="{% static 'css/base.css' %}">
@@ -97,6 +104,7 @@
   }
   </script>
 </head>
+
 
 <body class="{% block body_class %}{% endblock %}">
   {% wagtailuserbar %}

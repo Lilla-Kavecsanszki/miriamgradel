@@ -1,10 +1,10 @@
 {% extends "base.html" %}
-{% load static wagtailcore_tags wagtailimages_tags wme_qr %}
+{% load static wagtailcore_tags wagtailimages_tags %}
+{% load wme_qr %}
+
 
 {% block body_class %}template-work-with-me landing{% endblock %}
-{% block extra_css %}
-  <link rel="stylesheet" href="{% static 'css/work_with_me.css' %}">
-{% endblock extra_css %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/work_with_me.css' %}">{% endblock extra_css %}
 
 {% block content %}
 <section class="container my-5">
