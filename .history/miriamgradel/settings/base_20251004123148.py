@@ -132,17 +132,6 @@ DATABASES = {
     }
 }
 
-# --- Heroku/Postgres via DATABASE_URL ---
-if db_url := os.getenv("DATABASE_URL"):
-    # Requires dj-database-url in requirements
-    import dj_database_url
-    DATABASES["default"] = dj_database_url.config(
-        default=db_url,
-        conn_max_age=600,
-        ssl_require=True,
-    )
-
-
 # -------------------------------------------------------------------
 # Password validation
 # -------------------------------------------------------------------

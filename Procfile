@@ -1,0 +1,1 @@
+web: gunicorn miriamgradel.wsgi --log-file -
