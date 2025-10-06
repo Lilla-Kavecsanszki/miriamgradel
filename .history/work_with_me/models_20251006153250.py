@@ -13,7 +13,6 @@ class WorkWithMeFormField(AbstractFormField):
         on_delete=models.CASCADE,
         related_name="form_fields",
     )
-    
 
 class WorkWithMePage(AbstractEmailForm):
     template = "work_with_me_page.html"

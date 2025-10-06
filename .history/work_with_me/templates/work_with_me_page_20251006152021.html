@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static wagtailcore_tags wagtailimages_tags i18n bts_tags form_extras wme_qr %}
+{% load static wagtailcore_tags wagtailimages_tags form_extras wme_qr %}
 
 {% block body_class %}template-work-with-me{% endblock %}
 
@@ -34,6 +34,7 @@
       <form action="{% pageurl page %}" method="post" novalidate>
         {% csrf_token %}
 
+        {# Show any form-wide errors #}
         {% if form.non_field_errors %}
           <div class="alert alert-danger" role="alert">
             {{ form.non_field_errors }}
@@ -51,7 +52,7 @@
           {% endfor %}
         </div>
 
-        <!-- Remaining non-textarea fields -->
+        <!-- Remaining non-textarea fields full width (e.g., Subject) -->
         {% for field in form.visible_fields %}
           {% if forloop.counter0 >= 3 and field.field.widget.input_type != 'textarea' %}
             <div class="mt-3">
@@ -60,7 +61,7 @@
           {% endif %}
         {% endfor %}
 
-        <!-- Message textarea -->
+        <!-- Message textarea (if present) -->
         {% for field in form.visible_fields %}
           {% if field.field.widget.input_type == 'textarea' %}
             <div class="mt-3">
@@ -76,7 +77,7 @@
         </div>
       </form>
 
-    </div><!-- /col-8 -->
+    </div>
 
     <!-- ================= RIGHT: sidebar (col-4) ================= -->
     <div class="col-12 col-lg-4 mt-4 mt-lg-0">
@@ -125,7 +126,6 @@
         </ul>
 
       </aside>
-    </div><!-- /col-4 -->
-  </div><!-- /row -->
-</div><!-- /container-fluid -->
+    </div>
+
 {% endblock %}

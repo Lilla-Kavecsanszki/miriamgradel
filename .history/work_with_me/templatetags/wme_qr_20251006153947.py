@@ -18,11 +18,10 @@ def wme_qr_svg(data, scale=10, border=2):
     """
     if not data or segno is None:
         return ""
-    q = segno.make(str(data), error="m")  # medium EC
-    # Do NOT pass xmldecl here; segno.svg_inline() sets it itself.
-    try:
-        svg = q.svg_inline(scale=int(scale or 10), border=int(border or 2))
-    except TypeError:
-        # Fallback for unusual segno builds
-        svg = q.svg_inline(scale=int(scale or 10))
-    return mark_safe(svg)
+    q = segno.make(str(data), error="m")  # medium EC is plenty
+    svg = q.svg_inline(
+        scale=int(scale or 10),
+        border=int(border or 2),
+        xmldecl=False,             # avoid XML header inside HTML
+    )
+    return mark_safe(svg)          # makes {{ qr_svg|safe }} optional
