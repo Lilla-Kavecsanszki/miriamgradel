@@ -97,13 +97,9 @@
             <div class="wme-qr mb-2">{{ qr_svg|safe }}</div>
             {% if page.vcard_file %}
               <p class="mb-3">
-                {% if page.vcard_file %}
-                  <a class="btn btn-brand-outline btn-sm wme-vcard"
-                    href="{{ page.vcard_file.url }}?fl_attachment={{ page.slug|default:'contact'|slugify }}.vcf"
-                    download>
-                    Download vCard (.vcf)
-                  </a>
-                {% endif %}
+                <a class="btn btn-brand-outline btn-sm wme-vcard" href="{{ page.vcard_file.url }}?fl_attachment={{ page.slug|default:'contact' }}.vcf" download>
+                  Download vCard (.vcf)
+                </a>
               </p>
             {% endif %}
           {% else %}
