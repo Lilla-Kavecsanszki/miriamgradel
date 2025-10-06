@@ -1,13 +1,13 @@
 import os
 
 from django.db import models
-from django.utils.text import slugify  # ok to keep even if not used here
-from django.urls import reverse
+from django.utils.text import slugify
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.fields import RichTextField
 from wagtail.models import Page, Site
 from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
 from modelcluster.fields import ParentalKey
+from django.urls import reverse
 
 # -------------------------------------------------------------------
 # Cloudinary RAW storage for .vcf (robust with fallback)
@@ -131,7 +131,10 @@ class WorkWithMePage(AbstractEmailForm):
             return path_or_url
 
     def _read_vcard_text(self) -> str:
-        """Optional helper to read small .vcf content (not required for inline view)."""
+        """
+        Read a small vCard from the uploaded file so we could inline if desired.
+        Returns "" if not a valid vCard.
+        """
         f = self.vcard_file
         if not f:
             return ""
@@ -146,27 +149,26 @@ class WorkWithMePage(AbstractEmailForm):
 
     def get_qr_payload(self) -> str:
         """
-        Point the QR to our inline vCard endpoint.
-        That endpoint will either stream the uploaded .vcf
-        or synthesize one from page fields.
+        Always force a vCard download when scanning the QR.
+        (Uses Cloudinary RAW: ?fl_attachment=<filename>.vcf)
         """
+        if self.vcard_file:
+            url = self._absolute_url(self.vcard_file.url)
+            sep = "&" if "?" in url else "?"
+            fname = f"{slugify(self.slug or 'contact')}.vcf"
+            return f"{url}{sep}fl_attachment={fname}"
+
+        # Fallbacks if no vCard uploaded
+        if self.qr_data:
+            return self.qr_data.strip()
+        if self.contact_email:
+            return f"mailto:{self.contact_email}"
+        if self.phone_number:
+            return f"tel:{self.phone_number.replace(' ', '')}"
         try:
-            rel = reverse("work_with_me:vcard_inline", args=[self.id])
-            return self._absolute_url(rel)
+            return self.get_full_url()
         except Exception:
-            # Fallbacks (shouldn't happen if URL is included)
-            if self.vcard_file:
-                return self._absolute_url(self.vcard_file.url)
-            if self.qr_data:
-                return self.qr_data.strip()
-            if self.contact_email:
-                return f"mailto:{self.contact_email}"
-            if self.phone_number:
-                return f"tel:{self.phone_number.replace(' ', '')}"
-            try:
-                return self.get_full_url()
-            except Exception:
-                return self.url or "/"
+            return self.url or "/"
 
     def save(self, *args, **kwargs):
         creating = self.pk is None

@@ -1,4 +1,3 @@
-# work_with_me/templatetags/wme_qr.py
 from django import template
 from django.utils.safestring import mark_safe
 
@@ -10,17 +9,18 @@ except Exception:
 register = template.Library()
 
 @register.simple_tag
-def wme_qr_svg(data, scale=10, border=None, title=None):
+def wme_qr_svg(data, scale=10, border=None):
     """
     Return inline SVG for a QR code (requires 'segno').
     Usage:
-      {% wme_qr_svg page.get_qr_payload page.qr_scale 4 "Add contact" as qr_svg %}
+      {% wme_qr_svg page.get_qr_payload page.qr_scale as qr_svg %}
       {{ qr_svg|safe }}
     """
     if not data or segno is None:
         return ""
     q = segno.make(data, error="h")
 
+    # default quiet zone
     border = 4 if border is None else int(border)
 
     svg = q.svg_inline(
@@ -28,6 +28,5 @@ def wme_qr_svg(data, scale=10, border=None, title=None):
         border=border,
         dark="black",
         light="white",
-        title=title or "Scan QR",
     )
     return mark_safe(svg)

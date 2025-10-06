@@ -96,15 +96,9 @@
         <h3 class="section-title qr-title"><span>Scan the QR code or see below</span></h3>
 
         <div class="mb-3 wme-center">
-          {# Generate QR SVG with a quiet zone (border = 4) #}
-          {% wme_qr_svg page.get_qr_payload page.qr_scale 4 "Add contact" as qr_svg %}
-
+          {% wme_qr_svg page.get_qr_payload page.qr_scale as qr_svg %}
           {% if qr_svg %}
-            {# Clickable on desktop; scanners will just read the QR #}
-            <a href="{{ page.get_qr_payload }}" class="d-inline-block" aria-label="Open contact card">
-              <div class="wme-qr mb-2">{{ qr_svg|safe }}</div>
-            </a>
-
+            <div class="wme-qr mb-2">{{ qr_svg|safe }}</div>
             {% if page.vcard_file %}
               <p class="mb-3">
                 <a class="btn btn-brand-outline btn-sm wme-vcard"
