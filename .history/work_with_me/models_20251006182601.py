@@ -1,3 +1,4 @@
+# work_with_me/models.py
 import os
 
 from django.db import models
@@ -20,8 +21,7 @@ VCARD_FILEFIELD_KW = dict(
 
 def _cloudinary_present() -> bool:
     return bool(
-        os.getenv("CLOUDINARY_URL")
-        or (
+        os.getenv("CLOUDINARY_URL") or (
             os.getenv("CLOUDINARY_CLOUD_NAME")
             and os.getenv("CLOUDINARY_API_KEY")
             and os.getenv("CLOUDINARY_API_SECRET")
@@ -131,14 +131,15 @@ class WorkWithMePage(AbstractEmailForm):
 
     def _read_vcard_text(self) -> str:
         """
-        Read a small vCard from the uploaded file so we could inline if desired.
-        Returns "" if not a valid vCard.
+        Read a small vCard from the uploaded file so we can encode it directly in the QR
+        (best UX: many phones show 'Add to Contacts'). Returns "" if not a valid vCard.
         """
         f = self.vcard_file
         if not f:
             return ""
         try:
             f.open("rb")
+            # Read first few KB – typical .vcf is tiny
             data = f.read(4096)
             f.close()
             text = data.decode("utf-8", errors="ignore").strip()
@@ -147,27 +148,28 @@ class WorkWithMePage(AbstractEmailForm):
             return ""
 
     def get_qr_payload(self) -> str:
-        """
-        Always force a vCard download when scanning the QR.
-        (Uses Cloudinary RAW: ?fl_attachment=<filename>.vcf)
-        """
-        if self.vcard_file:
-            url = self._absolute_url(self.vcard_file.url)
-            sep = "&" if "?" in url else "?"
-            fname = f"{slugify(self.slug or 'contact')}.vcf"
-            return f"{url}{sep}fl_attachment={fname}"
+    """
+    Always force a vCard download when scanning the QR.
+    (Uses Cloudinary RAW: ?fl_attachment=<filename>.vcf)
+    """
+    if self.vcard_file:
+        url = self._absolute_url(self.vcard_file.url)
+        sep = "&" if "?" in url else "?"
+        fname = f"{slugify(self.slug or 'contact')}.vcf"
+        return f"{url}{sep}fl_attachment={fname}"
 
-        # Fallbacks if no vCard uploaded
-        if self.qr_data:
-            return self.qr_data.strip()
-        if self.contact_email:
-            return f"mailto:{self.contact_email}"
-        if self.phone_number:
-            return f"tel:{self.phone_number.replace(' ', '')}"
-        try:
-            return self.get_full_url()
-        except Exception:
-            return self.url or "/"
+    # Fallbacks if no vCard uploaded
+    if self.qr_data:
+        return self.qr_data.strip()
+    if self.contact_email:
+        return f"mailto:{self.contact_email}"
+    if self.phone_number:
+        return f"tel:{self.phone_number.replace(' ', '')}"
+    try:
+        return self.get_full_url()
+    except Exception:
+        return self.url or "/"
+
 
     def save(self, *args, **kwargs):
         creating = self.pk is None
