@@ -47,14 +47,6 @@ class ServiceBlock(blocks.StructBlock):
     image = ImageChooserBlock(required=True, help_text="Header image for this service")
     title = blocks.CharBlock(required=True, max_length=100, help_text="Service name")
     description = blocks.TextBlock(required=True, help_text="Short description")
-    
-    # where the card should go when clicked
-    link_page = blocks.PageChooserBlock(required=False, help_text="Internal page to open")
-    link_url = blocks.URLBlock(required=False, help_text="External URL (used only if no internal page)")
-    anchor = blocks.CharBlock(
-        required=False,
-        help_text="Optional section ID on the target page (without #)."
-    )
 
     class Meta:
         icon = "cog"

@@ -48,7 +48,7 @@ class ServiceBlock(blocks.StructBlock):
     title = blocks.CharBlock(required=True, max_length=100, help_text="Service name")
     description = blocks.TextBlock(required=True, help_text="Short description")
     
-    # where the card should go when clicked
+    # NEW: where the card should go when clicked
     link_page = blocks.PageChooserBlock(required=False, help_text="Internal page to open")
     link_url = blocks.URLBlock(required=False, help_text="External URL (used only if no internal page)")
     anchor = blocks.CharBlock(
