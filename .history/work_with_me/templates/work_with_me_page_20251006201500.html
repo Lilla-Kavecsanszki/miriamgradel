@@ -93,41 +93,33 @@
         {% endif %}
 
         {# QR SECTION #}
-        <h3 class="section-title qr-title"><span>{% trans "Scan the QR code or see below" %}</span></h3>
+        <h3 class="section-title qr-title"><span>Scan the QR code or see below</span></h3>
 
         <div class="mb-3 wme-center">
+          {# Generate QR SVG with a quiet zone (border = 4) #}
           {% wme_qr_svg page.get_qr_payload page.qr_scale as qr_svg %}
-          {% if qr_svg %}
-            {# Clickable QR — scanners read the URL; desktop users can click #}
-            <a class="wme-qr mb-2 d-inline-block"
-              href="{{ page.get_qr_payload }}"
-              aria-label="{% trans 'Open contact card' %}">
+          <div class="wme-qr mb-2">
+            <a href="{{ page.get_qr_payload }}" aria-label="Download contact card">
               {{ qr_svg|safe }}
-              <span class="visually-hidden">{% trans "Open contact card" %}</span>
+            </a>
+          </div>
+          {% if qr_svg %}
+            {# Clickable on desktop; scanners will just read the QR #}
+            <a href="{{ page.get_qr_payload }}" class="d-inline-block" aria-label="Open contact card">
+              <div class="wme-qr mb-2">{{ qr_svg|safe }}</div>
             </a>
 
-            <p class="mb-3">
-              {% if page.vcard_file %}
-                {# Direct Cloudinary download (forces attachment) #}
+            {% if page.vcard_file %}
+              <p class="mb-3">
                 <a class="btn btn-brand-outline btn-sm wme-vcard"
                   href="{{ page.vcard_file.url }}?fl_attachment={{ page.slug|default:'contact'|slugify }}.vcf"
                   download>
-                  {% trans "Download vCard (.vcf)" %}
+                  Download vCard (.vcf)
                 </a>
-              {% else %}
-                {# Fallback: same inline endpoint but force download via ?download=1 #}
-                <a class="btn btn-brand-outline btn-sm wme-vcard"
-                  href="{% url 'work_with_me:vcard_inline' page.id %}?download=1">
-                  {% trans "Download vCard (.vcf)" %}
-                </a>
-              {% endif %}
-            </p>
-
-            <noscript>
-              <p><a href="{{ page.get_qr_payload }}">{% trans "Open contact card" %}</a></p>
-            </noscript>
+              </p>
+            {% endif %}
           {% else %}
-            <p class="text-muted small mb-2">{% trans "QR code not available." %}</p>
+            <p class="text-muted small mb-2">QR code not available.</p>
           {% endif %}
         </div>
         {# CONTACT DETAILS #}

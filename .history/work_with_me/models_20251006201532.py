@@ -1,6 +1,7 @@
 import os
 
 from django.db import models
+from django.utils.text import slugify  # ok to keep even if not used here
 from django.urls import reverse
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.fields import RichTextField
@@ -8,8 +9,9 @@ from wagtail.models import Page, Site
 from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
 from modelcluster.fields import ParentalKey
 
-
-# ---------------- Cloudinary RAW storage (optional) ----------------
+# -------------------------------------------------------------------
+# Cloudinary RAW storage for .vcf (robust with fallback)
+# -------------------------------------------------------------------
 VCARD_FILEFIELD_KW = dict(
     upload_to="vcards/",
     blank=True,
@@ -43,8 +45,9 @@ if _cloudinary_present():
 if VCardRawStorage:
     VCARD_FILEFIELD_KW["storage"] = VCardRawStorage()
 
-
-# ---------------- Form field ----------------
+# -------------------------------------------------------------------
+# Form field
+# -------------------------------------------------------------------
 class WorkWithMeFormField(AbstractFormField):
     page = ParentalKey(
         "work_with_me.WorkWithMePage",
@@ -52,8 +55,9 @@ class WorkWithMeFormField(AbstractFormField):
         related_name="form_fields",
     )
 
-
-# ---------------- Page ----------------
+# -------------------------------------------------------------------
+# Page
+# -------------------------------------------------------------------
 class WorkWithMePage(AbstractEmailForm):
     template = "work_with_me_page.html"
     landing_page_template = "work_with_me_page_landing.html"
@@ -81,9 +85,11 @@ class WorkWithMePage(AbstractEmailForm):
         blank=True,
         help_text="Raw QR payload (URL / mailto: / tel: / vCard text). Leave blank to auto-generate.",
     )
-    qr_scale = models.PositiveSmallIntegerField(default=10, help_text="Size scale for the QR SVG")
+    qr_scale = models.PositiveSmallIntegerField(
+        default=10, help_text="Size scale for the QR SVG"
+    )
 
-    # Optional vCard file (served via Cloudinary RAW when available)
+    # vCard file (served via Cloudinary RAW when available)
     vcard_file = models.FileField(**VCARD_FILEFIELD_KW)
 
     content_panels = Page.content_panels + [
@@ -108,33 +114,47 @@ class WorkWithMePage(AbstractEmailForm):
         ),
     ]
 
-    # ---------------- Helpers ----------------
+    # ----------------------
+    # Helpers
+    # ----------------------
     def _absolute_url(self, path_or_url: str) -> str:
-        """Ensure an absolute URL for QR targets (force https)."""
+        """Ensure an absolute URL. Cloudinary returns absolute URLs; local media may be relative."""
         if not path_or_url:
             return ""
         if path_or_url.startswith(("http://", "https://")):
             return path_or_url
         try:
             site = Site.objects.get(is_default_site=True)
-            host = site.hostname
-            port = site.port
-            scheme = "https"
-            port_part = "" if port in (80, 443, None) else f":{port}"
-            return f"{scheme}://{host}{port_part}{path_or_url}"
+            root = (site.root_url or "").rstrip("/")
+            return f"{root}{path_or_url}"
         except Exception:
             return path_or_url
 
+    def _read_vcard_text(self) -> str:
+        """Optional helper to read small .vcf content (not required for inline view)."""
+        f = self.vcard_file
+        if not f:
+            return ""
+        try:
+            f.open("rb")
+            data = f.read(4096)
+            f.close()
+            text = data.decode("utf-8", errors="ignore").strip()
+            return text if "BEGIN:VCARD" in text and "END:VCARD" in text else ""
+        except Exception:
+            return ""
+
     def get_qr_payload(self) -> str:
         """
-        Point the QR at our inline vCard endpoint.
-        That endpoint streams the uploaded .vcf or synthesizes one.
+        Point the QR to our inline vCard endpoint.
+        That endpoint will either stream the uploaded .vcf
+        or synthesize one from page fields.
         """
         try:
             rel = reverse("work_with_me:vcard_inline", args=[self.id])
             return self._absolute_url(rel)
         except Exception:
-            # Fallbacks (should rarely be used)
+            # Fallbacks (shouldn't happen if URL is included)
             if self.vcard_file:
                 return self._absolute_url(self.vcard_file.url)
             if self.qr_data:
@@ -152,7 +172,7 @@ class WorkWithMePage(AbstractEmailForm):
         creating = self.pk is None
         super().save(*args, **kwargs)
 
-        # Seed default form fields on first create
+        # Seed sensible default form fields on first create
         if creating and not self.form_fields.exists():
             WorkWithMeFormField.objects.create(
                 page=self, label="Your name", field_type="singleline", required=True
@@ -166,3 +186,27 @@ class WorkWithMePage(AbstractEmailForm):
             WorkWithMeFormField.objects.create(
                 page=self, label="Message", field_type="multiline", required=True
             )
+
+
+from django.urls import reverse
+from wagtail.models import Site
+
+def _absolute_url(self, path_or_url: str) -> str:
+    if not path_or_url:
+        return ""
+    if path_or_url.startswith(("http://", "https://")):
+        return path_or_url
+    try:
+        site = Site.objects.get(is_default_site=True)
+        host = site.hostname
+        port = site.port
+        scheme = "https"             # we’ll force https for QR targets
+        port_part = "" if port in (80, 443) else f":{port}"
+        return f"{scheme}://{host}{port_part}{path_or_url}"
+    except Exception:
+        return path_or_url
+
+def get_qr_payload(self) -> str:
+    rel = reverse("work_with_me:vcard_inline", args=[self.id])
+    return self._absolute_url(rel)
+    return resp
