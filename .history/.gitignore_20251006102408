@@ -25,4 +25,4 @@ staticfiles/
 # Env files
 .env.local
 
-/staticfiles/
+/static/
