@@ -92,10 +92,12 @@
         <h3 class="section-title qr-title"><span>Scan the QR code or see below</span></h3>
 
         <div class="mb-3 wme-center">
+          {# SVG with good defaults: scale=page.qr_scale or 8, border(quiet zone)=4 #}
           {% wme_qr_svg page.get_qr_payload page.qr_scale|default:8 4 as qr_svg %}
           {% if qr_svg %}
             <div class="wme-qr mb-2">{{ qr_svg|safe }}</div>
           {% else %}
+            {# Fallback: PNG data URI for maximum phone compatibility #}
             {% wme_qr_png_data_uri page.get_qr_payload 8 4 as qr_png %}
             {% if qr_png %}
               <img class="wme-qr mb-2" src="{{ qr_png }}" alt="QR code" width="220" height="220">

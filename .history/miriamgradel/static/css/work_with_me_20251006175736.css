@@ -90,16 +90,6 @@
   margin: 0 auto;                       /* keep svg centered */
 }
 
-/* QR image itself */
-.wme-qr svg,
-.wme-qr img{
-  display:block;
-  max-width:220px;  /* tweak size */
-  height:auto;
-  margin:0 auto;
-  image-rendering: pixelated;
-}
-
 @media (max-width: 576px){
   .wme-qr svg{ max-width: 150px; }
 }

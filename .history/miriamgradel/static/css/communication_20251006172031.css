@@ -230,4 +230,6 @@ html { scroll-behavior: smooth; }
   }
 }
 
-
+/* QR code container (for contact details) */
+.wme-qr svg { display:block; max-width: 220px; height:auto; }
+.wme-qr svg { image-rendering: pixelated; }   /* keeps modules crisp on some browsers */

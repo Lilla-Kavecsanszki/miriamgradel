@@ -1,8 +1,6 @@
-# work_with_me/models.py
 import os
 
 from django.db import models
-from django.utils.text import slugify
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.fields import RichTextField
 from wagtail.models import Page, Site
@@ -53,6 +51,7 @@ class WorkWithMeFormField(AbstractFormField):
         on_delete=models.CASCADE,
         related_name="form_fields",
     )
+
 
 # -------------------------------------------------------------------
 # Page
@@ -117,7 +116,10 @@ class WorkWithMePage(AbstractEmailForm):
     # Helpers
     # ----------------------
     def _absolute_url(self, path_or_url: str) -> str:
-        """Ensure an absolute URL. Cloudinary returns absolute URLs; local media may be relative."""
+        """
+        Ensure an absolute URL. Cloudinary returns absolute URLs;
+        local media may be relative (e.g. /media/...).
+        """
         if not path_or_url:
             return ""
         if path_or_url.startswith(("http://", "https://")):
@@ -129,39 +131,16 @@ class WorkWithMePage(AbstractEmailForm):
         except Exception:
             return path_or_url
 
-    def _read_vcard_text(self) -> str:
-        """
-        Read a small vCard from the uploaded file so we can encode it directly in the QR
-        (best UX: many phones show 'Add to Contacts'). Returns "" if not a valid vCard.
-        """
-        f = self.vcard_file
-        if not f:
-            return ""
-        try:
-            f.open("rb")
-            # Read first few KB – typical .vcf is tiny
-            data = f.read(4096)
-            f.close()
-            text = data.decode("utf-8", errors="ignore").strip()
-            return text if "BEGIN:VCARD" in text and "END:VCARD" in text else ""
-        except Exception:
-            return ""
-
     def get_qr_payload(self) -> str:
         """
-        Prefer inline vCard text (instant 'Add to Contacts').
-        Fallback to forced-download URL; then qr_data/mailto/tel/page URL.
+        Choose the most useful payload for the QR:
+        1) vCard file URL (best)
+        2) Manually-entered qr_data
+        3) mailto: / tel:
+        4) Page URL
         """
         if self.vcard_file:
-            vtxt = self._read_vcard_text()
-            # Keep QR size reasonable: ~2k chars max
-            if vtxt and len(vtxt) <= 1800:
-                return vtxt
-
-            url = self._absolute_url(self.vcard_file.url)
-            sep = "&" if "?" in url else "?"
-            fname = f"{slugify(self.slug or 'contact')}.vcf"
-            return f"{url}{sep}fl_attachment={fname}"
+            return self._absolute_url(self.vcard_file.url)
 
         if self.qr_data:
             return self.qr_data.strip()
