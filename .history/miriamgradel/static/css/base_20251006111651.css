@@ -299,7 +299,8 @@ html { scroll-behavior: smooth; }
   right: auto !important;
 }
 
-/* Force the mobile close button to be transparent not cyan (wins over any hovers) */
+
+/* Force the mobile close button to be transparent (wins over any hovers) */
 .side-menu .menu-close,
 .side-menu .menu-close:hover,
 .side-menu .menu-close:focus {
