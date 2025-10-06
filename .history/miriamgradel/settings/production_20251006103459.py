@@ -9,3 +9,5 @@ STORAGES["staticfiles"] = {
 
 if "whitenoise.middleware.WhiteNoiseMiddleware" not in MIDDLEWARE:
     MIDDLEWARE.insert(1, "whitenoise.middleware.WhiteNoiseMiddleware")
+
+
