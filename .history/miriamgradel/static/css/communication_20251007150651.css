@@ -7,16 +7,13 @@
    SERVICE INDEX — editorial links (Option A)
    ======================== */
 
-.svc-index { 
-  margin-block: .5rem 1.25rem;
-  margin-top: 6%;
-}
+.svc-index { margin-block: .5rem 1.25rem; }
 
 /* Grid + typography */
 .svc-links{
   margin:0; padding:0;
   list-style:none;
-  /* font-family: 'Designer', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; */
+  font-family: 'Designer', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
   font-size: clamp(1.1rem, 2.2vw, 1.4rem);  /* bigger, headline-y */
   font-weight: 800;
   display:grid;

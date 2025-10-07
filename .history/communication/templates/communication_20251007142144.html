@@ -35,23 +35,25 @@
 
       <!-- Service anchor tiles -->
       {% if page.services %}
-      <section class="svc-index mb-4">
-        <ul class="svc-links list-unstyled" role="list">
-          {% for service in page.services %}
-            {% with svc=service.value %}
-            {% with anchor_id=svc.slug|default:svc.title|slugify %}
-              <li>
-                <a class="svc-link"
-                  href="#{{ anchor_id }}"
-                  aria-label="{% blocktrans with t=svc.title %}Jump to {{ t }}{% endblocktrans %}">
-                  <span class="svc-title">{{ svc.title }}</span>
-                </a>
-              </li>
-            {% endwith %}
-            {% endwith %}
-          {% endfor %}
-        </ul>
-      </section>
+        <section class="svc-tiles mb-2">
+          <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xxl-5 g-3">
+            {% for service in page.services %}
+              {% with svc=service.value %}
+              {% with anchor_id=svc.slug|default:svc.title|slugify %}
+                <div class="col">
+                  <a class="card tile border-0 h-100 text-decoration-none"
+                     href="#{{ anchor_id }}"
+                     aria-label="{% blocktrans with t=svc.title %}Jump to {{ t }}{% endblocktrans %}">
+                    <div class="card-body d-flex flex-column justify-content-center align-items-center p-3 p-md-4">
+                      <h4 class="h6 fw-bold mb-0 tile-title">{{ svc.title }}</h4>
+                    </div>
+                  </a>
+                </div>
+              {% endwith %}
+              {% endwith %}
+            {% endfor %}
+          </div>
+        </section>
       {% endif %}
 
     </div><!-- /col-8 -->
@@ -97,7 +99,7 @@
         <div class="row">
           <div class="col-12">
             <section id="{{ anchor_id }}"
-                     class="svc-section mb-1{% if forloop.counter|divisibleby:2 %} svc-section--alt{% endif %}">
+                     class="svc-section mb-5{% if forloop.counter|divisibleby:2 %} svc-section--alt{% endif %}">
               <h3 class="section-title">
                 <span class="band">{{ svc.title }}</span>
               </h3>

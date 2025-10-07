@@ -4,55 +4,41 @@
 }
 
 /* ========================
-   SERVICE INDEX — editorial links (Option A)
+   SERVICE INDEX — editorial links (replacing tiles)
    ======================== */
 
-.svc-index { 
-  margin-block: .5rem 1.25rem;
-  margin-top: 6%;
-}
+.svc-index { margin-block: .5rem 1.25rem; }
 
-/* Grid + typography */
+/* Responsive multi-column list */
 .svc-links{
   margin:0; padding:0;
-  list-style:none;
-  /* font-family: 'Designer', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; */
-  font-size: clamp(1.1rem, 2.2vw, 1.4rem);  /* bigger, headline-y */
-  font-weight: 800;
   display:grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: .5rem 1.5rem;
+  gap: .35rem 1.25rem;
 }
-
 .svc-links li{ list-style:none; }
 
-/* Link row: pseudo-arrow + title in a neat grid */
+/* Link row with subtle cyan shadow (no box) */
 .svc-link{
   position:relative;
-  display:grid;
-  grid-template-columns: auto 1fr;  /* pseudo arrow + text */
-  align-items: baseline;
-  column-gap: .35rem;
-  padding: .4rem .2rem .5rem;
+  display:flex; align-items:center; justify-content:space-between;
+  gap:.75rem;
+  padding:.35rem .15rem .45rem;
   text-decoration:none;
   color:#000;
+  font-weight:800;
   line-height:1.2;
+  filter: drop-shadow(0 6px 14px rgba(31,183,195,.18)); /* cyan shadow */
+  transition: filter .16s ease, transform .12s ease;
 }
+.svc-link:hover{ filter: drop-shadow(0 10px 24px rgba(31,183,195,.26)); }
+.svc-link:active{ transform: translateY(0); }
 
-/* Cyan glow on the letters (journalist flair) */
-.svc-title{
-  font: inherit;                       /* inherit family/size/weight */
-  letter-spacing: .005em;
-  text-shadow:
-    0 2px 12px rgba(31,183,195,.35),   /* soft cyan plume */
-    0 0 1px rgba(31,183,195,.55);      /* crisp cyan edge */
-}
-
-/* Underline reveal (editorial rule) */
+/* Underline reveal */
 .svc-link::after{
   content:"";
-  position:absolute; left:0; right:0; bottom:.05rem;
-  height:2px; background:#1fb7c3;
+  position:absolute; left:0; right:1.8em; bottom:0.08rem;
+  height:2px; background:#73f0fa;            /* darker cyan */
   transform: scaleX(0);
   transform-origin:left;
   transition: transform .16s ease;
@@ -60,37 +46,22 @@
 .svc-link:hover::after,
 .svc-link:focus-visible::after{ transform: scaleX(1); }
 
-/* Hover-only arrow (no extra HTML needed) */
-.svc-link::before{
-  content:"→";
-  opacity: 0;
-  transform: translateX(-6px);
-  transition: transform .16s ease, opacity .16s ease;
-  text-shadow:
-    0 2px 12px rgba(31,183,195,.35),
-    0 0 1px rgba(31,183,195,.55);
-}
-.svc-link:hover::before,
-.svc-link:focus-visible::before{
-  opacity: 1;
-  transform: translateX(0);
+/* Arrow motion */
+.svc-arrow{ transition: transform .16s ease; }
+.svc-link:hover .svc-arrow,
+.svc-link:focus-visible .svc-arrow{ transform: translateX(2px); }
+
+/* Title sizing */
+.svc-title{
+  display:block;
+  font-size: clamp(1rem, 1.5vw, 1.1rem);
+  max-width: 30ch;
 }
 
-/* Accessibility: clear keyboard focus */
+/* High-contrast focus ring */
 .svc-link:focus-visible{
   outline: 2px solid #000;
   outline-offset: 2px;
-}
-
-/* Small screens: gently scale down */
-@media (max-width: 420px){
-  .svc-links{ font-size: clamp(1.05rem, 4.8vw, 1.25rem); }
-}
-
-/* Reduced motion */
-@media (prefers-reduced-motion: reduce){
-  .svc-link::before,
-  .svc-link::after{ transition: none; }
 }
 
 /* ========================

@@ -7,10 +7,7 @@
    SERVICE INDEX — editorial links (Option A)
    ======================== */
 
-.svc-index { 
-  margin-block: .5rem 1.25rem;
-  margin-top: 6%;
-}
+.svc-index { margin-block: .5rem 1.25rem; }
 
 /* Grid + typography */
 .svc-links{

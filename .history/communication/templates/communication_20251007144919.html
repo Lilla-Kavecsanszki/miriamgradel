@@ -45,6 +45,7 @@
                   href="#{{ anchor_id }}"
                   aria-label="{% blocktrans with t=svc.title %}Jump to {{ t }}{% endblocktrans %}">
                   <span class="svc-title">{{ svc.title }}</span>
+                  <span class="svc-arrow" aria-hidden="true">→</span>
                 </a>
               </li>
             {% endwith %}
