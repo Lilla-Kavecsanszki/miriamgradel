@@ -44,8 +44,8 @@
   font: inherit;                       /* inherit family/size/weight */
   letter-spacing: .005em;
   text-shadow:
-    0 8px 16px rgba(115, 240, 250, 0.35), /* soft cyan plume */
-    0 0 4px   rgba(115, 240, 250, 0.55);  /* crisp cyan edge */
+    0 2px 12px rgba(115, 240, 250, 0.55), /* soft cyan plume */
+    0 0 4px   rgba(115, 240, 250, 0.75);  /* crisp cyan edge */
 }
 
 /* Underline reveal (editorial rule) */
