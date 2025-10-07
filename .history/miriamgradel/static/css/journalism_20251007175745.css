@@ -63,14 +63,18 @@
   width:20px; background:#000; transform:skewX(-23deg); z-index:-2;
 }
 @media (max-width:575.98px){
-  .section-title{ font-size:1rem; padding:6px 12px; }
+  .section-title{ padding:6px 14px; }
   :root{ --st-cut: 20px; }
 }
 
-/* ============== LINK BEHAVIOR ============== */
+/* subtle underline on hover for links; steady text for mentions */
 .written-list .w-title--link { text-decoration: none; }
 .written-list .w-title--link:hover { text-decoration: underline; }
+
+/* optional: slightly dim non-link titles */
 .written-list .w-title--nolink { opacity: .95; }
+
+/* optional: tiny external indicator for links that open new tab */
 .written-list .w-title--link[target="_blank"]::after {
   content: "↗";
   margin-left: .25rem;
@@ -78,44 +82,34 @@
 }
 
 /* ============== ARTICLE LISTS (Written index) ============== */
-/* Refined, elegant scale (great on mobile too) */
+/* Bigger, responsive list text */
 .written-item{
-  font-size: clamp(0.95rem, 0.9rem + 0.22vw, 1.125rem); /* ~15–18px typical */
-  line-height: 1.32;
-  margin-bottom: 8px;
+  /* was: font-size: small; */
+  font-size: clamp(1rem, 0.95rem + 0.35vw, 1.25rem);
+  line-height: 1.35;
+  margin-bottom: 10px; /* keeps rows airy as size grows */
 }
+
+/* Links/titles in the list */
 .written-item a{
   color:#000;
   text-decoration:none;
-  font-weight:700; /* slightly softer than 800 */
+  font-weight:800; /* stronger weight to match larger size */
 }
+
+/* Titles (link or no-link) slightly larger than the row base */
 .written-item .w-title--link,
 .written-item .w-title--nolink{
-  font-size: 1em;          /* no extra bump */
-  overflow-wrap: anywhere; /* long titles won’t break layout */
+  font-size: 1.02em;
 }
+
+/* Meta bits (publication name + year) */
 .written-item time,
 .written-item span{
   font-style: italic;
-  color:#555;      /* softer than pure gray */
-  font-size: .9em; /* subtler meta */
-  margin-bottom: 8px;
-}
-.w-dot{ white-space: nowrap; } /* avoid orphaned separators */
-
-/* Tiny phones — keep it tidy */
-@media (max-width:420px){
-  .written-item{
-    font-size: 0.98rem;   /* ~15–16px */
-    line-height: 1.28;
-    margin-bottom: 6px;
-  }
-  .written-hero, .video-hero{ margin-right: 12px; }
-}
-
-/* Very wide screens — prevent oversizing */
-@media (min-width:1600px){
-  .written-item{ font-size: 1.1rem; } /* gentle cap */
+  color: gray;
+  font-size: 0.95em;  /* scale with row size */
+  margin-bottom: 12px;
 }
 
 /* ============== BTS ASIDE / CARDS ============== */
@@ -136,7 +130,7 @@
 .bts-card:hover{ transform: translateY(-2px); }
 .bts-card .thumb{ position:relative; display:block; }
 .bts-card .thumb img{
-  display:block; width:100%; height:auto; object-fit:cover;
+  display:block; width:100%; height:auto; object-fit:cover; /* keep aspect without distortion */
 }
 .bts-title{
   position:absolute; left:0; right:0; bottom:0; margin:0; padding:12px 16px;
@@ -155,9 +149,9 @@
 }
 .bts-cta:hover{ filter:brightness(.96); }
 
-.bts-card--sidebar .thumb img{ height:auto; }
+.bts-card--sidebar .thumb img{ height:auto; } /* let sidebar thumbs size naturally */
 @media (min-width:992px){
-  .bts-card--sidebar .thumb img{ max-height: 220px; }
+  .bts-card--sidebar .thumb img{ max-height: 220px; } /* gentle cap on large screens */
 }
 .bts-card--sidebar .bts-title,
 .bts-card--sidebar .bts-title a{
