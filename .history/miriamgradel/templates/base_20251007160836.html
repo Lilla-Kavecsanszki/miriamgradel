@@ -253,25 +253,23 @@
     {% block content %}{% endblock %}
   </main>
 
-{# =================== FOOTER =================== #}
-<footer class="site-footer">
-  {% slugurl 'work-with-me' as work_url %}
-
-  {# Show CTA on all pages except the WorkWithMePage #}
-  {% if not page or page.content_type.model != 'workwithmepage' %}
-    <section id="cta" class="cta-strip mt-5" aria-labelledby="cta-heading">
+  {# =================== FOOTER =================== #}
+  <footer class="site-footer">
+    <!-- ========== CTA STRIP ========== -->
+    {% slugurl 'work-with-me' as work_url %}
+    <section id="cta" class="cta-strip mt-5">
       <div class="cta-inner">
-        <p id="cta-heading" class="cta-text m-0 me-3">{% trans "You have a project in mind?" %}</p>
+        <p class="cta-text m-0 me-3">{% trans "You have a project in mind?" %}</p>
         <a href="{{ work_url|default:'/work-with-me/' }}" class="cta-btn">
           {% trans "Let’s talk" %}
         </a>
       </div>
     </section>
-  {% endif %}
     <div class="footer-inner">
-      <div class="footer-col footer-meta">
-        <p class="m-0">{% blocktrans %}The website is the property of <strong>Miriam Gradel</strong>.{% endblocktrans %}</p>
+      <div class="footer-col footer-meta" style="display: flex; align-items: center;">
+        <p class="m-0">{% blocktrans %}The website is the property of <strong>  Miriam Gradel</strong>.{% endblocktrans %}</p>
       </div>
+
       <nav class="footer-col footer-nav footer-nav--right" aria-label="{% trans 'Journalism links' %}">
         <ul class="footer-links">
           <li><a href="{{ written_url|default:'#' }}">{% trans "Written" %}</a></li>
@@ -297,10 +295,9 @@
             {% now "Y" as current_year %}
             {% blocktrans with y=current_year %}Updated in {{ y }}.{% endblocktrans %}
           {% endif %}
-          <br>
           {% trans "No cookies are used." %}
         </p>
-        <p class="dev-note m-0">{% blocktrans %}Site by Larry's Studio{% endblocktrans %}</p>
+        <p class="dev-note m-0">{% blocktrans %}Site by <a href="#" rel="noopener">Your Studio</a>{% endblocktrans %}</p>
       </div>
     </div>
   </footer>

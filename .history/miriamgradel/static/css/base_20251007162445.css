@@ -38,9 +38,12 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
   background: #fff;
   display: grid; place-items: center;
   z-index: 10000; opacity: 1; transition: opacity 1s ease;
-  pointer-events: none; /* ensure faded overlay never blocks interactions */
 }
 .loading-logo { max-width: 200px; }
+
+/* ensure faded overlay never blocks interactions */
+.loading-overlay { pointer-events: none; }
+
 
 /* ======================== Sidebar (structure) ======================== */
 .side-menu {
@@ -93,7 +96,9 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
 
 /* keep "Journalism" normal weight */
 .main-menu .menu-toggle,
-.main-menu .menu-toggle .j-dropdown { font-weight: 400; }
+.main-menu .menu-toggle .j-dropdown { 
+  font-weight: 400; 
+}
 
 /* Submenu */
 .submenu { margin: 2px 0 2px; background: lightgray; border-radius: 4px; }
@@ -137,7 +142,7 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
   align-items: center;
   justify-content: center;
   font-size: clamp(18px, 2vw, 24px);
-  color: #222;
+  color: #222;                       /* default */
   transition: color .2s ease, transform .2s ease;
   text-decoration: none;
 }
@@ -223,36 +228,43 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
 @media (min-width: 992px) { .mobile-top-bar { display: none !important; } }
 @media (max-width: 991.98px) { main { padding-top: 60px; } }
 
-.mobile-contact{ text-decoration: none; color: inherit; }
+.mobile-contact{
+  text-decoration: none;
+  color: inherit;
+}
 
 /* ======================== Footer ======================== */
 .site-footer { position: relative; background: var(--cyan); color: #000; }
-
 .footer-inner{
   max-width: 1200px; margin: 0 auto;
   padding: 50px 40px;   
   display: grid;
   grid-template-columns: 1.2fr 0.8fr 0.8fr 1fr;
   align-items: start;
-  column-gap: 24px; row-gap: 12px;
 }
-
-.footer-meta{ display:flex; align-items:center; }
 .footer-meta p{ font-size: 0.95rem; }
-
+.footer-squares{ margin-top: 8px; display: flex; gap: 10px; }
+.footer-squares span{ width: 14px; height: 14px; background: #000; display: inline-block; }
 .footer-links{ list-style: none; padding: 0; margin: 0; }
 .footer-links li + li{ margin-top: 6px; }
 .footer-links a{ color: #000; text-decoration: none; font-weight: 600; font-size: 0.95rem; }
-.footer-links a:hover{ color:#111; text-decoration: underline; }
-
+.footer-links a:hover{ text-decoration: underline; }
 .footer-nav--right{ border-left: 2px solid #000; padding-left: 16px; }
-
 .footer-legal{ justify-self: end; text-align: left; color: rgba(0,0,0,.65); font-size: 0.9rem; }
 .footer-legal .dev-note{ margin-top: 6px; }
 .footer-legal .dev-note a{ color: inherit; text-decoration: none; border-bottom: 1px solid currentColor; }
 .footer-legal .dev-note a:hover{ opacity: .8; }
+@media (max-width: 991px){
+  .footer-inner{ grid-template-columns: 1fr 1fr; gap: 16px; }
+  .footer-legal{ justify-self: start; text-align: left; }
+  .footer-nav--right{ border-left: none; padding-left: 0; }
+}
+@media (max-width: 600px){ .footer-inner{ grid-template-columns: 1fr; } }
 
-/* Keyboard focus parity */
+/* Footer meta aligns nicely without inline style */
+.footer-meta{ display:flex; align-items:center; }
+
+/* Clear keyboard focus on all footer links */
 .footer-links a:focus-visible,
 .footer-legal a:focus-visible,
 .footer-nav a:focus-visible,
@@ -261,83 +273,9 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
   outline-offset: 2px;
 }
 
-/* Responsive footer layout */
-@media (max-width: 991px){
-  .footer-inner{ grid-template-columns: 1fr 1fr; gap: 16px; }
-  .footer-legal{ justify-self: start; text-align: left; }
-  .footer-nav--right{ border-left: none; padding-left: 0; }
-}
+/* Slightly tighter padding on small screens so the footer breathes */
 @media (max-width: 600px){
-  .footer-inner{ grid-template-columns: 1fr; padding: 36px 20px; }
-}
-
-/* ===== CTA STRIP (in footer) ===== */
-/* Fallback for older browsers */
-.cta-strip{
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
-  margin-right: calc(50% - 50vw);
-  background: #000;
-  padding-block: 32px;
-  overflow-x: clip;
-}
-@supports (width: 100dvw){
-  .cta-strip{
-    width: 100dvw;
-    margin-left: calc(50% - 50dvw);
-    margin-right: calc(50% - 50dvw);
-  }
-}
-
-.cta-inner{
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 12px;           /* spacing between text and button */
-  padding-inline: 16px;
-  text-align: center;  /* reads nicely when wrapping on small screens */
-}
-
-.cta-text{
-  color: #73f0fa;
-  font-weight: 700;
-  font-size: clamp(1rem, 1.4vw, 1.15rem);
-  margin: 0;
-}
-
-.cta-btn{
-  display: inline-block;
-  background: #73f0fa;
-  color: #000;
-  font-weight: 800;
-  padding: 10px 18px;           /* bigger tap target */
-  text-decoration: none;
-  box-shadow: 4px 4px 0 #000;
-  border-radius: 4px;
-  transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
-  -webkit-tap-highlight-color: transparent;
-}
-.cta-btn:hover{
-  transform: translateY(-1px) scale(1.03);
-  box-shadow: 6px 6px 0 #000;
-}
-.cta-btn:active{
-  transform: translateY(0) scale(1.0);
-  box-shadow: 4px 4px 0 #000;
-}
-.cta-btn:focus-visible{
-  outline: 2px solid #73f0fa;
-  outline-offset: 3px;
-  filter: drop-shadow(0 0 0.35rem rgba(115,240,250,.5));
-}
-
-@media (max-width: 520px){
-  .cta-inner{
-    flex-direction: column;
-    gap: 10px;
-  }
+  .footer-inner{ padding: 36px 20px; }
 }
 
 /* ======================== UX niceties ======================== */
@@ -358,7 +296,7 @@ html { scroll-behavior: smooth; }
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   * { scroll-behavior: auto !important; }
-  .side-menu, .menu-backdrop, .to-top-button, .loading-overlay, .cta-btn { transition: none !important; }
+  .side-menu, .menu-backdrop, .to-top-button, .loading-overlay { transition: none !important; }
 }
 
 /* ======================== Optional Bootstrap dropdown helpers ======================== */
@@ -391,7 +329,9 @@ html { scroll-behavior: smooth; }
 }
 
 /* If the element also has .menu-link, kill that hover background */
-.side-menu .menu-close.menu-link:hover { background: transparent !important; }
+.side-menu .menu-close.menu-link:hover {
+  background: transparent !important;
+}
 
 /* If it accidentally uses Bootstrap button classes, neutralize them too */
 .side-menu .menu-close.btn,
@@ -400,4 +340,77 @@ html { scroll-behavior: smooth; }
   border: 0 !important;
   filter: none !important;
   opacity: 1;
+}
+
+/* ===== CTA STRIP ===== */
+.cta-strip{
+  /* Full-bleed without accidental horizontal scrollbars */
+  width: 100dvw; /* use dynamic viewport to avoid 100vw + scrollbar issue */
+  margin-left: calc(50% - 50dvw);
+  margin-right: calc(50% - 50dvw);
+
+  background: #000;
+  padding-block: 32px;
+  /* If any parent has overflow-x: visible, this prevents a wiggle on mobile */
+  overflow-x: clip;
+}
+
+.cta-inner{
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;           /* replaces margin-left on the button */
+  padding-inline: 16px;
+  text-align: center;  /* reads nicely when wrapping on small screens */
+}
+
+.cta-text{
+  color: #73f0fa;
+  font-weight: 700;             /* a touch bolder for the question */
+  font-size: clamp(1rem, 1.4vw, 1.15rem);
+  margin: 0;
+}
+
+.cta-btn{
+  display: inline-block;
+  background: #73f0fa;
+  color: #000;
+  font-weight: 800;
+  padding: 10px 18px;           /* bigger tap target */
+  text-decoration: none;
+  box-shadow: 4px 4px 0 #000;
+  border-radius: 4px;
+  transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.cta-btn:hover{
+  transform: translateY(-1px) scale(1.03);
+  box-shadow: 6px 6px 0 #000;
+}
+.cta-btn:active{
+  transform: translateY(0) scale(1.0);
+  box-shadow: 4px 4px 0 #000;
+}
+
+/* Keyboard focus: clear, accessible */
+.cta-btn:focus-visible{
+  outline: 2px solid #73f0fa;
+  outline-offset: 3px;
+  filter: drop-shadow(0 0 0.35rem rgba(115,240,250,.5));
+}
+
+/* Small screens: let text and button stack nicely */
+@media (max-width: 520px){
+  .cta-inner{
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce){
+  .cta-btn{ transition: none; }
 }

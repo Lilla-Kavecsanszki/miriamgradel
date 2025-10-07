@@ -253,12 +253,12 @@
     {% block content %}{% endblock %}
   </main>
 
-{# =================== FOOTER =================== #}
-<footer class="site-footer">
+  {# =================== FOOTER =================== #}
+  <footer class="site-footer">
   {% slugurl 'work-with-me' as work_url %}
 
-  {# Show CTA on all pages except the WorkWithMePage #}
-  {% if not page or page.content_type.model != 'workwithmepage' %}
+  {# Show CTA everywhere except WorkWithMePage #}
+  {% if page and page.specific._meta.model_name != 'workwithme' %}
     <section id="cta" class="cta-strip mt-5" aria-labelledby="cta-heading">
       <div class="cta-inner">
         <p id="cta-heading" class="cta-text m-0 me-3">{% trans "You have a project in mind?" %}</p>

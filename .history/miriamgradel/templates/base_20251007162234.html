@@ -253,12 +253,10 @@
     {% block content %}{% endblock %}
   </main>
 
-{# =================== FOOTER =================== #}
-<footer class="site-footer">
-  {% slugurl 'work-with-me' as work_url %}
-
-  {# Show CTA on all pages except the WorkWithMePage #}
-  {% if not page or page.content_type.model != 'workwithmepage' %}
+  {# =================== FOOTER =================== #}
+  <footer class="site-footer">
+    <!-- ========== CTA STRIP ========== -->
+    {% slugurl 'work-with-me' as work_url %}
     <section id="cta" class="cta-strip mt-5" aria-labelledby="cta-heading">
       <div class="cta-inner">
         <p id="cta-heading" class="cta-text m-0 me-3">{% trans "You have a project in mind?" %}</p>
@@ -267,7 +265,6 @@
         </a>
       </div>
     </section>
-  {% endif %}
     <div class="footer-inner">
       <div class="footer-col footer-meta">
         <p class="m-0">{% blocktrans %}The website is the property of <strong>Miriam Gradel</strong>.{% endblocktrans %}</p>
