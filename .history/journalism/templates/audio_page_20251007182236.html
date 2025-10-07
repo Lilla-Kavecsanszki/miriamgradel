@@ -28,7 +28,7 @@
 
       {# ===== FEATURED PLAYER (inside left column) ===== #}
       {% if featured %}
-        <section class="featured mb-1">
+        <section class="featured mb-5">
           <h2 class="section-title"><span>{% trans "Selected Episode" %}</span></h2>
 
           <div class="featured__grid">
@@ -40,8 +40,9 @@
 
             <aside class="featured__meta">
               <p class="meta__date" id="meta-date">
-                {{ featured.audio_date|date:"Y" }}
+                {{ featured.audio_date|date:"d/m/Y" }}
               </p>
+
               <h3 class="meta__title" id="meta-title">
                 {{ featured.title|default:_("Untitled") }}
               </h3>

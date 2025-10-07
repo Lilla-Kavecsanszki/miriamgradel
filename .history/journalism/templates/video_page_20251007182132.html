@@ -8,7 +8,7 @@
 {% endblock extra_css %}
 
 {% block content %}
-<section class="container-fluid py-2">
+<section class="container-fluid py-4">
   <div class="row">
     {# ================= LEFT: HERO + INTRO + FEATURED + GRID ================= #}
     <div class="col-12 col-lg-8">
@@ -37,7 +37,7 @@
             </div>
 
             <aside class="featured__meta">
-              <p class="meta__date" id="meta-date">{{ featured.video_date|date:"Y" }}</p>
+              <p class="meta__date" id="meta-date">{{ featured.video_date|date:"d/m/Y" }}</p>
               <h3 class="meta__title" id="meta-title">{{ featured.standfirst|default:_("Untitled") }}</h3>
 
               {% if featured.description %}
