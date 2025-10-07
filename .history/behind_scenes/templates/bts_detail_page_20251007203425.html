@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load static wagtailcore_tags wagtailimages_tags i18n %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/journalism.css' %}">
+  <link rel="stylesheet" href="{% static 'css/bts.css' %}">
+  <link rel="stylesheet" href="{% static 'css/bts_detail.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+<article class="bts-article">
+<header class="bts-hero">
+<div class="bts-kicker">{{ page.get_category_display }}</div>
+
+
+<h1 class="bts-title">{{ page.intro_title|default:page.title }}</h1>
+
+
+{% if page.teaser_image %}
+<figure class="bts-hero-media">
+{% image page.teaser_image fill-1600x900 format-webp as hero %}
+<img src="{{ hero.url }}" width="{{ hero.width }}" height="{{ hero.height }}" alt="{{ page.teaser_image.title }}" loading="eager">
+</figure>
+{% endif %}
+
+
+{% if page.intro_body %}
+<div class="bts-standfirst richtext">{{ page.intro_body|richtext }}</div>
+{% endif %}
+</header>
+
+
+<div class="bts-body">
+{% if page.body %}
+{% for block in page.body %}
+{% if block.block_type == 'paragraph' %}
+<section class="bts-block bts-block--text richtext">
+{{ block.value|richtext }}
+</section>
+
+
+{% elif block.block_type == 'image' %}
+{% with img=block.value.image cap=block.value.caption align=block.value.alignment %}
+<figure class="bts-block bts-block--image bts-img--{{ align|default:'full' }}">
+{% image img original format-webp as rendition %}
+<img src="{{ rendition.url }}" width="{{ rendition.width }}" height="{{ rendition.height }}" alt="{{ img.title }}">
+{% if cap %}<figcaption>{{ cap }}</figcaption>{% endif %}
+</figure>
+{% endwith %}
+
+
+{% elif block.block_type == 'embed' %}
+<div class="bts-block bts-block--embed">
+{# block.value is the URL for EmbedBlock #}
+{% embed block.value %}
+</div>
+
+
+{% elif block.block_type == 'gallery' %}
+<section class="bts-block bts-block--gallery">
+<div class="bts-gallery-grid">
+{% for item in block.value.items %}
+<figure class="bts-gallery-item">
+{% image item.image fill-800x600 format-webp as g %}
+<img src="{{ g.url }}" width="{{ g.width }}" height="{{ g.height }}" alt="{{ item.image.title }}">
+{% if item.caption %}<figcaption>{{ item.caption }}</figcaption>{% endif %}
+</figure>
+{% endfor %}
+</div>
+</section>
+{% endif %}
+{% endfor %}
+{% endif %}
+</div>
+</article>
+
+
+
+
+{% endblock %}

@@ -1,0 +1,149 @@
+/* ===============================
+   Behind The Scenes — Detail page
+   =============================== */
+
+/* Back button — choose ONE behavior.
+   Option A: sticky inside article (recommended): */
+.back-affix{
+  position: sticky;
+  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  z-index: 10;
+  display: flex;
+  justify-content: flex-end;
+}
+.btn-brand {
+  background: #73f0fa;
+  color: #000;
+  font-weight: 800;
+  border: none;
+  border-radius: 6px; /* fixed from `px` */
+  box-shadow:
+    inset 0 -2px 0 rgba(0,0,0,.2),
+    0 6px 14px rgba(115,240,250,.25);
+  transition: background .2s ease, box-shadow .2s ease;
+  padding: 0.5rem 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  text-decoration: none;
+}
+.btn-brand:hover,
+.btn-brand:focus { background: #1fb7c3; color: #fff; }
+.btn-brand:active { background: #148a93; }
+
+/* If you prefer fixed-to-viewport instead, remove the .back-affix rules above
+   and use:
+.btn-brand { position: fixed; bottom: 2rem; right: 2rem; }
+*/
+
+/* Intro/standfirst (now matches <header> tag) */
+.bts-article header .lead {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  font-weight: 400;
+  color: #333;
+  margin-top: 0.5rem;
+  max-width: 70ch;
+}
+
+/* Body text */
+.article-body {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #333;
+}
+
+/* Headings */
+.article-body h2 {
+  font-size: 1.5rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+.article-body h3 {
+  font-size: 1.25rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  font-weight: 700;
+}
+
+/* Paragraph spacing */
+.article-body p { margin-bottom: 1rem; }
+
+/* Lists */
+.article-body ul,
+.article-body ol {
+  margin-bottom: 1rem;
+  padding-left: 1.25rem;
+}
+
+/* Figures */
+.bts-article figure { margin: 1.5rem auto; max-width: 72ch; }
+.bts-article figure img {
+  display: block; width: 100%; height: auto; object-fit: cover;
+  box-shadow: 0 2px 0 0 var(--cyan, #73f0fa),
+              0 8px 14px -6px rgba(0,0,0,0.2);
+}
+.bts-article figcaption{
+  text-align: center; font-size: .9rem; color:#6b7280;
+  margin: .4rem auto 0; max-width: 65ch; line-height: 1.4;
+}
+
+/* Blockquotes */
+.article-body blockquote {
+  border-left: 3px solid var(--cyan, #73f0fa);
+  padding-left: 1rem;
+  font-style: italic;
+  margin: 1.5rem 0;
+  color: #555;
+}
+
+/* Media embeds */
+.bts-article .embed,
+.bts-article .video-embed {
+  position: relative;
+  width: 100%;
+  max-width: 72ch;
+  aspect-ratio: 16/9;
+  background: #000;
+  overflow: hidden;
+  margin: 1.25rem auto;
+  box-shadow: 0 2px 0 0 var(--cyan, #73f0fa);
+}
+.bts-article .embed iframe,
+.bts-article .embed video,
+.bts-article .video-embed iframe,
+.bts-article .video-embed video {
+  position: absolute; inset: 0; width: 100%; height: 100%; border: 0;
+}
+
+/* Audio blocks */
+.bts-article .audio-block{
+  margin: 1rem auto; padding: .75rem; max-width: 72ch;
+  background:#f7f7f7; border-left:3px solid rgba(0,0,0,.4);
+  box-shadow: 0 1px 0 var(--cyan, #73f0fa);
+}
+.bts-article .audio-block audio,
+.bts-article .audio-block iframe{
+  width: 100%; display: block; border: 0;
+}
+
+/* Layout container & centering */
+.container-fluid.py-2 { padding-left: 12px; padding-right: 12px; }
+.bts-article { overflow-x: clip; }
+.bts-article header,
+.bts-article .article-body { max-width: 72ch; margin-left: auto; margin-right: auto; }
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .btn-brand { transition: none; }
+}
+@media (max-width: 576px){
+  .btn-brand{
+    padding: .55rem;
+    width: 44px; height: 44px;
+    justify-content: center;
+    font-size: 0;
+  }
+  .btn-brand::after{ content: "↑"; font-size: 18px; line-height: 1; }
+}

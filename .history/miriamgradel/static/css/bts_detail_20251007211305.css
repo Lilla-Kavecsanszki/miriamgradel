@@ -133,6 +133,19 @@
   .btn-brand{ transition: none; }
 }
 
+/* --- EXCLUDE ribbon from container/side-offset --- */
+.bts-detail .written-hero{
+  /* pull back out of the container gutters */
+  margin-left: calc(-1 * var(--gutter));
+  margin-right: calc(-1 * var(--gutter));
+}
+@media (min-width: 992px){
+  .bts-detail .written-hero{
+    /* also neutralize the desktop sidebar offset */
+    margin-left: calc(-1 * (var(--sidebar-w) + var(--gutter)));
+    margin-right: calc(-1 * var(--gutter));
+  }
+}
 
 /* === EXCLUDE these from the sidebar offset/gutters === */
 
@@ -169,63 +182,3 @@
   .container-fluid.bts-detail .back-affix{ justify-content: center; }
 }
 
-/* Make the back button hug the right edge of the text column */
-.bts-detail .back-affix{
-  width: 100%;                 /* fill the column */
-  max-width: var(--measure);   /* same measure as body */
-  margin-left: 0 !important;   /* align to left rail */
-  margin-right: auto !important;
-  display: flex;
-  justify-content: flex-end;   /* push button to the right edge */
-  text-align: right;           /* extra guard if flex gets overridden */
-}
-
-/* Absolutely ensure the button itself isn't fixed or centered */
-.bts-detail .btn-brand{
-  position: static !important;
-  right: auto !important;
-  bottom: auto !important;
-}
-/* prevent parent centering from affecting the wrapper */
-.bts-detail .back-affix{ align-self: stretch; }
-
-/* keep the wrapper at the column’s right edge */
-.bts-detail .back-affix{
-  width:100%;
-  max-width:var(--measure);
-  margin-left:0!important;
-  margin-right:auto!important;
-  display:flex;
-  justify-content:flex-end;
-  position:sticky;
-  bottom:calc(16px + env(safe-area-inset-bottom,0px));
-  z-index:2;
-  align-self:stretch;
-}
-
-/* Small screens: circular, arrow-only */
-@media (max-width: 480px) {
-  .bts-detail .btn-brand.to-top-button{
-    width:48px;
-    height:48px;
-    padding:0;
-    border-radius:9999px;
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    font-size:1.25rem; /* arrow size */
-    line-height:1;
-    gap:0;             /* no space when label is hidden */
-  }
-  .bts-detail .btn-brand.to-top-button .label{ display:none; }
-}
-
-/* Smooth anchor jumps and prevent header overlap */
-[id]{ scroll-margin-top:80px; }
-html{ scroll-behavior:smooth; }
-
-/* Respect reduced-motion preferences */
-@media (prefers-reduced-motion: reduce){
-  .bts-detail .btn-brand,
-  .to-top-button{ transition:none; }
-}

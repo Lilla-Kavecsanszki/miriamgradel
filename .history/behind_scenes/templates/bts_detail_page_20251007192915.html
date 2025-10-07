@@ -8,7 +8,7 @@
 {% endblock extra_css %}
 
 {% block content %}
-<div class="container-fluid bts-detail">
+<div class="container-fluid py-2 bts-detail">
   <article class="bts-article">
 
     {# Page header ribbon (shows the category) #}
@@ -20,14 +20,14 @@
     </div>
 
     {# Title & intro #}
-    <header class="mb-4 bts-intro">
+    <section class="mb-4 bts-detail">
       <h1 class="mb-2">{{ page.intro_title|default:page.title }}</h1>
       {% if page.intro_body %}
         <div class="lead" style="max-width: 70ch;">
           {{ page.intro_body|richtext }}
         </div>
       {% endif %}
-    </header>
+    </section>
 
     {# Optional teaser image (responsive, fast) #}
     {% if page.teaser_image %}
@@ -38,7 +38,7 @@
             class="img-fluid rounded w-100"
             srcset="fill-600x338 600w, fill-900x506 900w, fill-1200x675 1200w, fill-1600x900 1600w"
             sizes="(min-width:1200px) 1100px, (min-width:992px) 900px, 100vw"
-            alt="{{ alt_text }}" %}
+            alt=alt_text %}
       </figure>
       {% endwith %}
     {% endif %}
@@ -47,22 +47,20 @@
     {% if page.body %}
       <div class="article-body">
         {% for block in page.body %}
-          <div class="mb-lg-2">
+          <div class="mb-3 mb-lg-4">
             {% include_block block %}
           </div>
         {% endfor %}
       </div>
     {% endif %}
 
-    </article>
-
     {# Back link #}
     <div class="back-affix mt-3">
-  <a href="{{ page.get_parent.url }}" class="btn btn-brand to-top-button"
-     aria-label="{% trans 'Back to Behind the Scenes' %}">
-    ← <span class="label">{% trans "Back to Behind the Scenes" %}</span>
-  </a>
+      <a href="{{ page.get_parent.url }}" class="btn btn-brand">
+        ← {% trans "Back to Behind the Scenes" %}
+      </a>
+    </div>
+
+  </article>
 </div>
-  
-</div>
-{% endblock content %}
+{% endblock %}

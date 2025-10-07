@@ -54,15 +54,13 @@
       </div>
     {% endif %}
 
-    </article>
-
     {# Back link #}
     <div class="back-affix mt-3">
-  <a href="{{ page.get_parent.url }}" class="btn btn-brand to-top-button"
-     aria-label="{% trans 'Back to Behind the Scenes' %}">
-    ← <span class="label">{% trans "Back to Behind the Scenes" %}</span>
-  </a>
-</div>
-  
+      <a href="{{ page.get_parent.url }}" class="btn btn-brand">
+        ← {% trans "Back to Behind the Scenes" %}
+      </a>
+    </div>
+
+  </article>
 </div>
 {% endblock content %}

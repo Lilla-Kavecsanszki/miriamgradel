@@ -20,15 +20,36 @@
   }
 }
 
-.written-hero .block-title{
-  max-width: min(100%, calc(var(--measure) + 24px));
-}
-
 /* Article wrapper */
 .bts-article{
   margin: 0;
   padding: 0;
   overflow-x: visible;
+}
+
+/* ===============================
+   Ribbon (chip, aligned to left rail)
+   =============================== */
+
+/* keep the wrapper simple */
+.written-hero{ margin: 0 0 1rem 0; }
+
+/* make the ribbon size to its text + padding */
+.written-hero .block-title{
+  display: inline-block;
+  background: #000;
+  color: #73f0fa;               /* your cyan */
+  /* padding: .3rem .85rem; */
+  line-height: 1;
+  max-width: min(100%, calc(var(--measure) + 24px));
+  white-space: nowrap;          /* stays a neat chip on wide screens */
+}
+
+/* allow wrapping on small screens so it never overflows */
+@media (max-width: 480px){
+  .written-hero .block-title{
+    white-space: normal;        /* wrap text if needed */
+  }
 }
 
 /* ===============================
@@ -131,101 +152,4 @@
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce){
   .btn-brand{ transition: none; }
-}
-
-
-/* === EXCLUDE these from the sidebar offset/gutters === */
-
-/* 1) Ribbon: cancel only the sidebar part of the container padding on desktop.
-      (Keeps the normal gutter.) */
-@media (min-width: 992px){
-  .container-fluid.bts-detail > .bts-article > .written-hero{
-    margin-left: calc(-1 * var(--sidebar-w));
-  }
-}
-
-/* 2) Back button wrapper: same cancellation + keep it on the text rail */
-@media (min-width: 992px){
-  .container-fluid.bts-detail .back-affix{
-    margin-left: calc(-1 * var(--sidebar-w));
-  }
-}
-.container-fluid.bts-detail .back-affix{
-  max-width: var(--measure);
-  margin-right: auto;
-  justify-content: flex-end;
-  position: sticky;
-  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
-  z-index: 2;
-}
-
-/* 3) Button itself: make sure no earlier rules keep it fixed */
-.container-fluid.bts-detail .btn-brand{
-  position: static !important;
-  right: auto !important;
-  bottom: auto !important;
-}
-@media (max-width: 576px){
-  .container-fluid.bts-detail .back-affix{ justify-content: center; }
-}
-
-/* Make the back button hug the right edge of the text column */
-.bts-detail .back-affix{
-  width: 100%;                 /* fill the column */
-  max-width: var(--measure);   /* same measure as body */
-  margin-left: 0 !important;   /* align to left rail */
-  margin-right: auto !important;
-  display: flex;
-  justify-content: flex-end;   /* push button to the right edge */
-  text-align: right;           /* extra guard if flex gets overridden */
-}
-
-/* Absolutely ensure the button itself isn't fixed or centered */
-.bts-detail .btn-brand{
-  position: static !important;
-  right: auto !important;
-  bottom: auto !important;
-}
-/* prevent parent centering from affecting the wrapper */
-.bts-detail .back-affix{ align-self: stretch; }
-
-/* keep the wrapper at the column’s right edge */
-.bts-detail .back-affix{
-  width:100%;
-  max-width:var(--measure);
-  margin-left:0!important;
-  margin-right:auto!important;
-  display:flex;
-  justify-content:flex-end;
-  position:sticky;
-  bottom:calc(16px + env(safe-area-inset-bottom,0px));
-  z-index:2;
-  align-self:stretch;
-}
-
-/* Small screens: circular, arrow-only */
-@media (max-width: 480px) {
-  .bts-detail .btn-brand.to-top-button{
-    width:48px;
-    height:48px;
-    padding:0;
-    border-radius:9999px;
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    font-size:1.25rem; /* arrow size */
-    line-height:1;
-    gap:0;             /* no space when label is hidden */
-  }
-  .bts-detail .btn-brand.to-top-button .label{ display:none; }
-}
-
-/* Smooth anchor jumps and prevent header overlap */
-[id]{ scroll-margin-top:80px; }
-html{ scroll-behavior:smooth; }
-
-/* Respect reduced-motion preferences */
-@media (prefers-reduced-motion: reduce){
-  .bts-detail .btn-brand,
-  .to-top-button{ transition:none; }
 }
