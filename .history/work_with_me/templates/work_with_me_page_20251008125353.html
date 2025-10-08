@@ -100,17 +100,12 @@
         <div class="mb-3 wme-center">
           {# Render a PNG data-URI with healthy size + quiet zone #}
           {% wme_qr_png page.get_qr_image_payload 12 8 "Add contact" as qr_img %}
-
-          {% if qr_img %}
-            {# Clickable QR — scanners read the image; desktop users can click #}
-            <a class="wme-qr mb-2 d-inline-block"
-              href="{{ page.get_qr_click_href }}"
-              aria-label="{% trans 'Open contact card' %}">
-              {{ qr_img|safe }}
-              <span class="visually-hidden">{% trans "Open contact card" %}</span>
-            </a>
-
-            <p class="mb-3">
+          <a class="wme-qr mb-2 d-inline-block"
+            href="{{ page.get_qr_click_href }}"
+            aria-label="{% trans 'Open contact card' %}">
+            {{ qr_img|safe }}
+          </a>
+                      <p class="mb-3">
               {% if page.vcard_file %}
                 {# Direct Cloudinary download (forces attachment) #}
                 <a class="btn btn-brand-outline btn-sm wme-vcard"
@@ -128,13 +123,12 @@
             </p>
 
             <noscript>
-              <p><a href="{{ page.get_qr_click_href }}">{% trans "Open contact card" %}</a></p>
+              <p><a href="{{ page.get_qr_payload }}">{% trans "Open contact card" %}</a></p>
             </noscript>
           {% else %}
             <p class="text-muted small mb-2">{% trans "QR code not available." %}</p>
           {% endif %}
         </div>
-
         {# CONTACT DETAILS #}
         <ul class="list-unstyled small wme-contacts">
           {% if page.phone_number %}

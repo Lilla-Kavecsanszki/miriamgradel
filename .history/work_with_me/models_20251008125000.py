@@ -54,22 +54,25 @@ class WorkWithMeFormField(AbstractFormField):
 
 
 # ---------------- Page ----------------
-# models.py  (only the WorkWithMePage class shown)
-
 class WorkWithMePage(AbstractEmailForm):
     template = "work_with_me_page.html"
     landing_page_template = "work_with_me_page_landing.html"
 
-    # --- fields (unchanged) ---
+    # Content
     greeting = models.CharField(max_length=200, blank=True)
     intro = RichTextField(blank=True)
     bold_text = models.CharField(max_length=200, blank=True)
     paragraph = RichTextField(blank=True, features=["bold", "italic", "link"])
+
     portrait = models.ForeignKey(
-        "wagtailimages.Image", null=True, blank=True,
-        on_delete=models.SET_NULL, related_name="+",
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
     )
     phone_number = models.CharField(max_length=50, blank=True)
+
     thank_you_text = RichTextField(blank=True)
     contact_email = models.EmailField(blank=True, help_text="Shown on the page")
 
@@ -92,7 +95,9 @@ class WorkWithMePage(AbstractEmailForm):
         FieldPanel("phone_number"),
         FieldPanel("contact_email"),
         FieldPanel("thank_you_text"),
+
         InlinePanel("form_fields", label="Form fields"),
+
         MultiFieldPanel(
             [FieldPanel("from_address"), FieldPanel("to_address"), FieldPanel("subject")],
             heading="Email settings (used for notifications)",
@@ -122,12 +127,14 @@ class WorkWithMePage(AbstractEmailForm):
 
     def get_qr_payload(self) -> str:
         """
-        Default QR target: our inline vCard endpoint (a URL).
+        Point the QR at our inline vCard endpoint.
+        That endpoint streams the uploaded .vcf or synthesizes one.
         """
         try:
             rel = reverse("work_with_me:vcard_inline", args=[self.id])
             return self._absolute_url(rel)
         except Exception:
+            # Fallbacks (should rarely be used)
             if self.vcard_file:
                 return self._absolute_url(self.vcard_file.url)
             if self.qr_data:
@@ -144,6 +151,8 @@ class WorkWithMePage(AbstractEmailForm):
     def save(self, *args, **kwargs):
         creating = self.pk is None
         super().save(*args, **kwargs)
+
+        # Seed default form fields on first create
         if creating and not self.form_fields.exists():
             WorkWithMeFormField.objects.create(
                 page=self, label="Your name", field_type="singleline", required=True
@@ -157,27 +166,26 @@ class WorkWithMePage(AbstractEmailForm):
             WorkWithMeFormField.objects.create(
                 page=self, label="Message", field_type="multiline", required=True
             )
-
-    # === NEW: what the QR *encodes* (prefer embedded vCard text) ===
     def get_qr_image_payload(self) -> str:
-        """
-        If admin pasted a vCard (BEGIN:VCARD...), embed that text directly (CRLF),
-        otherwise fall back to the URL endpoint.
-        """
-        if self.qr_data and self.qr_data.lstrip().upper().startswith("BEGIN:VCARD"):
-            v = self.qr_data.strip().replace("\r\n", "\n").replace("\n", "\r\n")
-            return v
-        return self.get_qr_payload()  # URL fallback
+    """
+    What goes *inside* the QR.
+    If admin pasted a vCard (BEGIN:VCARD...), embed that text directly (with CRLF).
+    Otherwise fall back to the URL endpoint.
+    """
+    if self.qr_data and self.qr_data.lstrip().upper().startswith("BEGIN:VCARD"):
+        v = self.qr_data.strip().replace("\r\n", "\n").replace("\n", "\r\n")
+        return v
+    return self.get_qr_payload()  # URL fallback
 
-    # === NEW: what the <a href="..."> should be when clicking the QR image ===
-    def get_qr_click_href(self) -> str:
-        """
-        Always return a URL (never raw vCard text) for clickable links on the page.
-        """
-        try:
-            rel = reverse("work_with_me:vcard_inline", args=[self.id])
-            return self._absolute_url(rel)
-        except Exception:
-            if self.vcard_file:
-                return self._absolute_url(self.vcard_file.url)
-            return self._absolute_url(self.url or "/")
+def get_qr_click_href(self) -> str:
+    """
+    What <a href="..."> uses when someone taps the QR image on the site.
+    Always a URL (never raw vCard text).
+    """
+    try:
+        rel = reverse("work_with_me:vcard_inline", args=[self.id])
+        return self._absolute_url(rel)
+    except Exception:
+        if self.vcard_file:
+            return self._absolute_url(self.vcard_file.url)
+        return self._absolute_url(self.url or "/")

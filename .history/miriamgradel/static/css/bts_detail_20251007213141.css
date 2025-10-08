@@ -229,3 +229,89 @@ html{ scroll-behavior:smooth; }
   .bts-detail .btn-brand,
   .to-top-button{ transition:none; }
 }
+
+
+/* --- Layout: main column + right rail --- */
+.bts-layout{
+  display: grid;
+  grid-template-columns: minmax(0, var(--measure)) 180px; /* content + rail */
+  column-gap: var(--gutter);
+  align-items: start;
+}
+
+/* Keep the article aligned to the left rail */
+.bts-article{
+  max-width: var(--measure);
+}
+
+/* Right rail: sticky on desktop */
+.bts-rail-right{
+  position: sticky;
+  top: 96px;                 /* adjust to clear your site header */
+  align-self: start;
+  justify-self: end;
+  height: 0;                 /* avoid stretching the grid row */
+}
+
+/* Make the button fill rail width nicely */
+.bts-rail-right .back-btn{
+  width: 100%;
+  display: inline-flex;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+/* Mobile: hide the right rail and (optionally) show bottom-sticky */
+@media (max-width: 991.98px){
+  .bts-layout{
+    display: block; /* single column */
+  }
+  .bts-rail-right{
+    display: none;  /* rail hidden on mobile */
+  }
+
+  /* If you want the bottom-sticky on mobile, reuse .back-affix wrapper: */
+  /* (Optional) place this block at the END of the article in the template for mobile only */
+  /* Or keep it out; this is just to mirror your previous behavior */
+  .back-affix{
+    position: sticky;
+    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+  }
+}
+
+/* Ensure the button style is solid */
+.btn-brand{
+  background: #73f0fa;
+  color: #000;
+  font-weight: 800;
+  border: none;
+  border-radius: 4px;
+  box-shadow:
+    inset 0 -2px 0 rgba(0,0,0,.2),
+    0 6px 14px rgba(115,240,250,.25);
+  transition: background .2s ease, box-shadow .2s ease;
+  padding: .5rem 1rem;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+}
+.btn-brand:hover,
+.btn-brand:focus{ background:#1fb7c3; color:#fff; }
+.btn-brand:active{
+  background:#148a93;
+  box-shadow: inset 0 -1px 0 rgba(0,0,0,.25), 0 4px 10px rgba(0,0,0,.25);
+}
+
+/* Small screens: circular, arrow-only */
+@media (max-width: 480px) {
+  .btn-brand.to-top-button{
+    width:48px; height:48px; padding:0; border-radius:9999px;
+    justify-content:center; font-size:1.25rem; line-height:1; gap:0;
+  }
+  .btn-brand.to-top-button .label{ display:none; }
+}
