@@ -33,10 +33,13 @@
 
       <!-- Back button -->
       <p>
-        <a class="btn btn-brand mb-5 px-4 py-2" href="/home/">
-          &larr; Back to Home
-        </a>
+        {% with home_page=request.site.root_page.get_children.live.first %}
+          <a class="btn btn-brand mb-5 px-4 py-2" href="{% pageurl home_page %}">
+            &larr; Back to Home
+          </a>
+        {% endwith %}
       </p>
+
     </div>
   </div>
 </div>

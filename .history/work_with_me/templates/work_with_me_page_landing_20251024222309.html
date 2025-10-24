@@ -21,24 +21,26 @@
         </div>
       </div>
 
-      <!-- Success box / message -->
-      <section class="py-5 mt-5 mb-5">
-        <div class="container px-3 px-md-4">
-          <h3 class="fw-bold mb-5">Your message has been sent successfully.</h3>
-          <p class="lead mb-0">
-            Thank you for reaching out! I’ll respond as soon as I can.
-          </p>
-        </div>
-      </section>
+      <!-- Message -->
+      <div class="mb-4 fs-5">
+        {% if page.thank_you_text %}
+          {{ page.thank_you_text|richtext }}
+        {% else %}
+          <section class="py-5" style="background-color: #f8f9fa;">
+            <div class="container">
+              <h3 class="fw-bold mb-3">Your message has been sent successfully.</h3>
+              <p class="lead mb-0">Thank you for reaching out — I’ll respond as soon as I can.</p>
+            </div>
+          </section>
+        {% endif %}
+      </div>
 
       <!-- Back button -->
       <p>
-        <a class="btn btn-brand mb-5 px-4 py-2" href="/home/">
-          &larr; Back to Home
-        </a>
+        <a class="btn btn-brand px-4" href="{{ page.get_parent.url }}">&larr; Back to home</a>
       </p>
+
     </div>
   </div>
 </div>
 {% endblock %}
-

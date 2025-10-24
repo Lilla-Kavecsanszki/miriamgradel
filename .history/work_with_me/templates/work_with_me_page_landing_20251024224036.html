@@ -33,9 +33,11 @@
 
       <!-- Back button -->
       <p>
-        <a class="btn btn-brand mb-5 px-4 py-2" href="/home/">
-          &larr; Back to Home
-        </a>
+        {% with home_page=Site.objects.first.root_page %}
+          <a class="btn btn-brand mb-5 px-4 py-2" href="{{ home_page.url }}">
+            &larr; Back to Home
+          </a>
+        {% endwith %}
       </p>
     </div>
   </div>
