@@ -56,6 +56,26 @@
   transform:translateX(calc(-1 * var(--octo-slide)));
 }
 
+/* prevent wrapping on the first line */
+.octopus .octo-line:first-child{
+  white-space: nowrap;
+}
+
+/* also fix the negative padding (invalid) → use margin for the nudge */
+.from-left{
+  margin-left: -5px;   /* was padding-left:-5px; */
+  padding-left: 0;
+}
+
+/* tiny screens: shrink a touch + reduce gutters so it still fits */
+@media (max-width: 420px){
+  .octopus{
+    font-size: clamp(2.6rem, 12vw, 6.5rem);
+    letter-spacing: 1px;
+  }
+  .octopus-bg{ --octo-side-pad: clamp(16px, 6vw, 40px); }
+}
+
 /* Line 2: right-aligned, slide in from right */
 .from-right{
   justify-self:end;
@@ -67,7 +87,6 @@
 .octopus .octo-line:nth-child(3){
   justify-self: center !important;
   text-align: center !important;
-  padding-left: 10px;  /* little breathing room on the left */
 }
 
 /* animate when in view (IntersectionObserver adds .in-view) */
@@ -104,7 +123,11 @@
   position: relative;
   color: #fff;
   padding: 8px 18px;          /* smaller top/bottom padding */
-  margin-bottom: 16px;
+  margin: 0 0 16px;          /* no negative / huge margins */
+  overflow: visible;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
   margin-left: -15px;
   margin-right: 500px;
   overflow: visible;
@@ -192,8 +215,11 @@
 }
 
 /* keep them at the extreme left/right edges */
-#services .hscroll__btn--prev { left: -10px; }
-#services .hscroll__btn--next { right: -10px; }
+#services .hscroll__btn--prev { left: 0px; }
+#services .hscroll__btn--next { right: 0px; }
+
+#services .hscroll { overflow: hidden; }
+#services .hscroll__track { box-sizing: border-box; }
 
 /* filled black triangles */
 #services .hscroll__btn::before {
@@ -242,7 +268,7 @@
 #services .service-card__img { height: 120px; overflow: hidden; }
 #services .service-card__img img { object-fit: cover; height: 100%; width: 100%; }
 #services .service-card__body { padding: 12px 14px 16px; text-align: center; }
-#services .service-card__title { margin: 0 0 .35rem; font-weight: 800; font-size: 1.05rem; }
+#services .service-card__title { margin: 0 0 .35rem; font-weight: 800; font-size: 1.05rem; text-decoration: none; color: #000; }
 #services .service-card__text { margin: 0; color: #000; font-size: .94rem; }
 
 /* ===== Reviews: cyan accent on the left (like brand) ===== */
@@ -350,44 +376,9 @@
 
 /* Small screens */
 @media (max-width:575.98px){
-  .home-hero{ margin-right:20px; }
+  .home-hero{ margin-right:0px; }
   .service-card__img{ height:110px; }
   .hscroll__item{ flex-basis: 240px; }
 }
 
-/* ===== CTA STRIP ===== */
-.cta-strip {
-  width: 100vw;         /* full viewport width */
-  margin-left: calc(-50vw + 50%);  /* cancel container padding */
-  background: #000;
-  padding-top: 32px;
-  padding-bottom: 32px;
-}
-
-.cta-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0 1rem;      /* small breathing room inside */
-}
-
-.cta-text {
-  color: #73f0fa;
-  font-weight: 600;
-  font-size: 1.05rem;
-}
-
-.cta-btn {
-  display: inline-block;
-  background: #73f0fa;
-  color: #000;
-  font-weight: 700;
-  padding: 8px 16px;
-  margin-left: 12px;
-  text-decoration: none;
-  box-shadow: 4px 4px 0 #000;
-  transition: transform .15s ease;
-}
-.cta-btn:hover { transform: scale(1.05); }
+.template-homepage { overflow-x: clip; }  /* prevents horizontal scroll without hiding vertical shadows */

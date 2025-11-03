@@ -38,12 +38,9 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
   background: #fff;
   display: grid; place-items: center;
   z-index: 10000; opacity: 1; transition: opacity 1s ease;
+  pointer-events: none; /* ensure faded overlay never blocks interactions */
 }
 .loading-logo { max-width: 200px; }
-
-/* ensure faded overlay never blocks interactions */
-.loading-overlay { pointer-events: none; }
-
 
 /* ======================== Sidebar (structure) ======================== */
 .side-menu {
@@ -96,9 +93,7 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
 
 /* keep "Journalism" normal weight */
 .main-menu .menu-toggle,
-.main-menu .menu-toggle .j-dropdown { 
-  font-weight: 400; 
-}
+.main-menu .menu-toggle .j-dropdown { font-weight: 400; }
 
 /* Submenu */
 .submenu { margin: 2px 0 2px; background: lightgray; border-radius: 4px; }
@@ -142,7 +137,7 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
   align-items: center;
   justify-content: center;
   font-size: clamp(18px, 2vw, 24px);
-  color: #222;                       /* default */
+  color: #222;
   transition: color .2s ease, transform .2s ease;
   text-decoration: none;
 }
@@ -210,6 +205,12 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
 .brand-logo { width: 20px; height: 20px; object-fit: contain; }
 .mobile-top-bar .brand-text { font-family: 'Designer', sans-serif; font-weight: 700; font-size: 1.3rem; line-height: 1; }
 
+.brand {
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+}
+
 /* SAME HEIGHT buttons */
 .topbar-btn {
   height: 40px;
@@ -228,38 +229,122 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
 @media (min-width: 992px) { .mobile-top-bar { display: none !important; } }
 @media (max-width: 991.98px) { main { padding-top: 60px; } }
 
-.mobile-contact{
-  text-decoration: none;
-  color: inherit;
-}
+.mobile-contact{ text-decoration: none; color: inherit; }
 
 /* ======================== Footer ======================== */
 .site-footer { position: relative; background: var(--cyan); color: #000; }
+
 .footer-inner{
   max-width: 1200px; margin: 0 auto;
   padding: 50px 40px;   
   display: grid;
   grid-template-columns: 1.2fr 0.8fr 0.8fr 1fr;
   align-items: start;
+  column-gap: 24px; row-gap: 12px;
 }
+
+.footer-meta{ display:flex; align-items:center; }
 .footer-meta p{ font-size: 0.95rem; }
-.footer-squares{ margin-top: 8px; display: flex; gap: 10px; }
-.footer-squares span{ width: 14px; height: 14px; background: #000; display: inline-block; }
+
 .footer-links{ list-style: none; padding: 0; margin: 0; }
 .footer-links li + li{ margin-top: 6px; }
 .footer-links a{ color: #000; text-decoration: none; font-weight: 600; font-size: 0.95rem; }
-.footer-links a:hover{ text-decoration: underline; }
+.footer-links a:hover{ color:#111; text-decoration: underline; }
+
 .footer-nav--right{ border-left: 2px solid #000; padding-left: 16px; }
+
 .footer-legal{ justify-self: end; text-align: left; color: rgba(0,0,0,.65); font-size: 0.9rem; }
 .footer-legal .dev-note{ margin-top: 6px; }
 .footer-legal .dev-note a{ color: inherit; text-decoration: none; border-bottom: 1px solid currentColor; }
 .footer-legal .dev-note a:hover{ opacity: .8; }
+
+/* Keyboard focus parity */
+.footer-links a:focus-visible,
+.footer-legal a:focus-visible,
+.footer-nav a:focus-visible,
+.cta-btn:focus-visible{
+  outline: 2px solid #000;
+  outline-offset: 2px;
+}
+
+/* Responsive footer layout */
 @media (max-width: 991px){
   .footer-inner{ grid-template-columns: 1fr 1fr; gap: 16px; }
   .footer-legal{ justify-self: start; text-align: left; }
   .footer-nav--right{ border-left: none; padding-left: 0; }
 }
-@media (max-width: 600px){ .footer-inner{ grid-template-columns: 1fr; } }
+@media (max-width: 600px){
+  .footer-inner{ grid-template-columns: 1fr; padding: 36px 20px; }
+}
+
+/* ===== CTA STRIP (in footer) ===== */
+/* Fallback for older browsers */
+.cta-strip{
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  background: #000;
+  padding-block: 32px;
+  overflow-x: clip;
+}
+@supports (width: 100dvw){
+  .cta-strip{
+    width: 100dvw;
+    margin-left: calc(50% - 50dvw);
+    margin-right: calc(50% - 50dvw);
+  }
+}
+
+.cta-inner{
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;           /* spacing between text and button */
+  padding-inline: 16px;
+  text-align: center;  /* reads nicely when wrapping on small screens */
+}
+
+.cta-text{
+  color: #73f0fa;
+  font-weight: 700;
+  font-size: clamp(1rem, 1.4vw, 1.15rem);
+  margin: 0;
+}
+
+.cta-btn{
+  display: inline-block;
+  background: #73f0fa;
+  color: #000;
+  font-weight: 800;
+  padding: 10px 18px;           /* bigger tap target */
+  text-decoration: none;
+  box-shadow: 4px 4px 0 #000;
+  border-radius: 4px;
+  transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.cta-btn:hover{
+  transform: translateY(-1px) scale(1.03);
+  box-shadow: 6px 6px 0 #000;
+}
+.cta-btn:active{
+  transform: translateY(0) scale(1.0);
+  box-shadow: 4px 4px 0 #000;
+}
+.cta-btn:focus-visible{
+  outline: 2px solid #73f0fa;
+  outline-offset: 3px;
+  filter: drop-shadow(0 0 0.35rem rgba(115,240,250,.5));
+}
+
+@media (max-width: 520px){
+  .cta-inner{
+    flex-direction: column;
+    gap: 10px;
+  }
+}
 
 /* ======================== UX niceties ======================== */
 html { scroll-behavior: smooth; }
@@ -279,7 +364,7 @@ html { scroll-behavior: smooth; }
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   * { scroll-behavior: auto !important; }
-  .side-menu, .menu-backdrop, .to-top-button, .loading-overlay { transition: none !important; }
+  .side-menu, .menu-backdrop, .to-top-button, .loading-overlay, .cta-btn { transition: none !important; }
 }
 
 /* ======================== Optional Bootstrap dropdown helpers ======================== */
@@ -297,4 +382,135 @@ html { scroll-behavior: smooth; }
   left: 50% !important;
   transform: translateX(-50%) !important;
   right: auto !important;
+}
+
+/* Force the mobile close button to be transparent not cyan (wins over any hovers) */
+.side-menu .menu-close,
+.side-menu .menu-close:hover,
+.side-menu .menu-close:focus {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: #000 !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* If the element also has .menu-link, kill that hover background */
+.side-menu .menu-close.menu-link:hover { background: transparent !important; }
+
+/* If it accidentally uses Bootstrap button classes, neutralize them too */
+.side-menu .menu-close.btn,
+.side-menu .menu-close.btn-close {
+  background: transparent !important;
+  border: 0 !important;
+  filter: none !important;
+  opacity: 1;
+}
+
+/* ===================== FLASH MESSAGES ===================== */
+
+/* Layout vars: match your real sizes */
+:root {
+  --side-menu-width: 300px;      /* width of fixed sidebar */
+  --mobile-topbar-height: 56px;  /* height of mobile top bar */
+}
+
+/* Container stays above sidebar/topbar */
+.flash-messages {
+  position: sticky;
+  top: 12px;
+  z-index: 3000;
+}
+@media (min-width: 992px) {
+  .flash-messages {
+    margin-left: var(--side-menu-width);
+    max-width: calc(100% - var(--side-menu-width));
+  }
+}
+@media (max-width: 991.98px) {
+  .flash-messages { margin-top: var(--mobile-topbar-height); }
+}
+
+/* ===== Cute, compact, attention-grabbing banner ===== */
+.alert.alert-banner {
+  --alert-height: 44px;
+  --alert-radius: 12px;
+  --alert-pad-x: 14px;
+  --alert-gap: 10px;
+
+  display: flex;
+  align-items: center;
+  min-height: var(--alert-height);
+  padding: 8px var(--alert-pad-x);
+  margin-bottom: 8px;
+  border: 0 !important;
+  border-radius: var(--alert-radius);
+  font-size: 0.92rem;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  line-height: 1.4;
+  gap: var(--alert-gap);
+  position: relative;
+  overflow: hidden;
+  max-width: 720px;
+
+  /* subtle elevation + entrance */
+  box-shadow: 0 10px 24px rgba(0,0,0,0.08);
+  animation: alertSlide 280ms ease-out forwards;
+}
+@keyframes alertSlide {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Left accent bar */
+.alert-banner::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 6px;
+  border-top-left-radius: var(--alert-radius);
+  border-bottom-left-radius: var(--alert-radius);
+}
+
+/* Icon (Font Awesome already loaded) */
+.alert-banner::after {
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  margin-right: 2px;
+}
+
+/* ---- Success ---- */
+.alert-success.alert-banner {
+  background: linear-gradient(90deg, #73f0fa 0%, #d4fbff 100%);
+  color: #0b1f24;
+}
+.alert-success.alert-banner::before { background: #00d1e6; }
+.alert-success.alert-banner::after  { content: "\f058"; } /* fa-circle-check */
+
+/* ---- Error (slightly reddish, still moody) ---- */
+.alert-danger.alert-banner {
+  background: linear-gradient(90deg, #1a0000 0%, #330000 30%, #2a2a2a 100%);
+  color: #ffbcbc; /* soft blush for readability */
+}
+.alert-danger.alert-banner::before { background: #ff3b3b; }         /* red accent bar */
+.alert-danger.alert-banner::after  { content: "\f06a"; color: #ff3b3b; } /* fa-exclamation-triangle */
+
+/* Close button: compact & legible */
+.flash-messages .btn-close {
+  width: 0.9rem; height: 0.9rem;
+  margin-left: auto;
+  margin-top: 2px;
+  opacity: .65;
+  transition: opacity .2s ease;
+  filter: none; /* fine on light success */
+}
+.flash-messages .btn-close:hover { opacity: 1; }
+.alert-danger.alert-banner .btn-close { filter: invert(1); } /* visible on dark */
+
+/* Micro interaction on hover */
+.alert-banner:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 }
