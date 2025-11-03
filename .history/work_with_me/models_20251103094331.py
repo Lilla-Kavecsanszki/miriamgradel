@@ -234,4 +234,4 @@ class WorkWithMePage(AbstractEmailForm):
 
         context = self.get_context(request)
         context["form"] = form
-        return render(request, self.get_template(request), context)
+        return self.render(request, context)

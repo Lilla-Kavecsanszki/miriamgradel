@@ -6,13 +6,12 @@ from django.urls import reverse
 from django.contrib import messages
 
 from django.shortcuts import render  # only used indirectly via self.render
-from wagtail.admin.panels import FieldPanel, MultiFieldPanel  # InlinePanel removed
+from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.fields import RichTextField
 from wagtail.models import Page, Site
 from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
+from wagtail.contrib.forms.forms import FormBuilder
 from modelcluster.fields import ParentalKey
-
-from .forms import ContactForm  # <-- use your own static form
 
 logger = logging.getLogger(__name__)
 
@@ -53,7 +52,7 @@ if VCardRawStorage:
     VCARD_FILEFIELD_KW["storage"] = VCardRawStorage()
 
 
-# ---------------- (Kept for compatibility, but not used by the page) ----------------
+# ---------------- Form field ----------------
 class WorkWithMeFormField(AbstractFormField):
     page = ParentalKey(
         "work_with_me.WorkWithMePage",
@@ -111,7 +110,7 @@ class WorkWithMePage(AbstractEmailForm):
         FieldPanel("phone_number"),
         FieldPanel("contact_email"),
         FieldPanel("thank_you_text"),
-        # InlinePanel("form_fields", ...)  # <-- removed; we use ContactForm instead
+        InlinePanel("form_fields", label="Form fields"),
         MultiFieldPanel(
             [FieldPanel("from_address"), FieldPanel("to_address"), FieldPanel("subject")],
             heading="Email settings (used for notifications)",
@@ -160,6 +159,37 @@ class WorkWithMePage(AbstractEmailForm):
             except Exception:
                 return self.url or "/"
 
+    def save(self, *args, **kwargs):
+        creating = self.pk is None
+        super().save(*args, **kwargs)
+
+        # Auto-bootstrap default form fields on first create
+        if creating and not self.form_fields.exists():
+            WorkWithMeFormField.objects.create(
+                page=self,
+                label="Your name",
+                field_type="singleline",
+                required=True,
+            )
+            WorkWithMeFormField.objects.create(
+                page=self,
+                label="Your email",
+                field_type="email",
+                required=True,
+            )
+            WorkWithMeFormField.objects.create(
+                page=self,
+                label="Subject",
+                field_type="singleline",
+                required=False,
+            )
+            WorkWithMeFormField.objects.create(
+                page=self,
+                label="Message",
+                field_type="multiline",
+                required=True,
+            )
+
     # === what the QR *encodes* (prefer embedded vCard text) ===
     def get_qr_image_payload(self) -> str:
         """
@@ -188,29 +218,36 @@ class WorkWithMePage(AbstractEmailForm):
                 return self._absolute_url(self.vcard_file.url)
             return self._absolute_url(self.url or "/")
 
-    # ---------------- Form handling (uses your ContactForm) ----------------
+    # ---------------- Form handling override ----------------
     def serve(self, request, *args, **kwargs):
         """
-        Custom GET/POST handler using the static ContactForm from forms.py
+        Custom GET/POST handler.
+
+        - On GET: render empty form.
+        - On POST valid:
+            * save submission to DB
+            * try to send email (wrapped in try/except)
+            * add a success or error message
+            * render the landing / thank-you page
+        - On POST invalid:
+            * show errors inline
+            * add a friendly "fix the fields" message
         """
+
+        # Build a form class from the editable form_fields in Wagtail
+        form_builder = FormBuilder(self.form_fields.all())
+
         if request.method == "POST":
-            form = ContactForm(request.POST)
+            form = form_builder(request.POST, page=self)
 
-            # Honeypot (optional): treat any value as spam
-            if getattr(form, "is_valid", None) and form.is_valid():
-                hp_value = form.cleaned_data.get("hp")
-                if hp_value:
-                    # Pretend success to bots; do nothing
-                    messages.success(request, "Thank you — your message was sent successfully.")
-                    return self.render_landing_page(request, None)
-
-                # Save submission (optional but nice to keep Wagtail's history)
-                self.get_submission_class().objects.create(
+            if form.is_valid():
+                # 1. Save submission to DB (same shape as Wagtail's default)
+                submission = self.get_submission_class().objects.create(
                     form_data=form.cleaned_data,
                     page=self,
                 )
 
-                # Try to send email via AbstractEmailForm
+                # 2. Try to send notification email
                 try:
                     self.send_mail(form)
                     messages.success(
@@ -222,16 +259,26 @@ class WorkWithMePage(AbstractEmailForm):
                     messages.error(
                         request,
                         "Sorry — something went wrong sending your message. "
+                        "Your message was received, but email delivery failed. "
                         "You can also contact me directly at contact@miriamgradel.cc."
                     )
 
-                # Landing / thank-you page
-                return self.render_landing_page(request, None)
-            else:
-                messages.error(request, "Please correct the highlighted fields and try again.")
-        else:
-            form = ContactForm()
+                # 3. Render your thank-you / landing template
+                return self.render_landing_page(form, request, submission)
 
+            else:
+                # Form invalid -> fall through to re-render with field errors
+                messages.error(
+                    request,
+                    "Please correct the highlighted fields and try again."
+                )
+
+        else:
+            # GET: empty form
+            form = form_builder.get_form(page=self)
+
+
+        # Normal render (GET, or invalid POST)
         context = self.get_context(request)
         context["form"] = form
-        return render(request, self.get_template(request), context)
+        return self.render(request, context)

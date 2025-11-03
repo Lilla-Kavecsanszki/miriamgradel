@@ -506,5 +506,5 @@ html { scroll-behavior: smooth; }
 /* Micro interaction on hover */
 .alert-banner:hover {
   transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  box-shadow: 8px 0 24px rgba(0,0,0,.2);
 }

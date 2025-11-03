@@ -483,13 +483,13 @@ html { scroll-behavior: smooth; }
 .alert-success.alert-banner::before { background: #00d1e6; }
 .alert-success.alert-banner::after  { content: "\f058"; } /* fa-circle-check */
 
-/* ---- Error (slightly reddish, still moody) ---- */
+/* ---- Error ---- */
 .alert-danger.alert-banner {
-  background: linear-gradient(90deg, #1a0000 0%, #330000 30%, #2a2a2a 100%);
-  color: #ffbcbc; /* soft blush for readability */
+  background: linear-gradient(90deg, #151515 0%, #2a2a2a 100%);
+  color: #73f0fa;
 }
-.alert-danger.alert-banner::before { background: #ff3b3b; }         /* red accent bar */
-.alert-danger.alert-banner::after  { content: "\f06a"; color: #ff3b3b; } /* fa-exclamation-triangle */
+.alert-danger.alert-banner::before { background: #73f0fa; }
+.alert-danger.alert-banner::after  { content: "\f06a"; }   /* fa-exclamation-triangle */
 
 /* Close button: compact & legible */
 .flash-messages .btn-close {
@@ -506,5 +506,5 @@ html { scroll-behavior: smooth; }
 /* Micro interaction on hover */
 .alert-banner:hover {
   transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.12);
 }

@@ -402,109 +402,65 @@ html { scroll-behavior: smooth; }
   opacity: 1;
 }
 
-/* ===================== FLASH MESSAGES ===================== */
+/* MESSAGES */
 
-/* Layout vars: match your real sizes */
-:root {
-  --side-menu-width: 300px;      /* width of fixed sidebar */
-  --mobile-topbar-height: 56px;  /* height of mobile top bar */
+.alert-success {
+  background-color: #73f0fa;
+  color: #000;
+  border-color: #000;
 }
 
-/* Container stays above sidebar/topbar */
+.alert-danger {
+  background-color: #000;
+  color: #73f0fa;
+  border-color: #73f0fa;
+}
+.alert-danger .btn-close {
+  filter: invert(1); /* make close button visible on black */
+}
+
+/* Sidebar + topbar dimensions (adjust if yours differ) */
+:root {
+  --side-menu-width: 300px;   /* match your .side-menu width */
+  --mobile-topbar-height: 56px;
+}
+
+/* Keep alerts visible and pinned near the top */
 .flash-messages {
   position: sticky;
-  top: 12px;
-  z-index: 3000;
+  top: 12px;        /* space from top */
+  z-index: 3000;    /* higher than the side menu/drawer */
 }
+
+/* On large screens, shift alerts to the right of the fixed sidebar */
 @media (min-width: 992px) {
   .flash-messages {
     margin-left: var(--side-menu-width);
     max-width: calc(100% - var(--side-menu-width));
   }
 }
+
+/* On mobile, keep them below the top bar */
 @media (max-width: 991.98px) {
-  .flash-messages { margin-top: var(--mobile-topbar-height); }
+  .flash-messages {
+    margin-top: var(--mobile-topbar-height);
+  }
 }
 
-/* ===== Cute, compact, attention-grabbing banner ===== */
-.alert.alert-banner {
-  --alert-height: 44px;
-  --alert-radius: 12px;
-  --alert-pad-x: 14px;
-  --alert-gap: 10px;
-
-  display: flex;
-  align-items: center;
-  min-height: var(--alert-height);
-  padding: 8px var(--alert-pad-x);
-  margin-bottom: 8px;
-  border: 0 !important;
-  border-radius: var(--alert-radius);
-  font-size: 0.92rem;
-  font-weight: 500;
-  letter-spacing: 0.2px;
-  line-height: 1.4;
-  gap: var(--alert-gap);
-  position: relative;
-  overflow: hidden;
-  max-width: 720px;
-
-  /* subtle elevation + entrance */
-  box-shadow: 0 10px 24px rgba(0,0,0,0.08);
-  animation: alertSlide 280ms ease-out forwards;
-}
-@keyframes alertSlide {
-  from { opacity: 0; transform: translateY(-6px); }
-  to   { opacity: 1; transform: translateY(0); }
+/* Optional: improve close button contrast on success banner */
+.alert-success .btn-close {
+  filter: none;
 }
 
-/* Left accent bar */
-.alert-banner::before {
-  content: "";
-  position: absolute;
-  left: 0; top: 0; bottom: 0;
-  width: 6px;
-  border-top-left-radius: var(--alert-radius);
-  border-bottom-left-radius: var(--alert-radius);
+/* Already have these — keeping for reference */
+.alert-success {
+  background-color: #73f0fa;
+  color: #000;
+  border-color: #000;
 }
-
-/* Icon (Font Awesome already loaded) */
-.alert-banner::after {
-  font-family: "Font Awesome 6 Free";
-  font-weight: 900;
-  margin-right: 2px;
+.alert-danger {
+  background-color: #000;
+  color: #73f0fa;
+  border-color: #73f0fa;
 }
-
-/* ---- Success ---- */
-.alert-success.alert-banner {
-  background: linear-gradient(90deg, #73f0fa 0%, #d4fbff 100%);
-  color: #0b1f24;
-}
-.alert-success.alert-banner::before { background: #00d1e6; }
-.alert-success.alert-banner::after  { content: "\f058"; } /* fa-circle-check */
-
-/* ---- Error (slightly reddish, still moody) ---- */
-.alert-danger.alert-banner {
-  background: linear-gradient(90deg, #1a0000 0%, #330000 30%, #2a2a2a 100%);
-  color: #ffbcbc; /* soft blush for readability */
-}
-.alert-danger.alert-banner::before { background: #ff3b3b; }         /* red accent bar */
-.alert-danger.alert-banner::after  { content: "\f06a"; color: #ff3b3b; } /* fa-exclamation-triangle */
-
-/* Close button: compact & legible */
-.flash-messages .btn-close {
-  width: 0.9rem; height: 0.9rem;
-  margin-left: auto;
-  margin-top: 2px;
-  opacity: .65;
-  transition: opacity .2s ease;
-  filter: none; /* fine on light success */
-}
-.flash-messages .btn-close:hover { opacity: 1; }
-.alert-danger.alert-banner .btn-close { filter: invert(1); } /* visible on dark */
-
-/* Micro interaction on hover */
-.alert-banner:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-}
+.alert-danger .btn-close { filter: invert(1); }

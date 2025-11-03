@@ -5,14 +5,11 @@ from django.db import models
 from django.urls import reverse
 from django.contrib import messages
 
-from django.shortcuts import render  # only used indirectly via self.render
-from wagtail.admin.panels import FieldPanel, MultiFieldPanel  # InlinePanel removed
+from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.fields import RichTextField
 from wagtail.models import Page, Site
 from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
 from modelcluster.fields import ParentalKey
-
-from .forms import ContactForm  # <-- use your own static form
 
 logger = logging.getLogger(__name__)
 
@@ -43,7 +40,6 @@ if _cloudinary_present():
     except Exception:
         try:
             from cloudinary_storage.storage import MediaCloudinaryStorage
-
             class VCardRawStorage(MediaCloudinaryStorage):  # type: ignore
                 resource_type = "raw"
         except Exception:
@@ -53,7 +49,7 @@ if VCardRawStorage:
     VCARD_FILEFIELD_KW["storage"] = VCardRawStorage()
 
 
-# ---------------- (Kept for compatibility, but not used by the page) ----------------
+# ---------------- Form field ----------------
 class WorkWithMeFormField(AbstractFormField):
     page = ParentalKey(
         "work_with_me.WorkWithMePage",
@@ -73,31 +69,19 @@ class WorkWithMePage(AbstractEmailForm):
     bold_text = models.CharField(max_length=200, blank=True)
     paragraph = RichTextField(blank=True, features=["bold", "italic", "link"])
     portrait = models.ForeignKey(
-        "wagtailimages.Image",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
+        "wagtailimages.Image", null=True, blank=True,
+        on_delete=models.SET_NULL, related_name="+",
     )
     phone_number = models.CharField(max_length=50, blank=True)
     thank_you_text = RichTextField(blank=True)
-    contact_email = models.EmailField(
-        blank=True,
-        help_text="Shown on the page",
-    )
+    contact_email = models.EmailField(blank=True, help_text="Shown on the page")
 
     # QR options
     qr_data = models.TextField(
         blank=True,
-        help_text=(
-            "Raw QR payload (URL / mailto: / tel: / vCard text). "
-            "Leave blank to auto-generate."
-        ),
+        help_text="Raw QR payload (URL / mailto: / tel: / vCard text). Leave blank to auto-generate.",
     )
-    qr_scale = models.PositiveSmallIntegerField(
-        default=10,
-        help_text="Size scale for the QR SVG",
-    )
+    qr_scale = models.PositiveSmallIntegerField(default=10, help_text="Size scale for the QR SVG")
 
     # Optional vCard file (served via Cloudinary RAW when available)
     vcard_file = models.FileField(**VCARD_FILEFIELD_KW)
@@ -111,7 +95,7 @@ class WorkWithMePage(AbstractEmailForm):
         FieldPanel("phone_number"),
         FieldPanel("contact_email"),
         FieldPanel("thank_you_text"),
-        # InlinePanel("form_fields", ...)  # <-- removed; we use ContactForm instead
+        InlinePanel("form_fields", label="Form fields"),
         MultiFieldPanel(
             [FieldPanel("from_address"), FieldPanel("to_address"), FieldPanel("subject")],
             heading="Email settings (used for notifications)",
@@ -160,6 +144,23 @@ class WorkWithMePage(AbstractEmailForm):
             except Exception:
                 return self.url or "/"
 
+    def save(self, *args, **kwargs):
+        creating = self.pk is None
+        super().save(*args, **kwargs)
+        if creating and not self.form_fields.exists():
+            WorkWithMeFormField.objects.create(
+                page=self, label="Your name", field_type="singleline", required=True
+            )
+            WorkWithMeFormField.objects.create(
+                page=self, label="Your email", field_type="email", required=True
+            )
+            WorkWithMeFormField.objects.create(
+                page=self, label="Subject", field_type="singleline", required=False
+            )
+            WorkWithMeFormField.objects.create(
+                page=self, label="Message", field_type="multiline", required=True
+            )
+
     # === what the QR *encodes* (prefer embedded vCard text) ===
     def get_qr_image_payload(self) -> str:
         """
@@ -167,11 +168,7 @@ class WorkWithMePage(AbstractEmailForm):
         otherwise fall back to the URL endpoint.
         """
         if self.qr_data and self.qr_data.lstrip().upper().startswith("BEGIN:VCARD"):
-            v = (
-                self.qr_data.strip()
-                .replace("\r\n", "\n")
-                .replace("\n", "\r\n")
-            )
+            v = self.qr_data.strip().replace("\r\n", "\n").replace("\n", "\r\n")
             return v
         return self.get_qr_payload()  # URL fallback
 
@@ -188,50 +185,41 @@ class WorkWithMePage(AbstractEmailForm):
                 return self._absolute_url(self.vcard_file.url)
             return self._absolute_url(self.url or "/")
 
-    # ---------------- Form handling (uses your ContactForm) ----------------
-    def serve(self, request, *args, **kwargs):
+    # ---------------- Form handling override ----------------
+    def process_form_submission(self, form):
         """
-        Custom GET/POST handler using the static ContactForm from forms.py
+        Handle the form submit safely:
+        - always save the submission to the DB
+        - try to send email, but don't crash if it fails
+        - attach a user-visible message (success or error)
+        - then render the landing page
         """
-        if request.method == "POST":
-            form = ContactForm(request.POST)
 
-            # Honeypot (optional): treat any value as spam
-            if getattr(form, "is_valid", None) and form.is_valid():
-                hp_value = form.cleaned_data.get("hp")
-                if hp_value:
-                    # Pretend success to bots; do nothing
-                    messages.success(request, "Thank you — your message was sent successfully.")
-                    return self.render_landing_page(request, None)
+        # 1. Save the submission (same thing Wagtail does internally)
+        submission_class = self.get_submission_class()
+        submission = submission_class.objects.create(
+            form_data=form.cleaned_data,
+            page=self,
+        )
 
-                # Save submission (optional but nice to keep Wagtail's history)
-                self.get_submission_class().objects.create(
-                    form_data=form.cleaned_data,
-                    page=self,
-                )
+        # 2. Try to send the notification email
+        try:
+            self.send_mail(form)
+            messages.success(
+                form.request,
+                "Thank you — your message was sent successfully."
+            )
+        except Exception as e:
+            # Log the full traceback to Heroku logs
+            logger.exception("WorkWithMePage email send failed: %s", e)
 
-                # Try to send email via AbstractEmailForm
-                try:
-                    self.send_mail(form)
-                    messages.success(
-                        request,
-                        "Thank you — your message was sent successfully."
-                    )
-                except Exception as e:
-                    logger.exception("WorkWithMePage email send failed: %s", e)
-                    messages.error(
-                        request,
-                        "Sorry — something went wrong sending your message. "
-                        "You can also contact me directly at contact@miriamgradel.cc."
-                    )
+            # Show a friendly, branded error to the user (no tech details)
+            messages.error(
+                form.request,
+                "Sorry — something went wrong sending your message. "
+                "Your message was received, but email delivery failed. "
+                "You can also contact me directly at contact@miriamgradel.cc."
+            )
 
-                # Landing / thank-you page
-                return self.render_landing_page(request, None)
-            else:
-                messages.error(request, "Please correct the highlighted fields and try again.")
-        else:
-            form = ContactForm()
-
-        context = self.get_context(request)
-        context["form"] = form
-        return render(request, self.get_template(request), context)
+        # 3. Return the landing / thank-you response
+        return self.render_landing_page(form, form.request, submission)

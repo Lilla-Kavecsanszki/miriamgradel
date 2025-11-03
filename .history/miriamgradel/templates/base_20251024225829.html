@@ -250,12 +250,12 @@
 
     <!-- Flash messages (success / error) -->
   {% if messages %}
-    <div class="flash-messages container-fluid mt-3">
+    <div class="container-fluid mt-3">
       <div class="row">
         <div class="col-12 col-lg-8">
           {% for message in messages %}
             <div
-              class="alert alert-{{ message.tags }} alert-banner alert-dismissible fade show"
+              class="alert alert-{{ message.tags }} alert-dismissible fade show"
               role="alert"
               style="border-radius:0; border-width:2px; font-weight:500;"
             >
