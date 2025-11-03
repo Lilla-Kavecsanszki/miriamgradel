@@ -1,81 +1,114 @@
 /* ================== TOKENS ================== */
 :root { --cyan: #73f0fa; }
 
-/* ===== Unified Fin System (Cyan Band + Black Slash) ===== */
-:root {
+/* ===== Fin system (shared) ===== */
+:root{
   --cyan: #73f0fa;
-  --fin-width: 22px;       /* width of the black slash */
-  --fin-skew: -26deg;      /* angle of the slash */
-  --band-pad-x: 18px;      /* left/right padding inside band */
-  --band-pad-y: 8px;       /* top/bottom padding inside band */
+  --fin-w: clamp(16px, 2.8vw, 28px); /* fin width */
+  --band-px: 16px;                   /* horizontal padding inside band */
+  --band-py: 12px;                   /* vertical padding inside band */
 }
 
-/* ============== SECTION TITLES (Cyan Band + Black Slash) ============== */
-.section-title {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  isolation: isolate;
-  color: #000;
-  font-weight: 800;
-  line-height: 1.1;
-  font-size: 1.1rem;
-  margin: 18px 0 12px -15px;
-
-  /* make cyan slightly shorter than black fin */
-  padding: var(--band-pad-y)
-           calc(var(--band-pad-x) + var(--fin-width) * 0.65)
-           var(--band-pad-y)
-           var(--band-pad-x);
-
-  background: var(--cyan);
-  box-sizing: border-box;
-}
-
-.section-title::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  width: var(--fin-width);
-  background: #000;
-  transform: skewX(var(--fin-skew));
-  z-index: 1;
-}
-
-/* ================== HERO (Written / Video / Home) ================== */
-.home-hero,
+/* ================== HERO (Written / Video) ================== */
+/* Black band + cyan fin that always sits at the far-right edge */
 .written-hero,
-.video-hero {
+.video-hero{
   position: relative;
+  color: #fff;
+  background: #000;
+  /* reserve space for the fin on the right */
+  padding: var(--band-py) calc(var(--band-px) + var(--fin-w)) var(--band-py) var(--band-px);
+  margin: 0 0 16px -15px;      /* keep your small left nudge only */
+  overflow: hidden;            /* contains the fin cleanly */
   display: flex;
   align-items: center;
   box-sizing: border-box;
-  color: #fff;
-  background: #000;
-  isolation: isolate;
-  margin: 0 0 22px -15px;
-
-  /* cyan width shortened like section titles */
-  padding: var(--band-pad-y)
-           calc(var(--band-pad-x) + var(--fin-width) * 0.65)
-           var(--band-pad-y)
-           var(--band-pad-x);
 }
 
-.home-hero::after,
+/* angled tail on the black band (optional – keep if you like the cut) */
+.written-hero::before,
+.video-hero::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:#000;
+  clip-path: polygon(0 0, 100% 0, calc(100% - 28px) 100%, 0 100%);
+  z-index: 0;
+}
+
+/* SINGLE cyan fin at the container’s right edge */
 .written-hero::after,
-.video-hero::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  width: var(--fin-width);
+.video-hero::after{
+  content:"";
+  position:absolute; top:0; right:0; bottom:0;
+  width: var(--fin-w);
   background: var(--cyan);
-  transform: skewX(var(--fin-skew));
+  clip-path: polygon(100% 0, 0 50%, 100% 100%);
   z-index: 1;
+}
+
+.written-hero > *,
+.video-hero > *{ position: relative; z-index: 2; }
+
+.written-hero .block-title,
+.video-hero .block-title{
+  font-weight: 800;
+  line-height: 1.1;
+  margin: 0 0 .35rem;
+  font-size: 1.12rem;
+  letter-spacing: .2px;
+}
+
+.written-hero p{ margin:0; opacity:.95; }
+
+@media (max-width: 575.98px){
+  /* slightly tighter padding on phones */
+  :root{ --band-px: 12px; --band-py: 10px; }
+}
+
+/* ============== SECTION TITLES (cyan tag with black fin) ============== */
+.section-title{
+  position: relative;
+  display: inline-block;
+  margin: 18px 0 12px;
+  color: #000;
+  isolation: isolate;
+  font-size: 1.1rem;
+  margin-left: -15px; /* matches hero’s left nudge */
+}
+
+.section-title > *{
+  position: relative;
+  z-index: 2;
+}
+
+/* cyan band */
+.section-title .band{
+  position: relative;
+  display: inline-block;
+  background: var(--cyan);
+  padding: var(--band-py) calc(var(--band-px) + var(--fin-w)) var(--band-py) var(--band-px);
+  line-height: 1.1;
+}
+
+/* black fin on the right */
+.section-title .band::after{
+  content:"";
+  position: absolute; top:0; right:0; bottom:0;
+  width: var(--fin-w);
+  background: #000;
+  clip-path: polygon(100% 0, 0 50%, 100% 100%);
+}
+
+/* (Optional) keep the cyan tag’s back cut to match your style */
+.section-title::before{
+  content:"";
+  position:absolute; inset:0;
+  background: transparent; /* no extra layer needed now */
+}
+
+@media (max-width: 575.98px){
+  .section-title{ font-size: 1rem; }
 }
 
 /* ============== LINK BEHAVIOR ============== */

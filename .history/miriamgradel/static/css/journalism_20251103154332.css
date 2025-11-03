@@ -1,82 +1,70 @@
 /* ================== TOKENS ================== */
 :root { --cyan: #73f0fa; }
 
-/* ===== Unified Fin System (Cyan Band + Black Slash) ===== */
-:root {
-  --cyan: #73f0fa;
-  --fin-width: 22px;       /* width of the black slash */
-  --fin-skew: -26deg;      /* angle of the slash */
-  --band-pad-x: 18px;      /* left/right padding inside band */
-  --band-pad-y: 8px;       /* top/bottom padding inside band */
-}
-
-/* ============== SECTION TITLES (Cyan Band + Black Slash) ============== */
-.section-title {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  isolation: isolate;
-  color: #000;
-  font-weight: 800;
-  line-height: 1.1;
-  font-size: 1.1rem;
-  margin: 18px 0 12px -15px;
-
-  /* make cyan slightly shorter than black fin */
-  padding: var(--band-pad-y)
-           calc(var(--band-pad-x) + var(--fin-width) * 0.65)
-           var(--band-pad-y)
-           var(--band-pad-x);
-
-  background: var(--cyan);
-  box-sizing: border-box;
-}
-
-.section-title::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  width: var(--fin-width);
-  background: #000;
-  transform: skewX(var(--fin-skew));
-  z-index: 1;
-}
-
 /* ================== HERO (Written / Video / Home) ================== */
+/* Mirrors .section-title: content-width band + same fin geometry */
 .home-hero,
 .written-hero,
 .video-hero {
+  --cyan: #73f0fa;
+  /* reuse the same fin + padding variables you set above */
   position: relative;
-  display: flex;
+  display: inline-flex;                /* ⟵ content-width, not full row */
   align-items: center;
   box-sizing: border-box;
-  color: #fff;
-  background: #000;
   isolation: isolate;
-  margin: 0 0 22px -15px;
 
-  /* cyan width shortened like section titles */
+  color: #fff;
+  background: #000;                    /* hero = black band */
   padding: var(--band-pad-y)
-           calc(var(--band-pad-x) + var(--fin-width) * 0.65)
+           calc(var(--band-pad-x) + var(--fin-width))
            var(--band-pad-y)
            var(--band-pad-x);
+  margin: 0 0 16px -15px;              /* same left nudge as titles */
+  overflow: hidden;
 }
 
+/* keep text above the fin */
+.home-hero > *,
+.written-hero > *,
+.video-hero > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* cyan fin at the right, same angle/width as titles’ black fin */
 .home-hero::after,
 .written-hero::after,
 .video-hero::after {
   content: "";
   position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
+  top: 0; bottom: 0; right: 0;
   width: var(--fin-width);
   background: var(--cyan);
   transform: skewX(var(--fin-skew));
   z-index: 1;
 }
+
+/* optional: ensure GPU rasterization to avoid hairline seams */
+.home-hero,
+.written-hero,
+.video-hero { transform: translateZ(0); backface-visibility: hidden; }
+
+.home-hero .block-title,
+.written-hero .block-title,
+.video-hero .block-title {
+  font-weight: 800;
+  line-height: 1.1;
+  font-size: 1.15rem;
+  margin: 0;
+  letter-spacing: 0.3px;
+}
+
+/* mobile = same scale-down as titles (vars already shrink in your :root media rule) */
+@media (max-width: 575.98px) {
+  /* nothing extra needed; uses the same --fin-width / padding vars */
+}
+
 
 /* ============== LINK BEHAVIOR ============== */
 .written-list .w-title--link { text-decoration: none; }

@@ -55,7 +55,7 @@
   color: #fff;
   background: #000;
   isolation: isolate;
-  margin: 0 0 22px -15px;
+  margin: 20px 0 16px -15px;
 
   /* cyan width shortened like section titles */
   padding: var(--band-pad-y)

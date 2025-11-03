@@ -515,3 +515,66 @@ html { scroll-behavior: smooth; }
   transform: translateY(-1px);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 }
+
+/* ======================== RIBBON AND HERO FINS ======================== */
+/* One place to tweak brand + defaults */
+:root{
+  --fin-cyan: #73f0fa;
+}
+
+/* ===== Generic fin utility ===== */
+.has-fin {
+  /* space for the fin so text never collides */
+  --fin-w: 22px;          /* default; override per component */
+  --fin-w: clamp(14px, 2.6vw, 26px);
+  position: relative;
+  padding-right: calc(12px + var(--fin-w));
+  overflow: hidden;       /* keep everything inside, no gutters */
+}
+
+.has-fin::after{
+  content:"";
+  position:absolute;
+  top:0; right:0; bottom:0;
+  width: var(--fin-w);
+  background: var(--fin-cyan);
+  /* triangle that stays INSIDE the box */
+  clip-path: polygon(100% 0, 0 50%, 100% 100%);
+}
+
+/* ===== Hero ribbon (black bar with fin) ===== */
+.home-hero{
+  position:relative;
+  color:#fff;
+  padding: 8px 18px;
+  margin: 0 0 16px;
+  display:flex; align-items:center;
+}
+.home-hero::before{
+  content:"";
+  position:absolute; inset:0;
+  background:#000;
+  /* keep your diagonal tail on the right edge of the black bar */
+  clip-path: polygon(0 0, 100% 0, calc(100% - 28px) 100%, 0 100%);
+  z-index:1;
+}
+.home-hero > *{ position:relative; z-index:2; }
+
+/* apply the fin to the hero container */
+.home-hero.has-fin{ --fin-w: clamp(18px, 3vw, 28px); }
+
+/* ===== Section title band (“Services”, etc.) ===== */
+.section-title .band{
+  display:inline-block;
+  background:#73f0fa;
+  color:#000;
+  font-weight:800;
+  padding:6px 14px;
+}
+.section-title .band.has-fin{ --fin-w: clamp(10px, 2vw, 18px); }
+
+/* tiny screens: make fins a touch smaller if you want */
+@media (max-width:420px){
+  .home-hero.has-fin{ --fin-w: clamp(14px, 4vw, 22px); }
+  .section-title .band.has-fin{ --fin-w: clamp(8px, 3.5vw, 14px); }
+}

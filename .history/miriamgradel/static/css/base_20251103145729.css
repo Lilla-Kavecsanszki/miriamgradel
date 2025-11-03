@@ -515,3 +515,100 @@ html { scroll-behavior: smooth; }
   transform: translateY(-1px);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 }
+
+/* ======================== RIBBON AND HERO FINS ======================== */
+/* ===== Shared sizing (one place to tweak) ===== */
+:root{
+  --cyan: #73f0fa;
+  --fin-w: clamp(16px, 2.8vw, 28px); /* fin width, same everywhere */
+  --band-py: 8px;                    /* vertical padding */
+  --band-px: 16px;                   /* horizontal padding (before fin) */
+}
+
+/* Generic “fin” utility */
+.fin {
+  position: relative;
+  padding: var(--band-py) var(--band-px);
+  padding-right: calc(var(--band-px) + var(--fin-w)); /* room for fin */
+  overflow: hidden; /* keep triangles inside */
+}
+.fin::after{
+  content:"";
+  position:absolute; top:0; right:0; bottom:0;
+  width: var(--fin-w);
+  clip-path: polygon(100% 0, 0 50%, 100% 100%); /* inside-triangle */
+  background: currentColor; /* fin takes element text-color by default */
+}
+
+/* Variants: pick background + fin color explicitly */
+.fin--black {
+  background:#000;
+  color: var(--cyan);        /* text (and fin via currentColor) cyan */
+}
+.fin--black::after { background: var(--cyan); } /* cyan fin */
+
+.fin--cyan {
+  background: var(--cyan);
+  color:#000;               /* text black */
+}
+.fin--cyan::after { background:#000; }          /* black fin */
+
+/* ===== Apply to your components ===== */
+
+/* HERO ribbon (black with cyan fin) */
+.home-hero {
+  /* keep your structure, just drop the old skew fin */
+  /* remove previous ::after fin; keep ::before if you like the angled tail */
+  position: relative;
+}
+.home-hero::before{
+  content:"";
+  position:absolute; inset:0;
+  background:#000;
+  clip-path: polygon(0 0, 100% 0, calc(100% - 28px) 100%, 0 100%);
+  z-index:1;
+}
+.home-hero > *{ position:relative; z-index:2; }
+
+/* make the content block the fin carrier so it sits above ::before */
+.home-hero .block-title{
+  display:inline-block;
+}
+.home-hero .block-title { /* turn the text block into a fin band */
+  /* use same sizing as sections */
+  padding: var(--band-py) var(--band-px);
+  padding-right: calc(var(--band-px) + var(--fin-w));
+  background: transparent; /* background comes from ::before */
+  color: var(--cyan);
+  position: relative;
+  overflow: hidden;
+}
+.home-hero .block-title::after{
+  content:"";
+  position:absolute; top:0; right:0; bottom:0;
+  width: var(--fin-w);
+  clip-path: polygon(100% 0, 0 50%, 100% 100%);
+  background: var(--cyan);  /* cyan fin */
+}
+
+/* SECTION title band (cyan with black fin) */
+.section-title .band{
+  display:inline-block;
+  font-weight:800;
+  text-decoration:none;
+}
+.section-title .band {                 /* same sizes as hero */
+  padding: var(--band-py) var(--band-px);
+  padding-right: calc(var(--band-px) + var(--fin-w));
+  background: var(--cyan);
+  color:#000;
+  position: relative;
+  overflow: hidden;
+}
+.section-title .band::after{
+  content:"";
+  position:absolute; top:0; right:0; bottom:0;
+  width: var(--fin-w);
+  clip-path: polygon(100% 0, 0 50%, 100% 100%);
+  background:#000;                      /* black fin */
+}

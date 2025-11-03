@@ -10,6 +10,74 @@
   --band-pad-y: 8px;       /* top/bottom padding inside band */
 }
 
+/* ================== HERO (Written / Video / Home) ================== */
+.home-hero,
+.written-hero,
+.video-hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+
+  color: #fff;
+  background: #000;
+  padding: var(--band-pad-y) calc(var(--band-pad-x) + var(--fin-width)) var(--band-pad-y) var(--band-pad-x);
+  margin: 0 0 16px -15px;  /* align visually with edge of grid */
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Cyan fin (black slash overlay) */
+.home-hero::before,
+.written-hero::before,
+.video-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #000; /* black band background */
+  z-index: 0;
+}
+
+.home-hero::after,
+.written-hero::after,
+.video-hero::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: var(--fin-width);
+  background: #73f0fa;
+  transform: skewX(var(--fin-skew));
+  z-index: 1;
+}
+
+/* inner text styling */
+.home-hero > *,
+.written-hero > *,
+.video-hero > * {
+  position: relative;
+  z-index: 2;
+}
+
+.home-hero .block-title,
+.written-hero .block-title,
+.video-hero .block-title {
+  font-weight: 800;
+  line-height: 1.1;
+  font-size: 1.15rem;
+  margin: 0;
+  letter-spacing: 0.3px;
+}
+
+@media (max-width: 575.98px) {
+  :root {
+    --fin-width: 18px;
+    --band-pad-x: 14px;
+    --band-pad-y: 6px;
+  }
+}
+
 /* ============== SECTION TITLES (Cyan Band + Black Slash) ============== */
 .section-title {
   position: relative;
@@ -21,13 +89,7 @@
   line-height: 1.1;
   font-size: 1.1rem;
   margin: 18px 0 12px -15px;
-
-  /* make cyan slightly shorter than black fin */
-  padding: var(--band-pad-y)
-           calc(var(--band-pad-x) + var(--fin-width) * 0.65)
-           var(--band-pad-y)
-           var(--band-pad-x);
-
+  padding: var(--band-pad-y) calc(var(--band-pad-x) + var(--fin-width)) var(--band-pad-y) var(--band-pad-x);
   background: var(--cyan);
   box-sizing: border-box;
 }
@@ -44,38 +106,34 @@
   z-index: 1;
 }
 
-/* ================== HERO (Written / Video / Home) ================== */
-.home-hero,
-.written-hero,
-.video-hero {
-  position: relative;
-  display: flex;
-  align-items: center;
-  box-sizing: border-box;
-  color: #fff;
-  background: #000;
-  isolation: isolate;
-  margin: 0 0 22px -15px;
-
-  /* cyan width shortened like section titles */
-  padding: var(--band-pad-y)
-           calc(var(--band-pad-x) + var(--fin-width) * 0.65)
-           var(--band-pad-y)
-           var(--band-pad-x);
+@media (max-width: 575.98px) {
+  .section-title {
+    font-size: 1rem;
+  }
 }
 
+/* Seam fix: slightly overdraw the fin and nudge right */
+.section-title::after,
 .home-hero::after,
 .written-hero::after,
 .video-hero::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  width: var(--fin-width);
-  background: var(--cyan);
-  transform: skewX(var(--fin-skew));
-  z-index: 1;
+  width: calc(var(--fin-width) + 2px);   /* cover edge */
+  right: -1px;                           /* overhang by 1px */
+  will-change: transform;                /* help rasterization */
+  backface-visibility: hidden;           /* avoid AA artifacts */
+  transform: translateZ(0) skewX(var(--fin-skew));
+}
+
+/* (Optional) If you still see a hairline on some devices,
+   add a tiny vertical overdraw as well: */
+@supports (inset: 0) {
+  .section-title::after,
+  .home-hero::after,
+  .written-hero::after,
+  .video-hero::after {
+    top: -1px;
+    bottom: -1px;
+  }
 }
 
 /* ============== LINK BEHAVIOR ============== */

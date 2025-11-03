@@ -1,82 +1,129 @@
 /* ================== TOKENS ================== */
 :root { --cyan: #73f0fa; }
 
-/* ===== Unified Fin System (Cyan Band + Black Slash) ===== */
-:root {
-  --cyan: #73f0fa;
-  --fin-width: 22px;       /* width of the black slash */
-  --fin-skew: -26deg;      /* angle of the slash */
-  --band-pad-x: 18px;      /* left/right padding inside band */
-  --band-pad-y: 8px;       /* top/bottom padding inside band */
+/* ========== Shared fin vars ========== */
+:root{
+  --fin-w: 14px;          /* fin thickness (12–16 looks best) */
+  --fin-cut: 18px;        /* depth of the diagonal bite */
+  --band-pad-x: 18px;
+  --band-pad-y: 8px;
 }
 
-/* ============== SECTION TITLES (Cyan Band + Black Slash) ============== */
-.section-title {
+/* =====================================
+   SECTION TITLES (cyan band + black fin)
+   ===================================== */
+h2.section-title,
+h3.section-title{
   position: relative;
   display: inline-flex;
   align-items: center;
-  isolation: isolate;
-  color: #000;
   font-weight: 800;
+  color: #000;
   line-height: 1.1;
   font-size: 1.1rem;
   margin: 18px 0 12px -15px;
-
-  /* make cyan slightly shorter than black fin */
-  padding: var(--band-pad-y)
-           calc(var(--band-pad-x) + var(--fin-width) * 0.65)
-           var(--band-pad-y)
-           var(--band-pad-x);
-
-  background: var(--cyan);
+  padding: var(--band-pad-y) calc(var(--band-pad-x) + var(--fin-w))
+           var(--band-pad-y) var(--band-pad-x);
+  isolation: isolate;
   box-sizing: border-box;
+  /* compositor hint = smoother edges on some GPUs */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  outline: 1px solid transparent; /* kills subpixel seams in Safari */
 }
 
-.section-title::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  width: var(--fin-width);
-  background: #000;
-  transform: skewX(var(--fin-skew));
-  z-index: 1;
+/* Cyan band with a DIAGONAL CUT on the right */
+h2.section-title::before,
+h3.section-title::before{
+  content:"";
+  position:absolute; inset:0;
+  background: var(--cyan);
+  /* cut shape */
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    calc(100% - var(--fin-cut)) 100%,
+    0 100%
+  );
+  z-index: -1;
 }
 
-/* ================== HERO (Written / Video / Home) ================== */
+/* Black fin (thin parallelogram) */
+h2.section-title::after,
+h3.section-title::after{
+  content:"";
+  position:absolute; top:0; bottom:0; right:-1px;
+  width: calc(var(--fin-w) + 2px);
+  background:#000;
+  clip-path: polygon(
+    0 0, 100% 0,
+    75% 100%, 0 100%
+  );
+  z-index: -1;
+}
+
+/* Never draw fins on non-heading uses of .section-title */
+.section-title:not(h1):not(h2):not(h3){ background:unset; padding:0; margin:0; }
+.section-title:not(h1):not(h2):not(h3)::before,
+.section-title:not(h1):not(h2):not(h3)::after{ content:none !important; }
+
+/* ==============================
+   HERO (black band + cyan fin)
+   ============================== */
 .home-hero,
 .written-hero,
-.video-hero {
+.video-hero{
   position: relative;
-  display: flex;
-  align-items: center;
-  box-sizing: border-box;
-  color: #fff;
-  background: #000;
-  isolation: isolate;
-  margin: 0 0 22px -15px;
-
-  /* cyan width shortened like section titles */
+  display: flex; align-items: center;
+  color:#fff;
   padding: var(--band-pad-y)
-           calc(var(--band-pad-x) + var(--fin-width) * 0.65)
+           calc(var(--band-pad-x) + var(--fin-w))
            var(--band-pad-y)
            var(--band-pad-x);
+  margin: 0 0 16px 0;       /* no negative margins */
+  isolation: isolate;
+  overflow: hidden;
+  transform: translateZ(0);
+  outline: 1px solid transparent;
 }
 
+/* Black band with the same diagonal cut on the right */
+.home-hero::before,
+.written-hero::before,
+.video-hero::before{
+  content:"";
+  position:absolute; inset:0;
+  background:#000;
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    calc(100% - var(--fin-cut)) 100%,
+    0 100%
+  );
+  z-index:-1;
+}
+
+/* Cyan fin */
 .home-hero::after,
 .written-hero::after,
-.video-hero::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  width: var(--fin-width);
+.video-hero::after{
+  content:"";
+  position:absolute; top:0; bottom:0; right:-1px;
+  width: calc(var(--fin-w) + 2px);
   background: var(--cyan);
-  transform: skewX(var(--fin-skew));
-  z-index: 1;
+  clip-path: polygon(
+    0 0, 100% 0,
+    75% 100%, 0 100%
+  );
+  z-index:-1;
 }
+
+/* Small screens: thinner fin */
+@media (max-width: 575.98px){
+  :root{ --fin-w: 12px; --fin-cut: 16px; --band-pad-x: 14px; --band-pad-y: 6px; }
+  h2.section-title, h3.section-title{ font-size: 1rem; }
+}
+
 
 /* ============== LINK BEHAVIOR ============== */
 .written-list .w-title--link { text-decoration: none; }

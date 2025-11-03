@@ -116,6 +116,10 @@
   .octopus.in-view .from-right{ animation:none !important; }
 }
 
+
+/* ===== HERO (reuse) ===== */
+
+
 /* ===== Services carousel (scoped to #services) ===== */
 #services .hscroll { position: relative; }
 
