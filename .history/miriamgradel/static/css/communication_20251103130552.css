@@ -266,6 +266,7 @@ a.example-button:active {
   margin-right: 0;
 }
 
+.svc-section,
 .row,
 .container-fluid {
   overflow-x: hidden; /* ensure nothing leaks horizontally */

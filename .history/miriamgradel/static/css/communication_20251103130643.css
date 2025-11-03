@@ -99,7 +99,7 @@
 .svc-section {
   padding: 0.5rem 0;                   /* vertical rhythm */
   background-color: #fff;              /* default */
-  margin-left: -1%;
+  margin-left: 0%;
 }
 
 /* Alternate backgrounds for visual variety */
@@ -266,6 +266,7 @@ a.example-button:active {
   margin-right: 0;
 }
 
+.svc-section,
 .row,
 .container-fluid {
   overflow-x: hidden; /* ensure nothing leaks horizontally */
