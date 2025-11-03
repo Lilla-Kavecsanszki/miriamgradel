@@ -99,7 +99,7 @@
 .svc-section {
   padding: 0.5rem 0;                   /* vertical rhythm */
   background-color: #fff;              /* default */
-  margin-left: 0%;
+  margin-left: -1%;                    /* subtle full-bleed feel */
 }
 
 /* Alternate backgrounds for visual variety */
@@ -222,7 +222,7 @@ a.example-button:active {
   bottom: 2rem;
   right: 2rem;
   z-index: 1000;
-  display: block;
+  display: inline-block;
   text-decoration: none;
 }
 .to-top-button:hover,
@@ -253,23 +253,6 @@ a.example-button:active {
     line-height: 1;
   }
   .to-top-button .label { display: none; } /* hide text, keep arrow */
-}
-
-/* === Fix mobile overflow from example cards === */
-.example-card {
-  box-sizing: border-box;
-  max-width: 100%;
-  overflow-wrap: break-word;
-  word-break: break-word;
-  padding-left: 0;   /* remove weird 2% indent */
-  margin-left: 0;
-  margin-right: 0;
-}
-
-.svc-section,
-.row,
-.container-fluid {
-  overflow-x: hidden; /* ensure nothing leaks horizontally */
 }
 
 /* ========================

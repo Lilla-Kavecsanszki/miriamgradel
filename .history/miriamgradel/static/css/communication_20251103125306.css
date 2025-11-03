@@ -99,7 +99,7 @@
 .svc-section {
   padding: 0.5rem 0;                   /* vertical rhythm */
   background-color: #fff;              /* default */
-  margin-left: 0%;
+  margin-left: -1%;                    /* subtle full-bleed feel */
 }
 
 /* Alternate backgrounds for visual variety */

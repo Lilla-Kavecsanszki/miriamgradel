@@ -99,7 +99,7 @@
 .svc-section {
   padding: 0.5rem 0;                   /* vertical rhythm */
   background-color: #fff;              /* default */
-  margin-left: 0%;
+  margin-left: -1%;                    /* subtle full-bleed feel */
 }
 
 /* Alternate backgrounds for visual variety */
@@ -208,68 +208,91 @@ a.example-button:active {
    BACK TO TOP (floating CTA)
    ======================== */
 .to-top-button {
+  /* visual */
   background: var(--cyan);
   color: #000;
   font-weight: 800;
   border: none;
   border-radius: 4px;
+  text-decoration: none;
+
+  /* compact, denser shadow */
   box-shadow:
     inset 0 -2px 0 rgba(0,0,0,.2),
-    0 6px 14px rgba(115,240,250,.4);
-  transition: background .2s ease, transform .05s ease-in-out, box-shadow .2s ease;
-  padding: 0.5rem 1rem;
+    0 3px 6px rgba(0,0,0,.35);
+
+  /* placement */
   position: fixed;
-  bottom: 2rem;
-  right: 2rem;
-  z-index: 1000;
-  display: block;
-  text-decoration: none;
+  right: clamp(12px, 4vw, 20px);
+  bottom: calc(env(safe-area-inset-bottom, 0px) + clamp(12px, 4vw, 20px));
+  z-index: 2500;
+
+  /* size (desktop pill; mobile handled below) */
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.5rem 1rem;
+
+  /* show/hide animation */
+  transform: translateY(18px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .18s ease, transform .18s ease, box-shadow .18s ease;
 }
 .to-top-button:hover,
 .to-top-button:focus {
   transform: translate(-2px, -2px);
-  background: #1fb7c3; /* darker cyan */
+  background: #1fb7c3;
   color: #fff;
-}
-.to-top-button:active {
-  transform: translateY(1px);
-  background: #148a93;
   box-shadow:
     inset 0 -1px 0 rgba(0,0,0,.25),
-    0 4px 10px rgba(0,0,0,.25);
+    0 4px 8px rgba(0,0,0,.45);
+}
+/* active (JS toggles this) */
+.to-top-button.is-visible {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
 }
 
 /* Small screens: circular, arrow-only */
 @media (max-width: 480px) {
   .to-top-button {
-    width: 48px;
-    height: 48px;
-    padding: 0;
+    width: 44px;
+    height: 44px;
+    padding: 0;                 /* circular icon button */
     border-radius: 9999px;
-    display: inline-flex;
-    align-items: center;
     justify-content: center;
-    font-size: 1.25rem;
+    font-size: 1.1rem;
     line-height: 1;
+    /* keep right/bottom from base rule (safe area respected) */
   }
-  .to-top-button .label { display: none; } /* hide text, keep arrow */
+  .to-top-button .label { display: none; }
 }
 
-/* === Fix mobile overflow from example cards === */
-.example-card {
-  box-sizing: border-box;
-  max-width: 100%;
-  overflow-wrap: break-word;
-  word-break: break-word;
-  padding-left: 0;   /* remove weird 2% indent */
-  margin-left: 0;
-  margin-right: 0;
+@media (min-width: 992px) {
+  .to-top-button {
+    /* place inside content area, not under the 300px sidebar */
+    left: calc(var(--side-menu-width, 300px) + 16px);
+    right: auto;
+    bottom: 24px;
+  }
+  .to-top-button .label { display: inline; }
 }
 
-.svc-section,
-.row,
-.container-fluid {
-  overflow-x: hidden; /* ensure nothing leaks horizontally */
+/* Back-to-top: keep to the right on desktop */
+@media (min-width: 992px) {
+  .to-top-button {
+    left: auto !important;   /* undo the left-offset */
+    right: 24px !important;  /* pin to the right edge */
+    bottom: 24px;            /* nice spacing from bottom */
+  }
+}
+
+
+/* when footer/CTA intersects, give extra clearance */
+.to-top-button.avoid-footer {
+  bottom: calc(env(safe-area-inset-bottom, 0px) + clamp(84px, 12vh, 140px));
 }
 
 /* ========================
