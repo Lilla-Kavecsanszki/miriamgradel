@@ -163,3 +163,11 @@ a.example-button:active{
   }
   .to-top-button .label{ display:none; }
 }
+
+/* ===== Layout tweak: put Intro UNDER the hero title only on this template ===== */
+body.template-communication .written-hero{
+  /* keep flex from journalism.css but stack vertically */
+  flex-direction: column;
+  align-items: flex-start;
+  gap: .25rem; /* small breathing room between title and intro */
+}

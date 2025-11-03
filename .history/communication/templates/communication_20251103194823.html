@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+{% load static wagtailcore_tags wagtailimages_tags bts_tags i18n %}
+
+{% block body_class %}template-communication{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/journalism.css' %}">
+  <link rel="stylesheet" href="{% static 'css/communication.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+<div class="container-fluid py-2">
+
+  <a id="top"></a>
+
+  <!-- Row 1: Hero + service tiles (left) / BTS sidebar (right) -->
+  <div class="row">
+    <div class="col-12 col-lg-8">
+
+      <!-- Hero ribbon -->
+      <div class="written-hero mb-3">
+        <span class="cap" aria-hidden="true"></span>
+        <h1 class="block-title m-0" style="color:#73f0fa">{{ page.title }}</h1>
+        {% if page.intro %}
+          <div class="mt-2">
+            {{ page.intro|richtext }}
+          </div>
+        {% endif %}
+      </div>
+
+      <!-- Service tiles heading -->
+      <h3 class="section-title">
+        <span class="band">{% trans "Click on the service below to know more" %}</span>
+      </h3>
+
+      <!-- Service anchor tiles -->
+      {% if page.services %}
+      <section class="svc-index mb-4">
+        <ul class="svc-links list-unstyled" role="list">
+          {% for service in page.services %}
+            {% with svc=service.value %}
+            {% with anchor_id=svc.slug|default:svc.title|slugify %}
+              <li>
+                <a class="svc-link"
+                  href="#{{ anchor_id }}"
+                  aria-label="{% blocktrans with t=svc.title %}Jump to {{ t }}{% endblocktrans %}">
+                  <span class="svc-title">{{ svc.title }}</span>
+                </a>
+              </li>
+            {% endwith %}
+            {% endwith %}
+          {% endfor %}
+        </ul>
+      </section>
+      {% endif %}
+
+    </div><!-- /col-8 -->
+
+    <!-- BTS sidebar -->
+    <div class="col-12 col-lg-4 mt-4 mt-lg-0">
+      <aside class="bts-aside">
+        <h3 class="section-title">{% trans "Behind the Scenes" %}</h3>
+        {% bts_teasers_for 'communication' 3 as bts_teasers %}
+        {% if bts_teasers %}
+          <ul class="list-unstyled">
+            {% for bts in bts_teasers %}
+              <li class="mb-3">
+                <article class="bts-card bts-card--sidebar">
+                  <a href="{{ bts.url }}" class="thumb text-decoration-none" aria-label="{{ bts.card_title }}">
+                    {% if bts.teaser_image %}
+                      {% image bts.teaser_image fill-600x338 class="w-100" loading="lazy" decoding="async" alt=bts.card_title %}
+                    {% endif %}
+                    <span class="bts-title d-inline-block mt-2">{{ bts.card_title }}</span>
+                  </a>
+                  <div class="bts-body">
+                    {% if bts.card_summary %}
+                      <p class="bts-text">{{ bts.card_summary }}</p>
+                    {% endif %}
+                    <a href="{{ bts.url }}" class="bts-cta">{% trans "Discover how it happened!" %}</a>
+                  </div>
+                </article>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="text-muted">{% trans "More behind-the-scenes coming soon." %}</p>
+        {% endif %}
+      </aside>
+    </div><!-- /col-4 -->
+  </div><!-- /row -->
+
+  <!-- Rows 2+: each service section -->
+  {% if page.services %}
+    {% for service in page.services %}
+      {% with svc=service.value %}
+      {% with anchor_id=svc.slug|default:svc.title|slugify %}
+        <div class="row">
+          <div class="col-12">
+            <section id="{{ anchor_id }}"
+                     class="svc-section mb-1{% if forloop.counter|divisibleby:2 %} svc-section--alt{% endif %}">
+              <h3 class="section-title">
+                <span class="band">{{ svc.title }}</span>
+              </h3>
+
+              <div class="row gx-3 gy-4 align-items-start">
+                <div class="col-12 col-lg-7">
+                  {{ svc.details|richtext }}
+
+                  {% if svc.outputs %}
+                    <h4 class="mt-3">{% trans "Outputs:" %}</h4>
+                    <ul>
+                      {% for output in svc.outputs %}
+                        <li>{{ output }}</li>
+                      {% endfor %}
+                    </ul>
+                  {% endif %}
+                </div>
+
+                <div class="col-12 col-lg-5">
+                  {% if svc.image %}
+                    {% image svc.image fill-900x600 class="img-fluid rounded" loading="lazy" decoding="async" alt=svc.title %}
+                  {% endif %}
+                </div>
+              </div>
+
+              {% if svc.examples %}
+                <div class="svc-examples mt-4">
+                  <h4 class="mb-2">{% trans "Examples" %}</h4>
+                  <div class="row row-cols-1 row-cols-md-2 g-3">
+                    {% for ex in svc.examples %}
+                      <div class="col">
+                        <article class="example-card p-3 border-0">
+                          {% if ex.image %}
+                            {% image ex.image fill-600x338 class="img-fluid mb-2 rounded" loading="lazy" alt=ex.title %}
+                          {% endif %}
+                          <h5 class="mb-1">{{ ex.title }}</h5>
+                          {% if ex.description %}
+                            <p class="mb-2">{{ ex.description }}</p>
+                          {% endif %}
+                          {% if ex.link_url %}
+                            <a href="{{ ex.link_url }}"
+                               class="example-button d-inline-block"
+                               target="_blank"
+                               rel="noopener"
+                               aria-label="{% blocktrans with l=ex.link_label|default:'Learn more' %}Open: {{ l }}{% endblocktrans %}">
+                              {{ ex.link_label|default:_("Learn more") }}
+                            </a>
+                          {% endif %}
+                        </article>
+                      </div>
+                    {% endfor %}
+                  </div>
+                </div>
+              {% endif %}
+            </section>
+          </div>
+        </div>
+      {% endwith %}
+      {% endwith %}
+    {% endfor %}
+  {% endif %}
+
+  <!-- Back to top button -->
+  <a href="#top" class="to-top-button" aria-label="{% trans 'Back to top' %}">
+    <span class="arrow" aria-hidden="true">↑</span>
+    <span class="label">{% trans "Back to top" %}</span>
+  </a>
+
+</div><!-- /container-fluid -->
+{% endblock %}

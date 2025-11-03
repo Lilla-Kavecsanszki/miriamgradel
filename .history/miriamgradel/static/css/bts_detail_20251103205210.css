@@ -18,7 +18,7 @@
 @media (min-width: 992px){
   .container-fluid.bts-detail{
     padding-left: calc(var(--sidebar-w) + var(--gutter));
-    margin-top: 1.5%;
+    margin-top: 1,5%;
   }
 }
 

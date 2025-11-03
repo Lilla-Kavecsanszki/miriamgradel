@@ -7,7 +7,6 @@
 
   /* Fin / band geometry */
   --fin-width: 22px;
-  --fin-skew: -26deg;
   --band-pad-x: 18px;
   --band-pad-y: 8px;
 
@@ -16,9 +15,9 @@
   --hero-pad-bottom: calc(var(--band-pad-y) - 3px);
 
   /* Hero title sizing (subtle, elegant) */
-  --hero-title-min: 1.1rem;  /* ≈18px on mobile */
-  --hero-title-fluid: 1.6vw; /* gentle growth */
-  --hero-title-max: 1.6rem;  /* ≈25–26px max */
+  --hero-title-min: 1.1rem;   /* ≈18px on mobile */
+  --hero-title-fluid: 1.6vw;  /* gentle growth */
+  --hero-title-max: 1.6rem;   /* ≈25–26px max */
 }
 
 /* ============== SECTION TITLES (Cyan Band + Black Slash) ============== */
@@ -36,15 +35,14 @@
            calc(var(--band-pad-x) + var(--fin-width) * 0.65)
            var(--band-pad-y)
            var(--band-pad-x);
-  background: var(--cyan);
   box-sizing: border-box;
-}
-.section-title::after{
-  content:"";
-  position:absolute; top:0; bottom:0; right:0;
-  width:var(--fin-width);
-  background:#000; transform:skewX(var(--fin-skew));
-  z-index:1;
+
+  /* Draw cyan band + black slash INSIDE the background */
+  background:
+    /* black diagonal slash confined to the right fin strip */
+    linear-gradient(135deg, #000 0 49.5%, transparent 50.5%) right / var(--fin-width) 100% no-repeat,
+    /* base cyan band */
+    var(--cyan);
 }
 
 /* ================== HERO (Written / Video / Home) ================== */
@@ -53,16 +51,15 @@
 .video-hero{
   position: relative;
   display: flex;
-  align-items: flex-start; /* left-align */
-  flex-direction: column;  /* stack title + intro */
-  gap: .3rem;              /* tight, consistent gap */
+  align-items: flex-start;  /* left-align */
+  flex-direction: column;   /* stack title + intro */
+  gap: .3rem;               /* tight, consistent gap */
   box-sizing: border-box;
   color: #fff;
-  background: #000;
   isolation: isolate;
 
   /* left “band” indent unchanged; vertical padding tuned */
-  margin: 0 0 18px -15px; /* slightly reduced bottom margin */
+  margin: 0 0 18px -15px;   /* slightly reduced bottom margin */
   padding:
     var(--hero-pad-top)
     calc(var(--band-pad-x) + var(--fin-width) * 0.65)
@@ -71,16 +68,15 @@
 
   /* normalize so em-based UA h1 doesn't balloon */
   font-size: 1rem;
-}
-.home-hero::after,
-.written-hero::after,
-.video-hero::after{
-  content:"";
-  position:absolute; top:0; bottom:0; right:0;
-  width:var(--fin-width);
-  background:var(--cyan);
-  transform:skewX(var(--fin-skew));
-  z-index:1;
+
+  /* Draw black band + cyan fin + black diagonal INSIDE the background */
+  background:
+    /* layer 1: black diagonal that carves the slash shape over the cyan fin */
+    linear-gradient(135deg, #000 0 49.5%, transparent 50.5%) right / var(--fin-width) 100% no-repeat,
+    /* layer 2: cyan fin strip on the right */
+    linear-gradient(var(--cyan), var(--cyan)) right / var(--fin-width) 100% no-repeat,
+    /* layer 3: main black band */
+    #000;
 }
 
 /* ================== HERO — unified typography ================== */

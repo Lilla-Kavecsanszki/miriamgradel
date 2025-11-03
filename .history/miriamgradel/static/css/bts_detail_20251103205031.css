@@ -18,8 +18,12 @@
 @media (min-width: 992px){
   .container-fluid.bts-detail{
     padding-left: calc(var(--sidebar-w) + var(--gutter));
-    margin-top: 1.5%;
   }
+}
+
+/* Let hero title wrap nicely within a slightly wider rail */
+.written-hero .block-title{
+  max-width: min(100%, calc(var(--measure) + 24px));
 }
 
 /* === Article wrapper === */

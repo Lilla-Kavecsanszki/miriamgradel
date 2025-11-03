@@ -21,6 +21,14 @@
   --hero-title-max: 1.6rem;  /* ≈25–26px max */
 }
 
+/* Keep the skewed fin fully inside the box */
+.section-title,
+.home-hero,
+.written-hero,
+.video-hero{
+  overflow: hidden;          /* or: overflow: clip; (modern) */
+}
+
 /* ============== SECTION TITLES (Cyan Band + Black Slash) ============== */
 .section-title{
   position: relative;

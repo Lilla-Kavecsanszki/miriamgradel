@@ -7,7 +7,7 @@
 
   /* Fin / band geometry */
   --fin-width: 22px;
-  --fin-skew: -26deg;
+  --fin-cut: 18%;     /* diagonal amount of the fin’s left edge */
   --band-pad-x: 18px;
   --band-pad-y: 8px;
 
@@ -39,12 +39,16 @@
   background: var(--cyan);
   box-sizing: border-box;
 }
+
+/* Fin with clipped diagonal (no spikes, fully responsive) */
 .section-title::after{
   content:"";
   position:absolute; top:0; bottom:0; right:0;
-  width:var(--fin-width);
-  background:#000; transform:skewX(var(--fin-skew));
+  width: var(--fin-width);
+  background:#000;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, var(--fin-cut) 100%);
   z-index:1;
+  pointer-events:none;
 }
 
 /* ================== HERO (Written / Video / Home) ================== */
@@ -53,16 +57,16 @@
 .video-hero{
   position: relative;
   display: flex;
-  align-items: flex-start; /* left-align */
-  flex-direction: column;  /* stack title + intro */
-  gap: .3rem;              /* tight, consistent gap */
+  align-items: flex-start;  /* left-align */
+  flex-direction: column;   /* stack title + intro */
+  gap: .3rem;               /* tight, consistent gap */
   box-sizing: border-box;
   color: #fff;
   background: #000;
   isolation: isolate;
 
   /* left “band” indent unchanged; vertical padding tuned */
-  margin: 0 0 18px -15px; /* slightly reduced bottom margin */
+  margin: 0 0 18px -15px;   /* slightly reduced bottom margin */
   padding:
     var(--hero-pad-top)
     calc(var(--band-pad-x) + var(--fin-width) * 0.65)
@@ -72,15 +76,18 @@
   /* normalize so em-based UA h1 doesn't balloon */
   font-size: 1rem;
 }
+
+/* Cyan fin with clipped diagonal */
 .home-hero::after,
 .written-hero::after,
 .video-hero::after{
   content:"";
   position:absolute; top:0; bottom:0; right:0;
-  width:var(--fin-width);
-  background:var(--cyan);
-  transform:skewX(var(--fin-skew));
+  width: var(--fin-width);
+  background: var(--cyan);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, var(--fin-cut) 100%);
   z-index:1;
+  pointer-events:none;
 }
 
 /* ================== HERO — unified typography ================== */
@@ -133,6 +140,105 @@ body.template-communication .video-hero .block-title{
   color: var(--cyan);
   text-decoration-thickness: 2px;
 }
+
+/* ================== Fallback for very old browsers (no clip-path) ================== */
+@supports not (clip-path: polygon(0 0,100% 0,100% 100%,10% 100%)) {
+  .section-title::after,
+  .home-hero::after,
+  .written-hero::after,
+  .video-hero::after{
+    clip-path: none;
+    transform: skewX(-26deg);
+  }
+  .section-title,
+  .home-hero,
+  .written-hero,
+  .video-hero{
+    overflow: hidden; /* prevent tiny spikes only in fallback mode */
+  }
+}
+
+/* === gutter variable so we don’t hardcode 15px === */
+:root{
+  --col-gutter: 15px; /* Bootstrap column padding on each side */
+}
+
+/* SECTION TITLE: pull into both gutters so the fin meets the page edge evenly */
+.section-title{
+  /* was: margin: 18px 0 12px -15px; */
+  margin: 18px calc(-1 * var(--col-gutter)) 12px calc(-1 * var(--col-gutter));
+  /* keep the rest as-is */
+}
+
+/* HERO: pull the black bar into BOTH gutters */
+.home-hero,
+.written-hero,
+.video-hero{
+  /* was: margin: 0 0 18px -15px; */
+  margin: 0 calc(-1 * var(--col-gutter)) 18px calc(-1 * var(--col-gutter));
+  /* keep your padding, flex, etc. */
+}
+
+/* Diagonal fins (clip-path version you’re using) */
+.section-title::after{
+  content:"";
+  position:absolute; top:0; bottom:0; right:0;
+  width: var(--fin-width);
+  background:#000;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, var(--fin-cut, 18%) 100%);
+  z-index:1; pointer-events:none;
+}
+.home-hero::after,
+.written-hero::after,
+.video-hero::after{
+  content:"";
+  position:absolute; top:0; bottom:0; right:0;
+  width: var(--fin-width);
+  background: var(--cyan);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, var(--fin-cut, 18%) 100%);
+  z-index:1; pointer-events:none;
+}
+/* === gutter variable so we don’t hardcode 15px === */
+:root{
+  --col-gutter: 15px; /* Bootstrap column padding on each side */
+}
+
+/* SECTION TITLE: pull into both gutters so the fin meets the page edge evenly */
+.section-title{
+  /* was: margin: 18px 0 12px -15px; */
+  margin: 18px calc(-1 * var(--col-gutter)) 12px calc(-1 * var(--col-gutter));
+  /* keep the rest as-is */
+}
+
+/* HERO: pull the black bar into BOTH gutters */
+.home-hero,
+.written-hero,
+.video-hero{
+  /* was: margin: 0 0 18px -15px; */
+  margin: 0 calc(-1 * var(--col-gutter)) 18px calc(-1 * var(--col-gutter));
+  /* keep your padding, flex, etc. */
+}
+
+/* Diagonal fins (clip-path version you’re using) */
+.section-title::after{
+  content:"";
+  position:absolute; top:0; bottom:0; right:0;
+  width: var(--fin-width);
+  background:#000;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, var(--fin-cut, 18%) 100%);
+  z-index:1; pointer-events:none;
+}
+.home-hero::after,
+.written-hero::after,
+.video-hero::after{
+  content:"";
+  position:absolute; top:0; bottom:0; right:0;
+  width: var(--fin-width);
+  background: var(--cyan);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, var(--fin-cut, 18%) 100%);
+  z-index:1; pointer-events:none;
+}
+
 
 /* ============== LINK BEHAVIOR ============== */
 .written-list .w-title--link { text-decoration: none; }

@@ -7,22 +7,21 @@
 
   /* Fin / band geometry */
   --fin-width: 22px;
-  --fin-skew: -26deg;
   --band-pad-x: 18px;
   --band-pad-y: 8px;
 
-  /* Fine-tuned hero vertical padding (bottom a touch tighter) */
+  /* Hero spacing */
   --hero-pad-top: var(--band-pad-y);
   --hero-pad-bottom: calc(var(--band-pad-y) - 3px);
 
-  /* Hero title sizing (subtle, elegant) */
-  --hero-title-min: 1.1rem;  /* ≈18px on mobile */
-  --hero-title-fluid: 1.6vw; /* gentle growth */
-  --hero-title-max: 1.6rem;  /* ≈25–26px max */
+  /* Hero title sizing */
+  --hero-title-min: 1.1rem;
+  --hero-title-fluid: 1.6vw;
+  --hero-title-max: 1.6rem;
 }
 
-/* ============== SECTION TITLES (Cyan Band + Black Slash) ============== */
-.section-title{
+/* ============== SECTION TITLES ============== */
+.section-title {
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -30,66 +29,69 @@
   color: #000;
   font-weight: 800;
   line-height: 1.1;
-  font-size: calc(1.1rem + 1px); /* +1px */
+  font-size: calc(1.1rem + 1px);
   margin: 18px 0 12px -15px;
   padding: var(--band-pad-y)
            calc(var(--band-pad-x) + var(--fin-width) * 0.65)
            var(--band-pad-y)
            var(--band-pad-x);
-  background: var(--cyan);
   box-sizing: border-box;
+
+  /* Fin drawn safely INSIDE the element only */
+  background:
+    linear-gradient(135deg, #000 0 49.5%, transparent 50.5%)
+      right / var(--fin-width) 100% no-repeat,
+    var(--cyan);
+  background-origin: border-box;
+  background-clip: border-box;
 }
-.section-title::after{
-  content:"";
-  position:absolute; top:0; bottom:0; right:0;
-  width:var(--fin-width);
-  background:#000; transform:skewX(var(--fin-skew));
-  z-index:1;
+
+/* === Prevent gradient fin bleed into other UI === */
+.section-title *,
+.section-title::before,
+.section-title::after {
+  background: none;
 }
 
 /* ================== HERO (Written / Video / Home) ================== */
 .home-hero,
 .written-hero,
-.video-hero{
+.video-hero {
   position: relative;
   display: flex;
-  align-items: flex-start; /* left-align */
-  flex-direction: column;  /* stack title + intro */
-  gap: .3rem;              /* tight, consistent gap */
+  align-items: flex-start;
+  flex-direction: column;
+  gap: .3rem;
   box-sizing: border-box;
   color: #fff;
-  background: #000;
   isolation: isolate;
 
-  /* left “band” indent unchanged; vertical padding tuned */
-  margin: 0 0 18px -15px; /* slightly reduced bottom margin */
+  margin: 0 0 18px -15px;
   padding:
     var(--hero-pad-top)
     calc(var(--band-pad-x) + var(--fin-width) * 0.65)
     var(--hero-pad-bottom)
     var(--band-pad-x);
 
-  /* normalize so em-based UA h1 doesn't balloon */
   font-size: 1rem;
-}
-.home-hero::after,
-.written-hero::after,
-.video-hero::after{
-  content:"";
-  position:absolute; top:0; bottom:0; right:0;
-  width:var(--fin-width);
-  background:var(--cyan);
-  transform:skewX(var(--fin-skew));
-  z-index:1;
+
+  background:
+    linear-gradient(135deg, #000 0 49.5%, transparent 50.5%)
+      right / var(--fin-width) 100% no-repeat,
+    linear-gradient(var(--cyan), var(--cyan))
+      right / var(--fin-width) 100% no-repeat,
+    #000;
+  background-origin: border-box;
+  background-clip: border-box;
 }
 
-/* ================== HERO — unified typography ================== */
+/* ================== HERO — typography ================== */
 .home-hero .block-title,
 .written-hero .block-title,
 .video-hero .block-title,
 body.template-communication .home-hero .block-title,
 body.template-communication .written-hero .block-title,
-body.template-communication .video-hero .block-title{
+body.template-communication .video-hero .block-title {
   font-size: clamp(var(--hero-title-min), var(--hero-title-fluid), var(--hero-title-max));
   line-height: 1.2;
   font-weight: 400;
@@ -97,42 +99,46 @@ body.template-communication .video-hero .block-title{
   color: var(--cyan);
 }
 
-/* ================== HERO — intro sizing and margin reset ================== */
-/* 1) Kill Bootstrap mt-2 and default paragraph margins in hero */
+/* ================== HERO — intro text ================== */
 .home-hero > .mt-2,
 .written-hero > .mt-2,
-.video-hero > .mt-2{ margin: 0 !important; }
+.video-hero > .mt-2 { margin: 0 !important; }
 
 .home-hero .richtext p,
 .written-hero .richtext p,
-.video-hero .richtext p{ margin: 0; }
+.video-hero .richtext p { margin: 0; }
 
-/* 2) Provide controlled spacing between intro blocks */
 .home-hero .richtext > * + *,
 .written-hero .richtext > * + *,
-.video-hero .richtext > * + *{ margin-top: .35rem; }
+.video-hero .richtext > * + * { margin-top: .35rem; }
 
-/* 3) Intro typography */
 .home-hero > .mt-2,
 .written-hero > .mt-2,
 .video-hero > .mt-2,
 .home-hero .richtext,
 .written-hero .richtext,
-.video-hero .richtext{
-  font-size: clamp(1rem, 1.2vw, 1.1rem); /* ~16–18px */
+.video-hero .richtext {
+  font-size: clamp(1rem, 1.2vw, 1.1rem);
   line-height: 1.4;
   font-weight: 400;
   color: #fff;
   max-width: 60ch;
 }
 
-/* 4) Intro links legibility on dark */
 .home-hero .richtext a,
 .written-hero .richtext a,
-.video-hero .richtext a{
+.video-hero .richtext a {
   color: var(--cyan);
   text-decoration-thickness: 2px;
 }
+
+/* ================== Safety isolation ================== */
+[class*="swiper"],
+[class*="carousel"],
+[class*="slider"] {
+  background: none !important;
+}
+
 
 /* ============== LINK BEHAVIOR ============== */
 .written-list .w-title--link { text-decoration: none; }
