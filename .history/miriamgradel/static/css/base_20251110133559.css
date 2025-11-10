@@ -60,11 +60,8 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
   }
 }
 
-.loading-logo { max-width: 200px;
-                max-height: 200px;
-                width: auto;
-                height: auto;
-              }
+.loading-logo { max-width: 200px; }
+
 
 /* ======================== Sidebar (structure) ======================== */
 .side-menu {

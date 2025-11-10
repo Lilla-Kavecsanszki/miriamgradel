@@ -66,6 +66,7 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
                 height: auto;
               }
 
+
 /* ======================== Sidebar (structure) ======================== */
 .side-menu {
   position: fixed;

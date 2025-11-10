@@ -34,37 +34,13 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
 
 /* ======================== Loading Overlay ======================== */
 .loading-overlay {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #fff;
-  z-index: 10000;
-  opacity: 1;
-  transition: opacity 1s ease;
-  pointer-events: none;
+  position: fixed; inset: 0;
+  display: grid; place-items: center;
   background: #fff;
   z-index: 10000; opacity: 1; transition: opacity 1s ease;
   pointer-events: none; /* ensure faded overlay never blocks interactions */
 }
-
-@supports(padding: max(0px)) {
-  .loading-overlay {
-    padding-top: max(env(safe-area-inset-top), 0px);
-    padding-bottom: max(env(safe-area-inset-bottom), 0px);
-  }
-}
-
-.loading-logo { max-width: 200px;
-                max-height: 200px;
-                width: auto;
-                height: auto;
-              }
+.loading-logo { max-width: 200px; }
 
 /* ======================== Sidebar (structure) ======================== */
 .side-menu {
