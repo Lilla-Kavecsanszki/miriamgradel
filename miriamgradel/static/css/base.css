@@ -280,20 +280,12 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
 
 /* ===== CTA STRIP (in footer) ===== */
 /* Fallback for older browsers */
+/* Full width CTA strip above footer grid */
 .cta-strip{
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
-  margin-right: calc(50% - 50vw);
   background: #000;
-  padding-block: 32px;
-  overflow-x: clip;
-}
-@supports (width: 100dvw){
-  .cta-strip{
-    width: 100dvw;
-    margin-left: calc(50% - 50dvw);
-    margin-right: calc(50% - 50dvw);
-  }
+  width: 100%;
+  padding: 32px 0;
+  margin: 0;
 }
 
 .cta-inner{
@@ -302,9 +294,8 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 12px;           /* spacing between text and button */
-  padding-inline: 16px;
-  text-align: center;  /* reads nicely when wrapping on small screens */
+  gap: 12px;
+  padding: 0 16px;
 }
 
 .cta-text{

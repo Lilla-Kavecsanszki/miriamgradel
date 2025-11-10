@@ -277,53 +277,54 @@
 <footer class="site-footer">
   {% slugurl 'work-with-me' as work_url %}
 
-  {# Show CTA on all pages except the WorkWithMePage #}
   {% if not page or page.content_type.model != 'workwithmepage' %}
-    <section id="cta" class="cta-strip mt-5" aria-labelledby="cta-heading">
+    <section id="cta" class="cta-strip" aria-labelledby="cta-heading">
       <div class="cta-inner">
-        <p id="cta-heading" class="cta-text m-0 me-3">{% trans "You have a project in mind?" %}</p>
+        <p id="cta-heading" class="cta-text">{% trans "You have a project in mind?  " %}</p>
         <a href="{{ work_url|default:'/work-with-me/' }}" class="cta-btn">
           {% trans "Let’s talk" %}
         </a>
       </div>
     </section>
   {% endif %}
-    <div class="footer-inner">
-      <div class="footer-col footer-meta">
-        <p class="m-0">{% blocktrans %}The website is the property of <strong>Miriam Gradel</strong>.{% endblocktrans %}</p>
-      </div>
-      <nav class="footer-col footer-nav footer-nav--right" aria-label="{% trans 'Journalism links' %}">
-        <ul class="footer-links">
-          <li><a href="{{ written_url|default:'#' }}">{% trans "Written" %}</a></li>
-          <li><a href="{{ audio_url|default:'#' }}">{% trans "Audio" %}</a></li>
-          <li><a href="{{ videos_url|default:'#' }}">{% trans "Video" %}</a></li>
-        </ul>
-      </nav>
 
-      <nav class="footer-col footer-nav footer-nav--right" aria-label="{% trans 'Other links' %}">
-        <ul class="footer-links">
-          <li><a href="{{ communication_url|default:'#' }}">{% trans "Communication" %}</a></li>
-          <li><a href="{{ bts_url|default:'#' }}">{% trans "Behind the Scenes" %}</a></li>
-          <li><a href="{{ work_url|default:'#' }}">{% trans "Work with Me" %}</a></li>
-        </ul>
-      </nav>
-
-      <div class="footer-col footer-legal">
-        <p class="m-0">
-          {% trans "All rights reserved." %}
-          {% if page and page.last_published_at %}
-            {% blocktrans with y=page.last_published_at|date:"Y" %}Updated in {{ y }}.{% endblocktrans %}
-          {% else %}
-            {% now "Y" as current_year %}
-            {% blocktrans with y=current_year %}Updated in {{ y }}.{% endblocktrans %}
-          {% endif %}
-          <br>
-          {% trans "No cookies are used." %}
-        </p>
-        <p class="dev-note m-0">{% blocktrans %}Site by Lilla Kavecsanszki & Marie Pilot{% endblocktrans %}</p>
-      </div>
+  <div class="footer-inner">
+    <div class="footer-col footer-meta">
+      <p class="m-0">{% blocktrans %}The website is the property of <strong>Miriam Gradel</strong>.{% endblocktrans %}</p>
     </div>
-  </footer>
+
+    <nav class="footer-col footer-nav footer-nav--right" aria-label="{% trans 'Journalism links' %}">
+      <ul class="footer-links">
+        <li><a href="{{ written_url|default:'#' }}">{% trans "Written" %}</a></li>
+        <li><a href="{{ audio_url|default:'#' }}">{% trans "Audio" %}</a></li>
+        <li><a href="{{ videos_url|default:'#' }}">{% trans "Video" %}</a></li>
+      </ul>
+    </nav>
+
+    <nav class="footer-col footer-nav footer-nav--right" aria-label="{% trans 'Other links' %}">
+      <ul class="footer-links">
+        <li><a href="{{ communication_url|default:'#' }}">{% trans "Communication" %}</a></li>
+        <li><a href="{{ bts_url|default:'#' }}">{% trans "Behind the Scenes" %}</a></li>
+        <li><a href="{{ work_url|default:'#' }}">{% trans "Work with Me" %}</a></li>
+      </ul>
+    </nav>
+
+    <div class="footer-col footer-legal">
+      <p class="m-0">
+        {% trans "All rights reserved." %}
+        {% if page and page.last_published_at %}
+          {% blocktrans with y=page.last_published_at|date:"Y" %}Updated in {{ y }}.{% endblocktrans %}
+        {% else %}
+          {% now "Y" as current_year %}
+          {% blocktrans with y=current_year %}Updated in {{ y }}.{% endblocktrans %}
+        {% endif %}
+        <br>
+        {% trans "No cookies are used." %}
+      </p>
+      <p class="dev-note m-0">{% blocktrans %}Site by Lilla Kavecsanszki & Marie Pilot{% endblocktrans %}</p>
+    </div>
+  </div>
+</footer>
 
   {# --- Scripts --- #}
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
