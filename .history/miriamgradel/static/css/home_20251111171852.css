@@ -66,28 +66,6 @@
   }
 }
 
-/* Medium screens tighten */
-@media (max-width: 900px) {
-  .octopus-bg {
-    --octo-side-pad: clamp(80px, 15vw, 260px);
-  }
-  .octopus {
-    --octo-gap: clamp(.3rem, 2vw, 1.5rem);
-    line-height: .95;
-  }
-}
-
-/* Mobile — squeeze hardest */
-@media (max-width: 480px) {
-  .octopus-bg {
-    --octo-side-pad: clamp(110px, 20vw, 340px);
-  }
-  .octopus {
-    --octo-gap: clamp(.2rem, 1.5vw, 1rem);
-    line-height: .9;
-  }
-}
-
 /* start state */
 .octo-line{ display:block; opacity:0; will-change:transform,opacity; }
 

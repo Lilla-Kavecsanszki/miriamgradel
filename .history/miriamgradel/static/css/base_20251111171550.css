@@ -53,6 +53,13 @@ body:not(.template-welcome) footer { margin-left: var(--side-menu-width); }
   pointer-events: none; /* ensure faded overlay never blocks interactions */
 }
 
+@supports(padding: max(0px)) {
+  .loading-overlay {
+    padding-top: max(env(safe-area-inset-top), 0px);
+    padding-bottom: max(env(safe-area-inset-bottom), 0px);
+  }
+}
+
 .loading-logo { max-width: 200px;
                 max-height: 200px;
                 width: auto;
