@@ -3,94 +3,90 @@
    (Hero typography + fin system live in journalism.css)
    ======================== */
 
-/* SERVICE INDEX — same layout, new contact-form glow aesthetic */
+/* SERVICE INDEX — cyan glow buttons like contact form */
 
-/* Same structure, same grid — ONLY changing visual treatment */
 .svc-link{
   position: relative;
-  display: grid;
-  grid-template-columns: auto 1fr;
-  align-items: baseline;
-  column-gap: .35rem;
-  padding: .4rem .2rem .5rem;
-  text-decoration: none;
-  color: #000;
-  line-height: 1.2;
-  margin-top: .75rem;
-  
-  /* subtle cyan glow like wme-input fields */
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+
+  padding: .6rem .9rem;
+  border-radius: 4px;
   background: #fff;
-  border-radius: 1px;
+  color: #000;
+  text-decoration: none;
+  line-height: 1.2;
+  font-weight: 800;
+
+  /* same vibe as .wme-input / .btn-brand */
   box-shadow:
-    2px 3px 10px rgba(115,240,250,.45),   /* soft cyan glow bottom-right */
-    0 2px 6px rgba(0,0,0,.06);           /* slight lift */
-  
+    2px 3px 10px rgba(115,240,250,.8),   /* cyan glow bottom-right */
+    0 2px 6px rgba(0,0,0,.08);           /* subtle lift */
+
   transition:
-    background .2s ease,
     box-shadow .2s ease,
-    transform .05s ease-in-out;
+    transform .05s ease-in-out,
+    background .2s ease;
 }
 
-/* Keep your type, just using the same glow accent as contact titles */
+/* Title text with glow hint */
 .svc-title{
   font: inherit;
-  letter-spacing: .007em;
+  letter-spacing: .005em;
   text-shadow:
-    0 2px 12px rgba(115, 240, 250, 0.35),
-    0 0 4px   rgba(115, 240, 250, 0.55);
+    0 2px 12px rgba(115,240,250,.65),
+    0 0 4px   rgba(115,240,250,.85);
 }
 
-/* Arrow: position + animation, styled to match cyan family */
+/* Arrow on the left, like before but tuned for button */
 .svc-link::before{
-  content:"  →  ";
+  content:"→";
   opacity: 0;
   transform: translateX(-6px);
   transition: transform .16s ease, opacity .16s ease;
   text-shadow:
-    0 1px 8px rgba(115,240,250,.55),
-    0 0 2px rgba(115,240,250,.95);
+    0 2px 12px rgba(31,183,195,.35),
+    0 0 1px rgba(31,183,195,.55);
 }
 
-/* Underline: keep your exact animation, but use the brand cyan */
+/* Remove the old underline bar */
 .svc-link::after{
-  content:"  ";
-  position:absolute; 
-  left:0; right:0; bottom:.05rem;
-  height:2px; 
-  background:#1fb7c3;
-  transform: scaleX(0);
-  transform-origin:left;
-  transition: transform .16s ease;
+  content:none;
 }
 
-/* Hover/focus: stronger glow, tiny press feel */
+/* Hover / focus: stronger glow + tiny press effect */
 .svc-link:hover,
 .svc-link:focus-visible{
-  background:#f8feff;
+  background: #f9ffff;
   box-shadow:
-    3px 5px 14px rgba(115,240,250,.8),
-    0 4px 10px rgba(0,0,0,.10);
+    3px 5px 14px rgba(115,240,250,1),
+    0 4px 10px rgba(0,0,0,.12);
   transform: translateY(1px);
 }
 
-/* Trigger original underline animation */
-.svc-link:hover::after,
-.svc-link:focus-visible::after{
-  transform: scaleX(1);
-}
-
-/* Arrow animates */
+/* Animate arrow in on hover/focus */
 .svc-link:hover::before,
 .svc-link:focus-visible::before{
   opacity: 1;
   transform: translateX(0);
 }
 
-/* Keep your accessibility outline */
+/* Accessible focus ring */
 .svc-link:focus-visible{
   outline: 2px solid #000;
-  outline-offset: 2px;
+  outline-offset: 3px;
 }
+
+@media (max-width: 420px){
+  .svc-links{ font-size: clamp(1.05rem, 4.8vw, 1.25rem); }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce){
+  .svc-link::before{ transition: none; }
+}
+
 
 /* SERVICE SECTIONS (detail blocks) */
 .svc-section {

@@ -16,7 +16,6 @@
   text-decoration: none;
   color: #000;
   line-height: 1.2;
-  margin-top: .75rem;
   
   /* subtle cyan glow like wme-input fields */
   background: #fff;
@@ -34,15 +33,15 @@
 /* Keep your type, just using the same glow accent as contact titles */
 .svc-title{
   font: inherit;
-  letter-spacing: .007em;
-  text-shadow:
+  letter-spacing: .005em;
+  /* text-shadow:
     0 2px 12px rgba(115, 240, 250, 0.35),
-    0 0 4px   rgba(115, 240, 250, 0.55);
+    0 0 4px   rgba(115, 240, 250, 0.55); */
 }
 
-/* Arrow: position + animation, styled to match cyan family */
+/* Arrow: same position + animation, just styled to match your cyan family */
 .svc-link::before{
-  content:"  →  ";
+  content:"→";
   opacity: 0;
   transform: translateX(-6px);
   transition: transform .16s ease, opacity .16s ease;
@@ -53,7 +52,7 @@
 
 /* Underline: keep your exact animation, but use the brand cyan */
 .svc-link::after{
-  content:"  ";
+  content:"";
   position:absolute; 
   left:0; right:0; bottom:.05rem;
   height:2px; 
@@ -79,7 +78,7 @@
   transform: scaleX(1);
 }
 
-/* Arrow animates */
+/* Arrow animates exactly like before */
 .svc-link:hover::before,
 .svc-link:focus-visible::before{
   opacity: 1;
@@ -91,6 +90,7 @@
   outline: 2px solid #000;
   outline-offset: 2px;
 }
+
 
 /* SERVICE SECTIONS (detail blocks) */
 .svc-section {
