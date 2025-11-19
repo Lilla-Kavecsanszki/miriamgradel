@@ -96,50 +96,6 @@
   margin: calc(var(--block-gap) * 1.5) 0;
 }
 
-/* UNIVERSAL BRAND BUTTON */
-.btn-brand,
-.to-top-button{
-  background: var(--brand-cyan, #73f0fa);
-  color: #000;
-  font-weight: 800;
-  border: none;
-  border-radius: 4px;
-  box-shadow:
-    inset 0 -2px 0 rgba(0,0,0,.2),
-    0 6px 14px rgba(115,240,250,.4);
-  padding: .5rem 1rem;
-  text-decoration: none;
-
-  display: inline-flex;
-  align-items: center;
-  gap: .5rem;
-
-  transition:
-    background .2s ease,
-    transform .05s ease-in-out,
-    box-shadow .2s ease;
-}
-
-/* HOVER + FOCUS */
-.btn-brand:hover,
-.btn-brand:focus,
-.to-top-button:hover,
-.to-top-button:focus{
-  background: var(--brand-cyan-dark, #1fb7c3); /* darker cyan */
-  color: #fff;                                  /* better contrast */
-  transform: translate(-2px, -2px);             /* subtle lift */
-}
-
-/* ACTIVE / PRESSED */
-.btn-brand:active,
-.to-top-button:active{
-  transform: translateY(1px);
-  background: var(--brand-cyan-darker, #148a93); /* darkest cyan */
-  box-shadow:
-    inset 0 -1px 0 rgba(0,0,0,.25),
-    0 4px 10px rgba(0,0,0,.25);
-}
-
 /* ===============================
    Back button (sticky inside article)
    =============================== */

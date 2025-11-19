@@ -76,7 +76,7 @@
         {% for hf in form.hidden_fields %}{{ hf }}{% endfor %}
 
         <div class="d-flex justify-content-end mt-2">
-          <button class="btn btn-brand px-4" type="submit">Send</button>
+          <button class="btn btn-brand px-4" style="border-radius: 4px;" type="submit">Send</button>
         </div>
       </form>
 
@@ -92,36 +92,49 @@
           </div>
         {% endif %}
 
-        {# QR SECTION #}
-        <h3 class="section-title qr-title"><span>Scan the QR code or see below</span></h3>
+        {# ===================== QR SECTION (PNG-based) ===================== #}
+        <h3 class="section-title qr-title">
+          <span>{% trans "Scan the QR code or see below" %}</span>
+        </h3>
 
         <div class="mb-3 wme-center">
-          {# Generate QR SVG with a quiet zone (border = 4) #}
-          {% wme_qr_svg page.get_qr_payload page.qr_scale as qr_svg %}
-          <div class="wme-qr mb-2">
-            <a href="{{ page.get_qr_payload }}" aria-label="Download contact card">
-              {{ qr_svg|safe }}
-            </a>
-          </div>
-          {% if qr_svg %}
-            {# Clickable on desktop; scanners will just read the QR #}
-            <a href="{{ page.get_qr_payload }}" class="d-inline-block" aria-label="Open contact card">
-              <div class="wme-qr mb-2">{{ qr_svg|safe }}</div>
+          {# Render a PNG data-URI with healthy size + quiet zone #}
+          {% wme_qr_png page.get_qr_image_payload 12 8 "Add contact" as qr_img %}
+
+          {% if qr_img %}
+            {# Clickable QR — scanners read the image; desktop users can click #}
+            <a class="wme-qr mb-2 d-inline-block"
+              href="{{ page.get_qr_click_href }}"
+              aria-label="{% trans 'Open contact card' %}">
+              {{ qr_img|safe }}
+              <span class="visually-hidden">{% trans "Open contact card" %}</span>
             </a>
 
-            {% if page.vcard_file %}
-              <p class="mb-3">
+            <p class="mb-3">
+              {% if page.vcard_file %}
+                {# Direct Cloudinary download (forces attachment) #}
                 <a class="btn btn-brand-outline btn-sm wme-vcard"
                   href="{{ page.vcard_file.url }}?fl_attachment={{ page.slug|default:'contact'|slugify }}.vcf"
                   download>
-                  Download vCard (.vcf)
+                  {% trans "Download vCard (.vcf)" %}
                 </a>
-              </p>
-            {% endif %}
+              {% else %}
+                {# Inline endpoint; ?download=1 forces attachment for the button #}
+                <a class="btn btn-brand-outline btn-sm wme-vcard"
+                  href="{% url 'work_with_me:vcard_inline' page.id %}?download=1">
+                  {% trans "Download vCard (.vcf)" %}
+                </a>
+              {% endif %}
+            </p>
+
+            <noscript>
+              <p><a href="{{ page.get_qr_click_href }}">{% trans "Open contact card" %}</a></p>
+            </noscript>
           {% else %}
-            <p class="text-muted small mb-2">QR code not available.</p>
+            <p class="text-muted small mb-2">{% trans "QR code not available." %}</p>
           {% endif %}
         </div>
+
         {# CONTACT DETAILS #}
         <ul class="list-unstyled small wme-contacts">
           {% if page.phone_number %}

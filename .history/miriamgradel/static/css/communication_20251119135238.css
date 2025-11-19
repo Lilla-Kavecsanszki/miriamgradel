@@ -197,11 +197,3 @@ a.example-button:active{
   }
   .to-top-button .label{ display:none; }
 }
-
-/* FLOATING "TO TOP" VARIANT */
-.to-top-button{
-  position: fixed;
-  bottom: 2rem;
-  right: 2rem;
-  z-index: 1000;
-}
