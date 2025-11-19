@@ -1,80 +1,144 @@
 /* ================== TOKENS ================== */
 :root { --cyan: #73f0fa; }
 
-/* ================== HERO (Written / Video) ================== */
+/* ===== Unified Fin System (Cyan Band + Black Slash) ===== */
+:root {
+  --cyan: #73f0fa;
+
+  /* Fin / band geometry */
+  --fin-width: 22px;
+  --fin-skew: -26deg;
+  --band-pad-x: 18px;
+  --band-pad-y: 8px;
+
+  /* Fine-tuned hero vertical padding (bottom a touch tighter) */
+  --hero-pad-top: var(--band-pad-y);
+  --hero-pad-bottom: calc(var(--band-pad-y) - 3px);
+
+  /* Hero title sizing (subtle, elegant) */
+  --hero-title-min: 1.1rem;  /* ≈18px on mobile */
+  --hero-title-fluid: 1.6vw; /* gentle growth */
+  --hero-title-max: 1.6rem;  /* ≈25–26px max */
+}
+
+/* ============== SECTION TITLES (Cyan Band + Black Slash) ============== */
+.section-title{
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  isolation: isolate;
+  color: #000;
+  font-weight: 800;
+  line-height: 1.1;
+  font-size: calc(1.1rem + 1px); /* +1px */
+  margin: 18px 0 12px -15px;
+  padding: var(--band-pad-y)
+           calc(var(--band-pad-x) + var(--fin-width) * 0.65)
+           var(--band-pad-y)
+           var(--band-pad-x);
+  background: var(--cyan);
+  box-sizing: border-box;
+}
+.section-title::after{
+  content:"";
+  position:absolute; top:0; bottom:0; right:0;
+  width:var(--fin-width);
+  background:#000; transform:skewX(var(--fin-skew));
+  z-index:1;
+  right: -7px;
+}
+
+/* ================== HERO (Written / Video / Home) ================== */
+.home-hero,
 .written-hero,
 .video-hero{
   position: relative;
-  color:#fff;
-  padding:18px 22px 16px;
-  margin:0 140px 16px -15px; /* left nudge + fin room on right */
-  overflow:visible;          /* allow cyan fin overhang */
+  display: flex;
+  align-items: flex-start; /* left-align */
+  flex-direction: column;  /* stack title + intro */
+  gap: .3rem;              /* tight, consistent gap */
+  box-sizing: border-box;
+  color: #fff;
+  background: #000;
+  isolation: isolate;
+
+  /* left “band” indent unchanged; vertical padding tuned */
+  margin: 0 0 18px -15px; /* slightly reduced bottom margin */
+  padding:
+    var(--hero-pad-top)
+    calc(var(--band-pad-x) + var(--fin-width) * 0.65)
+    var(--hero-pad-bottom)
+    var(--band-pad-x);
+
+  /* normalize so em-based UA h1 doesn't balloon */
+  font-size: 1rem;
 }
-.written-hero::before,
-.video-hero::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:#000;
-  clip-path: polygon(0 0, 100% 0, calc(100% - 28px) 100%, 0 100%);
-  z-index:1;
-}
+.home-hero::after,
 .written-hero::after,
 .video-hero::after{
   content:"";
-  position:absolute; top:0; bottom:0; right:0;
-  width:20px; background:var(--cyan);
-  transform:skewX(-15deg); z-index:0;
+  position:absolute; top:0; bottom:0; right:-10px;
+  width:var(--fin-width);
+  background:var(--cyan);
+  transform:skewX(var(--fin-skew));
+  z-index:1;
 }
-.written-hero > *,
-.video-hero > *{ position:relative; z-index:2; }
+
+/* ================== HERO — unified typography ================== */
+.home-hero .block-title,
 .written-hero .block-title,
-.video-hero .block-title{
-  font-weight:800; line-height:1.1; margin:0 0 .35rem; font-size:1.12rem; letter-spacing:.2px;
-}
-.written-hero p{ margin:0; opacity:.95; }
-
-@media (max-width:575.98px){
-  .written-hero,
-  .video-hero{ padding:14px 16px; margin-right:20px; }
-  .written-hero::before,
-  .video-hero::before{ left:-8px; top:6px; bottom:6px; }
-  .written-hero::after,
-  .video-hero::after{ right:-14px; top:6px; bottom:6px; }
+.video-hero .block-title,
+body.template-communication .home-hero .block-title,
+body.template-communication .written-hero .block-title,
+body.template-communication .video-hero .block-title{
+  font-size: clamp(var(--hero-title-min), var(--hero-title-fluid), var(--hero-title-max));
+  line-height: 1.2;
+  font-weight: 400;
+  margin: 0;
+  color: var(--cyan);
 }
 
-/* ============== SECTION TITLES (cyan tag with black slash) ============== */
-:root{ --st-cut: 15px; }  /* depth of angled cut */
+/* ================== HERO — intro sizing and margin reset ================== */
+/* 1) Kill Bootstrap mt-2 and default paragraph margins in hero */
+.home-hero > .mt-2,
+.written-hero > .mt-2,
+.video-hero > .mt-2{ margin: 0 !important; }
 
-.section-title{
-  position:relative; display:inline-block;
-  margin:18px 0 12px; padding:6px 18px; line-height:1.1;
-  margin-left:-15px; color:#000; isolation:isolate;
-  font-size: 1.1rem;
-}
-.section-title > *{ position:relative; z-index:2; }
-.section-title::before{
-  content:""; position:absolute; inset:0; background:var(--cyan);
-  clip-path: polygon(0 0, 100% 0, calc(100% - var(--st-cut)) 100%, 0 100%);
-  z-index:-1;
-}
-.section-title::after{
-  content:""; position:absolute; top:0; bottom:0; right:0;
-  width:20px; background:#000; transform:skewX(-23deg); z-index:-2;
-}
-@media (max-width:575.98px){
-  .section-title{ padding:6px 14px; }
-  :root{ --st-cut: 20px; }
+.home-hero .richtext p,
+.written-hero .richtext p,
+.video-hero .richtext p{ margin: 0; }
+
+/* 2) Provide controlled spacing between intro blocks */
+.home-hero .richtext > * + *,
+.written-hero .richtext > * + *,
+.video-hero .richtext > * + *{ margin-top: .35rem; }
+
+/* 3) Intro typography */
+.home-hero > .mt-2,
+.written-hero > .mt-2,
+.video-hero > .mt-2,
+.home-hero .richtext,
+.written-hero .richtext,
+.video-hero .richtext{
+  font-size: clamp(1rem, 1.2vw, 1.1rem); /* ~16–18px */
+  line-height: 1.4;
+  font-weight: 400;
+  color: #fff;
+  max-width: 60ch;
 }
 
-/* subtle underline on hover for links; steady text for mentions */
+/* 4) Intro links legibility on dark */
+.home-hero .richtext a,
+.written-hero .richtext a,
+.video-hero .richtext a{
+  color: var(--cyan);
+  text-decoration-thickness: 2px;
+}
+
+/* ============== LINK BEHAVIOR ============== */
 .written-list .w-title--link { text-decoration: none; }
 .written-list .w-title--link:hover { text-decoration: underline; }
-
-/* optional: slightly dim non-link titles */
 .written-list .w-title--nolink { opacity: .95; }
-
-/* optional: tiny external indicator for links that open new tab */
 .written-list .w-title--link[target="_blank"]::after {
   content: "↗";
   margin-left: .25rem;
@@ -82,34 +146,64 @@
 }
 
 /* ============== ARTICLE LISTS (Written index) ============== */
-/* Bigger, responsive list text */
+/* Refined, elegant scale (great on mobile too) */
 .written-item{
-  /* was: font-size: small; */
-  font-size: clamp(1rem, 0.95rem + 0.35vw, 1.25rem);
-  line-height: 1.35;
-  margin-bottom: 10px; /* keeps rows airy as size grows */
+  font-size: clamp(0.95rem, 0.9rem + 0.22vw, 1.125rem); /* ~15–18px typical */
+  line-height: 1.32;
+  margin-bottom: 8px;
 }
 
-/* Links/titles in the list */
+/* Generic links in the row: don't force bold */
 .written-item a{
   color:#000;
   text-decoration:none;
-  font-weight:800; /* stronger weight to match larger size */
+  font-weight: inherit; /* was 700 — let titles control weight */
 }
 
-/* Titles (link or no-link) slightly larger than the row base */
-.written-item .w-title--link,
+/* Titles */
+.written-item .w-title--link{
+  font-size: 1em;          /* no extra bump */
+  overflow-wrap: anywhere; /* long titles won’t break layout */
+  font-weight: 700;        /* bold ONLY when it's a link */
+  color:#000;
+  font-style: normal;
+  opacity: 1;
+}
 .written-item .w-title--nolink{
-  font-size: 1.02em;
+  font-size: 1em;          /* match linked title size */
+  overflow-wrap: anywhere;
+  font-weight: 400;        /* normal weight when no link */
+  color:#000;              /* not greyed out */
+  font-style: normal;      /* not italic */
+  opacity: 1;
 }
 
-/* Meta bits (publication name + year) */
+/* --- Refine meta selector so it doesn't style titles --- */
+/* Replace the broad `.written-item time, .written-item span` rule with this: */
 .written-item time,
-.written-item span{
+.written-item .w-pub,
+.written-item .w-dot{
   font-style: italic;
-  color: gray;
-  font-size: 0.95em;  /* scale with row size */
-  margin-bottom: 12px;
+  color: #555;      /* softer than pure gray */
+  font-size: .9em;  /* subtler meta */
+  margin-bottom: 8px;
+}
+
+.w-dot{ white-space: nowrap; } /* avoid orphaned separators */
+
+/* Tiny phones — keep it tidy */
+@media (max-width:420px){
+  .written-item{
+    font-size: 0.98rem;   /* ~15–16px */
+    line-height: 1.28;
+    margin-bottom: 6px;
+  }
+  .written-hero, .video-hero{ margin-right: 12px; }
+}
+
+/* Very wide screens — prevent oversizing */
+@media (min-width:1600px){
+  .written-item{ font-size: 1.1rem; } /* gentle cap */
 }
 
 /* ============== BTS ASIDE / CARDS ============== */
@@ -130,7 +224,7 @@
 .bts-card:hover{ transform: translateY(-2px); }
 .bts-card .thumb{ position:relative; display:block; }
 .bts-card .thumb img{
-  display:block; width:100%; height:auto; object-fit:cover; /* keep aspect without distortion */
+  display:block; width:100%; height:auto; object-fit:cover;
 }
 .bts-title{
   position:absolute; left:0; right:0; bottom:0; margin:0; padding:12px 16px;
@@ -149,9 +243,9 @@
 }
 .bts-cta:hover{ filter:brightness(.96); }
 
-.bts-card--sidebar .thumb img{ height:auto; } /* let sidebar thumbs size naturally */
+.bts-card--sidebar .thumb img{ height:auto; }
 @media (min-width:992px){
-  .bts-card--sidebar .thumb img{ max-height: 220px; } /* gentle cap on large screens */
+  .bts-card--sidebar .thumb img{ max-height: 220px; }
 }
 .bts-card--sidebar .bts-title,
 .bts-card--sidebar .bts-title a{
@@ -163,8 +257,8 @@
 /* ============== FEATURED (Video/Audio) ============== */
 .featured{
   background:#F7F7F7;
-  border-top:3px solid rgba(0,0,0,.4);
-  border-bottom:3px solid rgba(0,0,0,.4);
+  /* border-top:3px solid rgba(0,0,0,.4); */
+  /* border-bottom:3px solid rgba(0,0,0,.4); */
   padding-bottom:1%;
 }
 .featured__grid{

@@ -45,7 +45,7 @@
   width:var(--fin-width);
   background:#000; transform:skewX(var(--fin-skew));
   z-index:1;
-  right: -7px;
+  right: -6px;
 }
 
 /* ================== HERO (Written / Video / Home) ================== */
@@ -54,8 +54,6 @@
 .video-hero{
   position: relative;
   display: flex;
-  width: fit-content;
-  max-width: 100%;
   align-items: flex-start; /* left-align */
   flex-direction: column;  /* stack title + intro */
   gap: .3rem;              /* tight, consistent gap */
@@ -79,10 +77,10 @@
 .written-hero::after,
 .video-hero::after{
   content:"";
-  position:absolute; top:0; bottom:0; right:-14px;
-  width: 28px;           /* custom hero fin width */
-  transform: skewX(-18deg);  /* custom hero angle (gentler) */
+  position:absolute; top:0; bottom:0; right:0;
+  width:var(--fin-width);
   background:var(--cyan);
+  transform:skewX(var(--fin-skew));
   z-index:1;
 }
 

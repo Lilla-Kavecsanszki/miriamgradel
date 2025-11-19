@@ -53,9 +53,7 @@
 .written-hero,
 .video-hero{
   position: relative;
-  display: flex;
-  width: fit-content;
-  max-width: 100%;
+  display: inline-flex;
   align-items: flex-start; /* left-align */
   flex-direction: column;  /* stack title + intro */
   gap: .3rem;              /* tight, consistent gap */
@@ -79,8 +77,8 @@
 .written-hero::after,
 .video-hero::after{
   content:"";
-  position:absolute; top:0; bottom:0; right:-14px;
-  width: 28px;           /* custom hero fin width */
+  position:absolute; top:0; bottom:0; right:-12px;
+  width: 30px;           /* custom hero fin width */
   transform: skewX(-18deg);  /* custom hero angle (gentler) */
   background:var(--cyan);
   z-index:1;

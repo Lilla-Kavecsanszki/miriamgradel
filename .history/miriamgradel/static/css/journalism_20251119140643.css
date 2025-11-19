@@ -16,9 +16,9 @@
   --hero-pad-bottom: calc(var(--band-pad-y) - 3px);
 
   /* Hero title sizing (subtle, elegant) */
-  --hero-title-min: 1.1rem;  /* ≈18px on mobile */
-  --hero-title-fluid: 1.6vw; /* gentle growth */
-  --hero-title-max: 1.6rem;  /* ≈25–26px max */
+  --hero-title-min: 1.1rem;
+  --hero-title-fluid: 1.6vw;
+  --hero-title-max: 1.6rem;
 }
 
 /* ============== SECTION TITLES (Cyan Band + Black Slash) ============== */
@@ -27,25 +27,36 @@
   display: inline-flex;
   align-items: center;
   isolation: isolate;
+
+  /* 🔥 FIX: clip any fin spillover */
+  overflow: hidden;
+
   color: #000;
   font-weight: 800;
   line-height: 1.1;
-  font-size: calc(1.1rem + 1px); /* +1px */
+  font-size: calc(1.1rem + 1px);
+
   margin: 18px 0 12px -15px;
-  padding: var(--band-pad-y)
-           calc(var(--band-pad-x) + var(--fin-width) * 0.65)
-           var(--band-pad-y)
-           var(--band-pad-x);
+  padding:
+    var(--band-pad-y)
+    calc(var(--band-pad-x) + var(--fin-width) * 0.65)
+    var(--band-pad-y)
+    var(--band-pad-x);
+
   background: var(--cyan);
   box-sizing: border-box;
 }
+
 .section-title::after{
   content:"";
-  position:absolute; top:0; bottom:0; right:0;
+  position:absolute;
+  top:0;
+  bottom:0;
+  right:0;
   width:var(--fin-width);
-  background:#000; transform:skewX(var(--fin-skew));
+  background:#000;
+  transform:skewX(var(--fin-skew));
   z-index:1;
-  right: -7px;
 }
 
 /* ================== HERO (Written / Video / Home) ================== */
@@ -54,8 +65,6 @@
 .video-hero{
   position: relative;
   display: flex;
-  width: fit-content;
-  max-width: 100%;
   align-items: flex-start; /* left-align */
   flex-direction: column;  /* stack title + intro */
   gap: .3rem;              /* tight, consistent gap */
@@ -79,10 +88,10 @@
 .written-hero::after,
 .video-hero::after{
   content:"";
-  position:absolute; top:0; bottom:0; right:-14px;
-  width: 28px;           /* custom hero fin width */
-  transform: skewX(-18deg);  /* custom hero angle (gentler) */
+  position:absolute; top:0; bottom:0; right:0;
+  width:var(--fin-width);
   background:var(--cyan);
+  transform:skewX(var(--fin-skew));
   z-index:1;
 }
 
