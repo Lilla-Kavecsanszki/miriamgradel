@@ -156,12 +156,15 @@
   }
 }
 
-/* === MEDIUM VIEWPORTS: extra gutters so logo feels tighter === */
-/* roughly tablets & small laptops */
-@media (min-width: 640px) and (max-width: 1199px){
-  .octopus-bg{
-    /* chunkier side padding than the earlier rules */
-    --octo-side-pad: clamp(72px, 14vw, 260px);
+/* === MEDIUM VIEWPORT TIGHTEN (ONLY 640–1024px) === */
+@media (min-width: 640px) and (max-width: 1024px){
+  .octopus{
+    line-height: 0.78;   /* tighter vertical rhythm than 0.84 */
+  }
+
+  /* pull 2nd + 3rd line a hair closer to the one above */
+  .octopus .octo-line + .octo-line{
+    margin-top: -0.04em;
   }
 }
 

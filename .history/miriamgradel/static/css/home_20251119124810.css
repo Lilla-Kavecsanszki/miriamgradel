@@ -1,49 +1,101 @@
-/* ===== OCTOPUS headline (FINAL, MEDIUM FIXED) ===== */
+/* ===== OCTOPUS headline (final) ===== */
 :root{
   --octo-cyan: #73f0fa;          /* shadow color */
-  --octo-slide: 160px;           /* travel distance */
-  --octo-overshoot: 12px;        /* settle past target */
-  --octo-duration: 3s;           /* animation speed */
+  --octo-slide: 160px;            /* travel distance */
+  --octo-overshoot: 12px;         /* little settle past target */
+  --octo-duration: 3s;            /* animation speed */
+  --octo-gap: clamp(.5rem, 3vw, 2.2rem); /* space between lines */
 }
 
-/* === MAIN LOGO === */
 .octopus{
   font-family: 'Designer', sans-serif;
   color:#000;
   font-weight:700;
   text-transform:uppercase;
   letter-spacing:2px;
-
-  /* desktop scaling you liked */
   font-size: clamp(4rem, 11vw, 10rem);
-
   margin:0;
   padding:1rem 0;
-  line-height: 1;   /* desktop keeps original spacing */
+  row-gap: 0 !important;   /* no extra space between lines */
+  line-height: 1;          /* keep each line tight */
 
+  /* layout & spacing */
   display:grid;
-  justify-items:stretch;
-  text-align:left;
+  justify-items:stretch;          /* each line sets its own alignment */
+  text-align:left;                /* default for left-aligned lines */
 
+  /* cyan drop shadow */
   text-shadow:3px 3px 0 var(--octo-cyan);
 }
 
-/* Below 1200px: use the same compact line-height everywhere
-   so medium & small screens match the reference logo spacing */
-@media (max-width: 1200px){
-  .octopus{
-    line-height: 0.84;
+/* === Hero headline gutters (left/right “safe area”) === */
+.octopus-bg{
+  /* wider gutters → more side space */
+  --octo-side-pad: clamp(48px, 10vw, 200px);
+  padding-inline: var(--octo-side-pad);
+  /* optional vertical breathing room */
+  padding-block: clamp(8px, 2vw, 24px);
+}
+
+/* If you want a firm max content width too (optional) */
+@media (min-width: 1400px){
+  .octopus-bg{
+    max-width: 1320px;        /* adjust to taste */
+    margin-inline: auto;      /* centers the block */
   }
 }
 
-/* === HERO SIDE GUTTERS === */
+/* Tighter block on laptop/tablet screens */
+@media (max-width: 1200px) {
+  .octopus-bg{
+    --octo-side-pad: clamp(72px, 12vw, 260px); /* bigger gutters than desktop */
+  }
+}
+
+/* Even tighter on tablets / large phones */
+@media (max-width: 900px) {
+  .octopus-bg{
+    --octo-side-pad: clamp(88px, 14vw, 300px);
+  }
+}
+
+/* Mobile — maximum squeeze */
+@media (max-width: 600px) {
+  .octopus-bg{
+    --octo-side-pad: clamp(100px, 16vw, 340px);
+  }
+}
+
+/* Medium screens tighten */
+@media (max-width: 900px) {
+  .octopus-bg {
+    --octo-side-pad: clamp(80px, 15vw, 260px);
+  }
+  .octopus {
+    --octo-gap: clamp(.3rem, 2vw, 1.5rem);
+    line-height: .95;
+  }
+}
+
+/* Mobile — squeeze hardest */
+@media (max-width: 480px) {
+  .octopus-bg {
+    --octo-side-pad: clamp(110px, 20vw, 340px);
+  }
+  .octopus {
+    --octo-gap: clamp(.2rem, 1.5vw, 1rem);
+    line-height: .9;
+  }
+}
+
+/* === Hero headline gutters (left/right “safe area”) === */
 .octopus-bg{
-  --octo-side-pad: clamp(48px, 10vw, 200px);  /* desktop look */
+  --octo-side-pad: clamp(48px, 10vw, 200px);
   padding-inline: var(--octo-side-pad);
   padding-block: clamp(8px, 2vw, 24px);
 }
 
-/* XL DESKTOP CAPS */
+/* Large desktops: cap total width, keep centered */
 @media (min-width: 1400px){
   .octopus-bg{
     max-width: 1320px;
@@ -51,88 +103,115 @@
   }
 }
 
-/* 1200px–900px: slightly smaller gutters than desktop */
-@media (max-width: 1200px){
-  .octopus-bg{
-    --octo-side-pad: clamp(40px, 8vw, 160px);
-  }
-}
-
-/* 900px–600px: medium screens */
+/* Laptops / tablets */
 @media (max-width: 900px){
   .octopus-bg{
-    --octo-side-pad: clamp(40px, 9vw, 170px);
+    /* still generous, slightly bigger than before */
+    --octo-side-pad: clamp(56px, 14vw, 220px);
+  }
+  .octopus{
+    --octo-gap: clamp(.3rem, 2vw, 1.5rem);
+    line-height: .95;
   }
 }
 
-/* 600px–420px: small phones & small tablets */
+/* Small phones / narrow screens */
 @media (max-width: 600px){
   .octopus-bg{
-    --octo-side-pad: clamp(32px, 8vw, 140px);
+    /* MORE gutter on small screens */
+    --octo-side-pad: clamp(64px, 18vw, 260px);
   }
 }
 
-/* 420px and down: very small phones */
+/* Tiny phones: keep it big, but make sure it fits and gutters stay chunky */
 @media (max-width: 420px){
   .octopus{
-    font-size: clamp(3rem, 13vw, 7rem);
+    font-size: clamp(3.2rem, 15vw, 7.5rem);  /* larger than old mobile size */
     letter-spacing: 1px;
   }
   .octopus-bg{
-    --octo-side-pad: clamp(24px, 10vw, 120px);
+    --octo-side-pad: clamp(40px, 20vw, 280px); /* noticeably more side padding than before */
   }
 }
 
-/* === VERTICAL STACKING (no extra margins; line-height does the work) === */
-.octo-line{
-  display:block;
-  opacity:0;
-  margin:0;
-  will-change:transform,opacity;
+/* Base vertical spacing between the three lines */
+.octopus .octo-line{
+  margin: 0;                    /* reset any default block margins */
 }
 
-/* === ALIGNMENTS === */
+.octopus .octo-line + .octo-line{
+  margin-top: 0.35em;           /* controlled, relative to font size */
+}
 
-/* Lines 1 & 3 from left */
+/* Tablets / large phones: slightly tighter stack */
+@media (max-width: 600px){
+  .octopus .octo-line + .octo-line{
+    margin-top: 0.25em;
+  }
+}
+
+/* Small phones (~414px and under): tight hero stack */
+@media (max-width: 420px){
+  .octopus .octo-line + .octo-line{
+    margin-top: 0.18em;
+  }
+}
+
+
+/* start state */
+.octo-line{ display:block; opacity:0; will-change:transform,opacity; }
+
+/* Line 1 & 3: left-aligned, slide in from left */
 .from-left{
   justify-self:start;
-  text-align:left;
+  text-align:left; 
   transform:translateX(calc(-1 * var(--octo-slide)));
-  margin-left:-5px; /* optical nudge */
 }
 
-/* prevent wrapping on line 1 */
+/* prevent wrapping on the first line */
 .octopus .octo-line:first-child{
   white-space: nowrap;
 }
 
-/* Line 2 from right */
+/* also fix the negative padding (invalid) → use margin for the nudge */
+.from-left{
+  margin-left: -5px;   /* was padding-left:-5px; */
+  padding-left: 0;
+}
+
+/* tiny screens: shrink a touch + reduce gutters so it still fits */
+@media (max-width: 420px){
+  .octopus{
+    font-size: clamp(2.6rem, 12vw, 6.5rem);
+    letter-spacing: 1px;
+  }
+  .octopus-bg{ --octo-side-pad: clamp(16px, 6vw, 40px); }
+}
+
+/* Line 2: right-aligned, slide in from right */
 .from-right{
   justify-self:end;
   text-align:right;
   transform:translateX(var(--octo-slide));
 }
 
-/* Line 3 centered */
+/* Center the 3rd line ("Octopus") */
 .octopus .octo-line:nth-child(3){
-  justify-self:center !important;
-  text-align:center !important;
+  justify-self: center !important;
+  text-align: center !important;
 }
 
-/* === ANIMATION TRIGGERS === */
-.octopus.in-view .from-left{
-  animation:octo-in-left var(--octo-duration) cubic-bezier(.16,1,.3,1) forwards;
-}
-.octopus.in-view .from-right{
-  animation:octo-in-right var(--octo-duration) cubic-bezier(.16,1,.3,1) forwards;
-}
+/* ANIMATION */
+/* animate when in view (IntersectionObserver adds .in-view) */
+.octopus.in-view .from-left  { animation:octo-in-left  var(--octo-duration) cubic-bezier(.16,1,.3,1) forwards; }
+.octopus.in-view .from-right { animation:octo-in-right var(--octo-duration) cubic-bezier(.16,1,.3,1) forwards; }
 
-/* staggered reveal */
+/* stagger */
 .octopus.in-view .octo-line:nth-child(1){ animation-delay:.10s; }
 .octopus.in-view .octo-line:nth-child(2){ animation-delay:.80s; }
 .octopus.in-view .octo-line:nth-child(3){ animation-delay:1.50s; }
 
-/* === KEYFRAMES === */
+/* keyframes: overshoot then settle */
 @keyframes octo-in-left{
   0%   { transform:translateX(calc(-1 * var(--octo-slide))); opacity:0; }
   75%  { transform:translateX(var(--octo-overshoot));        opacity:1; }
@@ -144,25 +223,11 @@
   100% { transform:translateX(0);                            opacity:1; }
 }
 
-/* === ACCESSIBILITY === */
+/* accessibility */
 @media (prefers-reduced-motion: reduce){
-  .from-left,.from-right{
-    transform:none !important; 
-    opacity:1 !important;
-  }
+  .from-left,.from-right{ transform:none !important; opacity:1 !important; }
   .octopus.in-view .from-left,
-  .octopus.in-view .from-right{
-    animation:none !important;
-  }
-}
-
-/* === MEDIUM VIEWPORTS: extra gutters so logo feels tighter === */
-/* roughly tablets & small laptops */
-@media (min-width: 640px) and (max-width: 1199px){
-  .octopus-bg{
-    /* chunkier side padding than the earlier rules */
-    --octo-side-pad: clamp(72px, 14vw, 260px);
-  }
+  .octopus.in-view .from-right{ animation:none !important; }
 }
 
 /* ===== Services carousel (scoped to #services) ===== */

@@ -1,4 +1,4 @@
-/* ===== OCTOPUS headline (FINAL, MEDIUM FIXED) ===== */
+/* ===== OCTOPUS headline (FINAL CLEAN VERSION) ===== */
 :root{
   --octo-cyan: #73f0fa;          /* shadow color */
   --octo-slide: 160px;           /* travel distance */
@@ -6,7 +6,7 @@
   --octo-duration: 3s;           /* animation speed */
 }
 
-/* === MAIN LOGO === */
+/* === MAIN LOGO (desktop behaviour unchanged) === */
 .octopus{
   font-family: 'Designer', sans-serif;
   color:#000;
@@ -14,12 +14,12 @@
   text-transform:uppercase;
   letter-spacing:2px;
 
-  /* desktop scaling you liked */
+  /* your original size logic (perfect on desktop) */
   font-size: clamp(4rem, 11vw, 10rem);
 
   margin:0;
   padding:1rem 0;
-  line-height: 1;   /* desktop keeps original spacing */
+  line-height: 1;
 
   display:grid;
   justify-items:stretch;
@@ -28,17 +28,9 @@
   text-shadow:3px 3px 0 var(--octo-cyan);
 }
 
-/* Below 1200px: use the same compact line-height everywhere
-   so medium & small screens match the reference logo spacing */
-@media (max-width: 1200px){
-  .octopus{
-    line-height: 0.84;
-  }
-}
-
-/* === HERO SIDE GUTTERS === */
+/* === HERO SIDE GUTTERS — DESKTOP PERFECT === */
 .octopus-bg{
-  --octo-side-pad: clamp(48px, 10vw, 200px);  /* desktop look */
+  --octo-side-pad: clamp(48px, 10vw, 200px);  /* unchanged desktop look */
   padding-inline: var(--octo-side-pad);
   padding-block: clamp(8px, 2vw, 24px);
 }
@@ -51,7 +43,9 @@
   }
 }
 
-/* 1200px–900px: slightly smaller gutters than desktop */
+/* ===== FIXED GUTTERS SO SMALL/MEDIUM DON’T SQUEEZE ===== */
+
+/* 1200px–900px: slightly reduced */
 @media (max-width: 1200px){
   .octopus-bg{
     --octo-side-pad: clamp(40px, 8vw, 160px);
@@ -61,14 +55,17 @@
 /* 900px–600px: medium screens */
 @media (max-width: 900px){
   .octopus-bg{
-    --octo-side-pad: clamp(40px, 9vw, 170px);
+    --octo-side-pad: clamp(32px, 6vw, 120px);
+  }
+  .octopus{
+    line-height: .95;
   }
 }
 
 /* 600px–420px: small phones & small tablets */
 @media (max-width: 600px){
   .octopus-bg{
-    --octo-side-pad: clamp(32px, 8vw, 140px);
+    --octo-side-pad: clamp(24px, 5vw, 90px);
   }
 }
 
@@ -79,16 +76,38 @@
     letter-spacing: 1px;
   }
   .octopus-bg{
-    --octo-side-pad: clamp(24px, 10vw, 120px);
+    --octo-side-pad: clamp(16px, 4vw, 64px);
   }
 }
 
-/* === VERTICAL STACKING (no extra margins; line-height does the work) === */
+/* === VERTICAL STACKING === */
+/* desktop: natural spacing */
 .octo-line{
   display:block;
   opacity:0;
   margin:0;
   will-change:transform,opacity;
+}
+
+/* 900px and down: add comfortable spacing */
+@media (max-width: 900px){
+  .octopus .octo-line + .octo-line{
+    margin-top: 0.32em;
+  }
+}
+
+/* 600px and down: slightly tighter */
+@media (max-width: 600px){
+  .octopus .octo-line + .octo-line{
+    margin-top: 0.28em;
+  }
+}
+
+/* 420px and down: tight but not crushed */
+@media (max-width: 420px){
+  .octopus .octo-line + .octo-line{
+    margin-top: 0.22em;
+  }
 }
 
 /* === ALIGNMENTS === */
@@ -98,7 +117,7 @@
   justify-self:start;
   text-align:left;
   transform:translateX(calc(-1 * var(--octo-slide)));
-  margin-left:-5px; /* optical nudge */
+  margin-left:-5px; /* optical correction */
 }
 
 /* prevent wrapping on line 1 */
@@ -156,12 +175,26 @@
   }
 }
 
-/* === MEDIUM VIEWPORTS: extra gutters so logo feels tighter === */
-/* roughly tablets & small laptops */
-@media (min-width: 640px) and (max-width: 1199px){
+/* ===== EXTRA GUTTER BOOST: medium + small screens ===== */
+
+/* Medium screens: ~900px–600px */
+@media (max-width: 900px){
   .octopus-bg{
-    /* chunkier side padding than the earlier rules */
-    --octo-side-pad: clamp(72px, 14vw, 260px);
+    --octo-side-pad: clamp(40px, 8vw, 160px);  /* was 32px,6vw,120px */
+  }
+}
+
+/* Small screens: ~600px–420px */
+@media (max-width: 600px){
+  .octopus-bg{
+    --octo-side-pad: clamp(32px, 7vw, 140px);  /* was 24px,5vw,90px */
+  }
+}
+
+/* Tiny phones: ~420px and below */
+@media (max-width: 420px){
+  .octopus-bg{
+    --octo-side-pad: clamp(24px, 10vw, 120px); /* was 16px,4vw,64px */
   }
 }
 

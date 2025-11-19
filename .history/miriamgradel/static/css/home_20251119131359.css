@@ -1,4 +1,4 @@
-/* ===== OCTOPUS headline (FINAL, MEDIUM FIXED) ===== */
+/* ===== OCTOPUS headline (FINAL TUNED VERSION) ===== */
 :root{
   --octo-cyan: #73f0fa;          /* shadow color */
   --octo-slide: 160px;           /* travel distance */
@@ -6,7 +6,7 @@
   --octo-duration: 3s;           /* animation speed */
 }
 
-/* === MAIN LOGO === */
+/* === MAIN LOGO (desktop behaviour unchanged) === */
 .octopus{
   font-family: 'Designer', sans-serif;
   color:#000;
@@ -14,12 +14,12 @@
   text-transform:uppercase;
   letter-spacing:2px;
 
-  /* desktop scaling you liked */
+  /* your original desktop scale */
   font-size: clamp(4rem, 11vw, 10rem);
 
   margin:0;
   padding:1rem 0;
-  line-height: 1;   /* desktop keeps original spacing */
+  line-height: 1;   /* desktop: perfect as-is */
 
   display:grid;
   justify-items:stretch;
@@ -28,15 +28,7 @@
   text-shadow:3px 3px 0 var(--octo-cyan);
 }
 
-/* Below 1200px: use the same compact line-height everywhere
-   so medium & small screens match the reference logo spacing */
-@media (max-width: 1200px){
-  .octopus{
-    line-height: 0.84;
-  }
-}
-
-/* === HERO SIDE GUTTERS === */
+/* === HERO SIDE GUTTERS — DESKTOP PERFECT === */
 .octopus-bg{
   --octo-side-pad: clamp(48px, 10vw, 200px);  /* desktop look */
   padding-inline: var(--octo-side-pad);
@@ -51,32 +43,44 @@
   }
 }
 
-/* 1200px–900px: slightly smaller gutters than desktop */
+/* ===== GUTTERS: just a bit more on medium/small ===== */
+
+/* 1200px–900px */
 @media (max-width: 1200px){
   .octopus-bg{
     --octo-side-pad: clamp(40px, 8vw, 160px);
   }
+  .octopus{
+    line-height: 0.9;   /* tighten vertical stack slightly */
+  }
 }
 
-/* 900px–600px: medium screens */
+/* 900px–600px */
 @media (max-width: 900px){
   .octopus-bg{
     --octo-side-pad: clamp(40px, 9vw, 170px);
   }
+  .octopus{
+    line-height: 0.86;  /* closer lines so they don’t feel scattered */
+  }
 }
 
-/* 600px–420px: small phones & small tablets */
+/* 600px–420px */
 @media (max-width: 600px){
   .octopus-bg{
     --octo-side-pad: clamp(32px, 8vw, 140px);
   }
+  .octopus{
+    line-height: 0.84;
+  }
 }
 
-/* 420px and down: very small phones */
+/* 420px and down: small phones */
 @media (max-width: 420px){
   .octopus{
     font-size: clamp(3rem, 13vw, 7rem);
     letter-spacing: 1px;
+    line-height: 0.82;  /* compact but not overlapping */
   }
   .octopus-bg{
     --octo-side-pad: clamp(24px, 10vw, 120px);
@@ -87,7 +91,7 @@
 .octo-line{
   display:block;
   opacity:0;
-  margin:0;
+  margin:0;                     /* no extra spacing; we control via line-height */
   will-change:transform,opacity;
 }
 
@@ -153,15 +157,6 @@
   .octopus.in-view .from-left,
   .octopus.in-view .from-right{
     animation:none !important;
-  }
-}
-
-/* === MEDIUM VIEWPORTS: extra gutters so logo feels tighter === */
-/* roughly tablets & small laptops */
-@media (min-width: 640px) and (max-width: 1199px){
-  .octopus-bg{
-    /* chunkier side padding than the earlier rules */
-    --octo-side-pad: clamp(72px, 14vw, 260px);
   }
 }
 

@@ -156,15 +156,6 @@
   }
 }
 
-/* === MEDIUM VIEWPORTS: extra gutters so logo feels tighter === */
-/* roughly tablets & small laptops */
-@media (min-width: 640px) and (max-width: 1199px){
-  .octopus-bg{
-    /* chunkier side padding than the earlier rules */
-    --octo-side-pad: clamp(72px, 14vw, 260px);
-  }
-}
-
 /* ===== Services carousel (scoped to #services) ===== */
 #services .hscroll { position: relative; }
 
