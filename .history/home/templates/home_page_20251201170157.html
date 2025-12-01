@@ -36,15 +36,18 @@
 
 <!-- ========== SERVICES (Horizontal carousel) ========== -->
 <section id="services" class="mb-4">
-  <h3 class="section-title"><span>{% trans "Services" %}</span></h3>
+  <h3 class="section-title"><span>{% trans "Discover what I do" %}</span></h3>
 
   <div class="hscroll" id="services-scroll">
     <div class="hscroll__track" tabindex="0" aria-label="{% trans 'Services carousel' %}">
       {% for block in page.services %}
         {% if block.block_type == "service" %}
+          {# Pick link target: internal page URL, else external URL, else # #}
+          {% firstof block.value.link_page.url block.value.link_url "#" as base_href %}
+
           <a
             class="service-card hscroll__item text-decoration-none"
-            href="{% if block.value.link_page %}{{ block.value.link_page.url }}{% elif block.value.link_url %}{{ block.value.link_url }}{% else %}#{% endif %}{% if block.value.anchor %}#{{ block.value.anchor|slugify }}{% endif %}"
+            href="{{ base_href }}{% if block.value.anchor %}#{{ block.value.anchor|slugify }}{% endif %}"
             aria-label="{{ block.value.title }}"
             {% if block.value.link_url and not block.value.link_page %}target="_blank" rel="noopener"{% endif %}
           >
@@ -65,16 +68,15 @@
         <p class="text-muted m-0">{% trans "Services coming soon." %}</p>
       {% endfor %}
     </div>
-  </div>
 
-      <!-- Controls (arrows + dots) -->
-      <div class="hscroll__controls" aria-label="{% trans 'Carousel controls' %}">
-        <button class="hscroll__btn hscroll__btn--prev" aria-label="{% trans 'Previous services' %}" type="button"></button>
-        <div class="hscroll__dots" aria-label="{% trans 'Services navigation' %}"></div>
-        <button class="hscroll__btn hscroll__btn--next" aria-label="{% trans 'Next services' %}" type="button"></button>
-      </div>
+    <!-- Controls (inside .hscroll and after the track) -->
+    <div class="hscroll__controls" aria-label="{% trans 'Carousel controls' %}">
+      <button class="hscroll__btn hscroll__btn--prev" aria-label="{% trans 'Previous services' %}" type="button"></button>
+      <div class="hscroll__dots" aria-label="{% trans 'Services navigation' %}"></div>
+      <button class="hscroll__btn hscroll__btn--next" aria-label="{% trans 'Next services' %}" type="button"></button>
     </div>
-  </section>
+  </div>
+</section>
 
   <!-- ========== REVIEWS ========== -->
   {% if page.reviews %}
@@ -144,17 +146,6 @@
       </div>
     </section>
   {% endif %}
-
-  <!-- ========== CTA STRIP ========== -->
-  {% slugurl 'work-with-me' as work_url %}
-  <section id="cta" class="cta-strip mt-5">
-    <div class="cta-inner">
-      <p class="cta-text m-0 me-3">{% trans "You have a project in mind?" %}</p>
-      <a href="{{ work_url|default:'/work-with-me/' }}" class="cta-btn">
-        {% trans "Let’s talk" %}
-      </a>
-    </div>
-  </section>
 
   <!-- Octopus animation -->
   <script>
