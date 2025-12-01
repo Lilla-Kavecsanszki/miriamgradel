@@ -8,7 +8,7 @@
 {% endblock extra_css %}
 
 {% block content %}
-<section class="container-fluid py-4">
+<section class="container-fluid py-2">
   <div class="row">
     {# ================= LEFT: HERO + INTRO + FEATURED + GRID ================= #}
     <div class="col-12 col-lg-8">
@@ -16,10 +16,8 @@
       {# HERO / INTRO #}
       <div class="video-hero mb-3">
         <span class="cap" aria-hidden="true"></span>
-        <div class="block-title" style="color: #73f0fa">
-          {% trans "As a multimedia journalist I also do videos" %}
-        </div>
-        <p>{% trans "For some clients, I filmed and produced videos. Here’s a glimpse at my multimedia work." %}</p>
+        <div class="block-title" style="color: #73f0fa">{% trans "Video & TV" %}</div>
+        <p>{% trans "News, reels, documentaries and more, from behind and in front of the camera." %}</p>
       </div>
 
       {% if page.intro %}
@@ -28,8 +26,8 @@
 
       {# ===== FEATURED PLAYER ===== #}
       {% if featured %}
-        <section class="featured mb-3">
-          <h2 class="section-title"><span>{% trans "Selected Episode" %}</span></h2>
+        <section class="featured mb-1">
+          <h2 class="section-title"><span>{% trans "Featured" %}</span></h2>
 
           <div class="featured__grid">
             <div class="featured__media">
@@ -39,7 +37,7 @@
             </div>
 
             <aside class="featured__meta">
-              <p class="meta__date" id="meta-date">{{ featured.video_date|date:"d/m/Y" }}</p>
+              <p class="meta__date" id="meta-date">{{ featured.video_date|date:"Y" }}</p>
               <h3 class="meta__title" id="meta-title">{{ featured.standfirst|default:_("Untitled") }}</h3>
 
               {% if featured.description %}
@@ -48,7 +46,7 @@
                 <div class="meta__body richtext" id="meta-desc"></div>
               {% endif %}
 
-              <div class="meta__credits" id="meta-credits">
+              {% comment %} <div class="meta__credits" id="meta-credits">
                 {% if featured.produced_by and featured.produced_for %}
                   {% blocktrans with by=featured.produced_by forw=featured.produced_for %}
                     Produced by <strong>{{ by }}</strong> for: <strong>{{ forw }}</strong>
@@ -62,31 +60,29 @@
                     Produced for: <strong>{{ forw }}</strong>
                   {% endblocktrans %}
                 {% endif %}
-              </div>
+              </div> {% endcomment %}
 
               {# --- Share row --- #}
-              <div class="meta__share">
+              {% comment %} <div class="meta__share">
                 <span>{% trans "Share it" %}</span>
-                <a id="share-in" aria-label="{% trans 'Share to LinkedIn' %}"
+                <a aria-label="{% trans 'Share to LinkedIn' %}"
                    href="https://www.linkedin.com/sharing/share-offsite/?url={{ request.build_absolute_uri|urlencode }}"
                    target="_blank" rel="noopener">{% trans "LinkedIn" %}</a>
-                <a id="share-bsky" aria-label="{% trans 'Share to Bluesky' %}"
+                <a aria-label="{% trans 'Share to WhatsApp' %}"
+                    href="https://api.whatsapp.com/send?text={{ request.build_absolute_uri|urlencode }}"
+                    target="_blank" rel="noopener">{% trans "WhatsApp" %}</a>
+                <a aria-label="{% trans 'Share to Bluesky' %}"
                    href="https://bsky.app/intent/compose?text={{ featured.standfirst|default:_('Untitled')|urlencode }}%20{{ request.build_absolute_uri|urlencode }}"
                    target="_blank" rel="noopener">{% trans "Bluesky" %}</a>
-                <a id="share-line" aria-label="{% trans 'Share to Line' %}"
+                <a aria-label="{% trans 'Share to Line' %}"
                    href="https://social-plugins.line.me/lineit/share?url={{ request.build_absolute_uri|urlencode }}"
                    target="_blank" rel="noopener">{% trans "Line" %}</a>
-              </div>
+              </div> {% endcomment %}
 
-              {# --- External link button --- #}
               {% if featured.external_url %}
-                <a class="btn" id="meta-link" href="{{ featured.external_url }}" target="_blank" rel="noopener">
-                  {% trans "Open video" %}
-                </a>
+                <a class="btn" id="meta-link" href="{{ featured.external_url }}" target="_blank" rel="noopener">{% trans "Open video" %}</a>
               {% else %}
-                <a class="btn disabled" id="meta-link" tabindex="-1" aria-disabled="true">
-                  {% trans "Open video" %}
-                </a>
+                <a class="btn disabled" id="meta-link" tabindex="-1" aria-disabled="true">{% trans "Open" %}</a>
               {% endif %}
             </aside>
           </div>
@@ -167,15 +163,12 @@
                 <article class="bts-card bts-card--sidebar">
                   <a href="{{ bts.url }}" class="thumb">
                     {% if bts.teaser_image %}
-                      {% image bts.teaser_image fill-600x338 format-webp class="w-100"
-                         loading="lazy" decoding="async" fetchpriority="low" alt=bts.card_title %}
+                      {% image bts.teaser_image fill-600x338 class="w-100" loading="lazy" decoding="async" alt=bts.card_title %}
                     {% endif %}
                     <span class="bts-title">{{ bts.card_title }}</span>
                   </a>
                   <div class="bts-body">
-                    {% if bts.card_summary %}
-                      <p class="bts-text">{{ bts.card_summary }}</p>
-                    {% endif %}
+                    {% if bts.card_summary %}<p class="bts-text">{{ bts.card_summary }}</p>{% endif %}
                     <a href="{{ bts.url }}" class="bts-cta">{% trans "Discover how it happened!" %}</a>
                   </div>
                 </article>
@@ -190,132 +183,116 @@
   </div>
 </section>
 
-{# Force lazy-loading on embeds that don’t set it by default #}
+{# Lazy-load embeds + player swap logic #}
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('iframe').forEach(f => f.setAttribute('loading','lazy'));
-});
-</script>
+  // Add lazy to iframes created by wagtail-embed
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('iframe').forEach(f => f.setAttribute('loading', 'lazy'));
+  });
 
-{# Player swap-back JS + share syncing #}
-<script>
-(function () {
-  const player      = document.getElementById('video-player');
-  const metaTitle   = document.getElementById('meta-title');
-  const metaDate    = document.getElementById('meta-date');
-  const metaDesc    = document.getElementById('meta-desc');
-  const metaCredits = document.getElementById('meta-credits');
-  const metaLink    = document.getElementById('meta-link');
+  (function () {
+    const player      = document.getElementById('video-player');
+    const metaTitle   = document.getElementById('meta-title');
+    const metaDate    = document.getElementById('meta-date');
+    const metaDesc    = document.getElementById('meta-desc');
+    const metaCredits = document.getElementById('meta-credits');
+    const metaLink    = document.getElementById('meta-link');
 
-  // Share anchors (with IDs above)
-  const shareIN  = document.getElementById('share-in');
-  const shareBS  = document.getElementById('share-bsky');
-  const shareLN  = document.getElementById('share-line');
+    const featuredTpl   = document.getElementById('tpl-featured-current');
+    const featuredStore = document.getElementById('featured-meta-store');
 
-  const featuredTpl   = document.getElementById('tpl-featured-current');
-  const featuredStore = document.getElementById('featured-meta-store');
-
-  let prevFeatured = {
-    embedHTML:   featuredTpl ? featuredTpl.innerHTML : '',
-    title:       featuredStore ? featuredStore.dataset.title : '',
-    date:        featuredStore ? featuredStore.dataset.date : '',
-    producedBy:  featuredStore ? featuredStore.dataset.producedBy : '',
-    producedFor: featuredStore ? featuredStore.dataset.producedFor : '',
-    externalUrl: featuredStore ? featuredStore.dataset.externalUrl : ''
-  };
-
-  function setHTML(el, html) { if (el) el.innerHTML = html || ''; }
-  function setCredits(by, forWho) {
-    if (!metaCredits) return;
-    if (by && forWho) {
-      metaCredits.innerHTML = `{% trans "Produced by" %} <strong>${by}</strong> {% trans "for:" %} <strong>${forWho}</strong>`;
-    } else if (by) {
-      metaCredits.innerHTML = `{% trans "Produced by" %} <strong>${by}</strong>`;
-    } else if (forWho) {
-      metaCredits.innerHTML = `{% trans "Produced for:" %} <strong>${forWho}</strong>`;
-    } else {
-      metaCredits.innerHTML = '';
-    }
-  }
-  function setLink(url) {
-    if (!metaLink) return;
-    if (url) {
-      metaLink.classList.remove('disabled');
-      metaLink.setAttribute('href', url);
-      metaLink.setAttribute('aria-disabled', 'false');
-      metaLink.removeAttribute('tabindex');
-    } else {
-      metaLink.classList.add('disabled');
-      metaLink.removeAttribute('href');
-      metaLink.setAttribute('aria-disabled', 'true');
-      metaLink.setAttribute('tabindex', '-1');
-    }
-  }
-  function setShare(url, title) {
-    const shareUrl = url || window.location.href;
-    const text     = title || '{% trans "Untitled" %}';
-    if (shareIN) shareIN.href = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`;
-    if (shareBS) shareBS.href = `https://bsky.app/intent/compose?text=${encodeURIComponent(text)}%20${encodeURIComponent(shareUrl)}`;
-    if (shareLN) shareLN.href = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(shareUrl)}`;
-  }
-
-  // Initialize share links for initial featured
-  setShare(prevFeatured.externalUrl, prevFeatured.title);
-
-  function updateCardButtons(cardEl, data) {
-    const buttons = cardEl.querySelectorAll('.play-in-hero');
-    buttons.forEach(btn => {
-      btn.setAttribute('data-title', data.title || '{% trans "Untitled" %}');
-      btn.setAttribute('data-date', data.date || '');
-      btn.setAttribute('data-produced-by', data.producedBy || '');
-      btn.setAttribute('data-produced-for', data.producedFor || '');
-      btn.setAttribute('data-external-url', data.externalUrl || '');
-    });
-    const titleBtn = cardEl.querySelector('.card__title .play-in-hero');
-    if (titleBtn) titleBtn.textContent = data.title || '{% trans "Untitled" %}';
-  }
-
-  document.addEventListener('click', function (e) {
-    const btn = e.target.closest('.play-in-hero');
-    if (!btn) return;
-
-    const card = btn.closest('.card');
-    const tplId = btn.getAttribute('data-tpl-id');
-    const tpl = tplId ? document.getElementById(tplId) : null;
-    const cardThumb = card ? card.querySelector('.embed.embed--thumb') : null;
-
-    if (!tpl || !player || !card) return;
-
-    const clicked = {
-      embedHTML:   tpl.innerHTML,
-      title:       btn.getAttribute('data-title') || '{% trans "Untitled" %}',
-      date:        btn.getAttribute('data-date') || '',
-      producedBy:  btn.getAttribute('data-produced-by') || '',
-      producedFor: btn.getAttribute('data-produced-for') || '',
-      externalUrl: btn.getAttribute('data-external-url') || ''
+    let prevFeatured = {
+      embedHTML:   featuredTpl ? featuredTpl.innerHTML : '',
+      title:       featuredStore ? featuredStore.dataset.title : '',
+      date:        featuredStore ? featuredStore.dataset.date : '',
+      producedBy:  featuredStore ? featuredStore.dataset.producedBy : '',
+      producedFor: featuredStore ? featuredStore.dataset.producedFor : '',
+      externalUrl: featuredStore ? featuredStore.dataset.externalUrl : ''
     };
 
-    // Promote clicked to featured
-    player.innerHTML = clicked.embedHTML;
-    setHTML(metaTitle, clicked.title);
-    setHTML(metaDate,  clicked.date);
-    setHTML(metaDesc,  '');  // (Optionally set per-card description if you have it)
-    setCredits(clicked.producedBy, clicked.producedFor);
-    setLink(clicked.externalUrl);
-    setShare(clicked.externalUrl, clicked.title);
-
-    // Demote previous featured back into the clicked card
-    if (cardThumb && prevFeatured.embedHTML) {
-      cardThumb.innerHTML = prevFeatured.embedHTML;
+    function setHTML(el, html) { if (el) el.innerHTML = html || ''; }
+    function setCredits(by, forWho) {
+      if (!metaCredits) return;
+      if (by && forWho) {
+        metaCredits.innerHTML = `{{ _("Produced by") }} <strong>${by}</strong> {{ _("for:") }} <strong>${forWho}</strong>`;
+      } else if (by) {
+        metaCredits.innerHTML = `{{ _("Produced by") }} <strong>${by}</strong>`;
+      } else if (forWho) {
+        metaCredits.innerHTML = `{{ _("Produced for:") }} <strong>${forWho}</strong>`;
+      } else {
+        metaCredits.innerHTML = '';
+      }
     }
-    tpl.innerHTML = prevFeatured.embedHTML;
-    updateCardButtons(card, prevFeatured);
+    function setLink(url) {
+      if (!metaLink) return;
+      if (url) {
+        metaLink.classList.remove('disabled');
+        metaLink.setAttribute('href', url);
+        metaLink.setAttribute('aria-disabled', 'false');
+        metaLink.removeAttribute('tabindex');
+      } else {
+        metaLink.classList.add('disabled');
+        metaLink.removeAttribute('href');
+        metaLink.setAttribute('aria-disabled', 'true');
+        metaLink.setAttribute('tabindex', '-1');
+      }
+    }
 
-    // Update cache
-    prevFeatured = clicked;
+    function updateCardButtons(cardEl, data) {
+      const buttons = cardEl.querySelectorAll('.play-in-hero');
+      buttons.forEach(btn => {
+        btn.setAttribute('data-title', data.title || '{{ _("Untitled") }}');
+        btn.setAttribute('data-date', data.date || '');
+        btn.setAttribute('data-produced-by', data.producedBy || '');
+        btn.setAttribute('data-produced-for', data.producedFor || '');
+        btn.setAttribute('data-external-url', data.externalUrl || '');
+      });
+      const titleBtn = cardEl.querySelector('.card__title .play-in-hero');
+      if (titleBtn) titleBtn.textContent = data.title || '{{ _("Untitled") }}';
+      const dek = cardEl.querySelector('.card__dek');
+      if (dek) dek.textContent = data.title || '';
+    }
 
-    player.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  });
-})();
+    document.addEventListener('click', function (e) {
+      const btn = e.target.closest('.play-in-hero');
+      if (!btn) return;
+
+      const card = btn.closest('.card');
+      const tplId = btn.getAttribute('data-tpl-id');
+      const tpl = tplId ? document.getElementById(tplId) : null;
+      const cardThumb = card ? card.querySelector('.embed.embed--thumb') : null;
+
+      if (!tpl || !player || !card) return;
+
+      const clicked = {
+        embedHTML:   tpl.innerHTML,
+        title:       btn.getAttribute('data-title') || '{{ _("Untitled") }}',
+        date:        btn.getAttribute('data-date') || '',
+        producedBy:  btn.getAttribute('data-produced-by') || '',
+        producedFor: btn.getAttribute('data-produced-for') || '',
+        externalUrl: btn.getAttribute('data-external-url') || ''
+      };
+
+      // Promote clicked to featured
+      player.innerHTML = clicked.embedHTML;
+      setHTML(metaTitle, clicked.title);
+      setHTML(metaDate,  clicked.date);
+      setHTML(metaDesc,  '');  // no per-card desc stored here
+      setCredits(clicked.producedBy, clicked.producedFor);
+      setLink(clicked.externalUrl);
+
+      // Demote previous featured back into clicked card
+      if (cardThumb && prevFeatured.embedHTML) {
+        cardThumb.innerHTML = prevFeatured.embedHTML;
+      }
+      tpl.innerHTML = prevFeatured.embedHTML;
+      updateCardButtons(card, prevFeatured);
+
+      // New "previous" is the one we just promoted
+      prevFeatured = clicked;
+
+      player.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  })();
 </script>
 {% endblock %}

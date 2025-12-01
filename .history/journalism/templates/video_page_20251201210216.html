@@ -16,8 +16,8 @@
       {# HERO / INTRO #}
       <div class="video-hero mb-3">
         <span class="cap" aria-hidden="true"></span>
-        <div class="block-title" style="color: #73f0fa">{% trans "As a multimedia Journalist I also do Videos" %}</div>
-        <p>{% trans "For some clients, I had to film and produce videos. Here’s a glimpse at my multimedia work." %}</p>
+        <div class="block-title" style="color: #73f0fa">{% trans "Video & TV" %}</div>
+        <p>{% trans "News, reels, documentaries and more, from behind and in front of the camera." %}</p>
       </div>
 
       {% if page.intro %}
@@ -27,7 +27,7 @@
       {# ===== FEATURED PLAYER ===== #}
       {% if featured %}
         <section class="featured mb-1">
-          <h2 class="section-title"><span>{% trans "Selected Episode" %}</span></h2>
+          <h2 class="section-title"><span>{% trans "Featured" %}</span></h2>
 
           <div class="featured__grid">
             <div class="featured__media">
@@ -37,7 +37,7 @@
             </div>
 
             <aside class="featured__meta">
-              <p class="meta__date" id="meta-date">{{ featured.video_date|date:"d/m/Y" }}</p>
+              <p class="meta__date" id="meta-date">{{ featured.video_date|date:"Y" }}</p>
               <h3 class="meta__title" id="meta-title">{{ featured.standfirst|default:_("Untitled") }}</h3>
 
               {% if featured.description %}
@@ -46,7 +46,7 @@
                 <div class="meta__body richtext" id="meta-desc"></div>
               {% endif %}
 
-              <div class="meta__credits" id="meta-credits">
+              {% comment %} <div class="meta__credits" id="meta-credits">
                 {% if featured.produced_by and featured.produced_for %}
                   {% blocktrans with by=featured.produced_by forw=featured.produced_for %}
                     Produced by <strong>{{ by }}</strong> for: <strong>{{ forw }}</strong>
@@ -60,10 +60,10 @@
                     Produced for: <strong>{{ forw }}</strong>
                   {% endblocktrans %}
                 {% endif %}
-              </div>
+              </div> {% endcomment %}
 
               {# --- Share row --- #}
-              <div class="meta__share">
+              {% comment %} <div class="meta__share">
                 <span>{% trans "Share it" %}</span>
                 <a aria-label="{% trans 'Share to LinkedIn' %}"
                    href="https://www.linkedin.com/sharing/share-offsite/?url={{ request.build_absolute_uri|urlencode }}"
@@ -77,12 +77,12 @@
                 <a aria-label="{% trans 'Share to Line' %}"
                    href="https://social-plugins.line.me/lineit/share?url={{ request.build_absolute_uri|urlencode }}"
                    target="_blank" rel="noopener">{% trans "Line" %}</a>
-              </div>
+              </div> {% endcomment %}
 
               {% if featured.external_url %}
                 <a class="btn" id="meta-link" href="{{ featured.external_url }}" target="_blank" rel="noopener">{% trans "Open video" %}</a>
               {% else %}
-                <a class="btn disabled" id="meta-link" tabindex="-1" aria-disabled="true">{% trans "Open video" %}</a>
+                <a class="btn disabled" id="meta-link" tabindex="-1" aria-disabled="true">{% trans "Open" %}</a>
               {% endif %}
             </aside>
           </div>
@@ -101,7 +101,7 @@
 
       {# ===== ALL VIDEOS GRID ===== #}
       <section class="all-videos">
-        <h2 class="section-title"><span>{% trans "All my videos" %}</span></h2>
+        <h2 class="section-title"><span>{% trans "Other Examples" %}</span></h2>
 
         <div class="cards" id="video-cards">
           {% for v in videos %}

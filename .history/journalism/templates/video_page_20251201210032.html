@@ -8,7 +8,7 @@
 {% endblock extra_css %}
 
 {% block content %}
-<section class="container-fluid py-4">
+<section class="container-fluid py-2">
   <div class="row">
     {# ================= LEFT: HERO + INTRO + FEATURED + GRID ================= #}
     <div class="col-12 col-lg-8">
@@ -16,8 +16,8 @@
       {# HERO / INTRO #}
       <div class="video-hero mb-3">
         <span class="cap" aria-hidden="true"></span>
-        <div class="block-title" style="color: #73f0fa">{% trans "As a multimedia Journalist I also do Videos" %}</div>
-        <p>{% trans "For some clients, I had to film and produce videos. Here’s a glimpse at my multimedia work." %}</p>
+        <div class="block-title" style="color: #73f0fa">{% trans "Video & TV" %}</div>
+        <p>{% trans "News, reels, documentaries and more, from behind and in front of the camera." %}</p>
       </div>
 
       {% if page.intro %}
@@ -27,7 +27,7 @@
       {# ===== FEATURED PLAYER ===== #}
       {% if featured %}
         <section class="featured mb-1">
-          <h2 class="section-title"><span>{% trans "Selected Episode" %}</span></h2>
+          <h2 class="section-title"><span>{% trans "Featured" %}</span></h2>
 
           <div class="featured__grid">
             <div class="featured__media">
@@ -37,7 +37,7 @@
             </div>
 
             <aside class="featured__meta">
-              <p class="meta__date" id="meta-date">{{ featured.video_date|date:"d/m/Y" }}</p>
+              <p class="meta__date" id="meta-date">{{ featured.video_date|date:"Y" }}</p>
               <h3 class="meta__title" id="meta-title">{{ featured.standfirst|default:_("Untitled") }}</h3>
 
               {% if featured.description %}
