@@ -17,9 +17,9 @@
       <div class="written-hero mb-3">
         <span class="cap" aria-hidden="true"></span>
         <div class="block-title" style="color: #73f0fa">
-          {% trans "I also produce audio stories & podcasts" %}
+          {% trans "Podcast & Radio" %}
         </div>
-        <p>{% trans "Here’s a selection of my audio work: interviews, features and sound-rich stories." %}</p>
+        <p>{% trans "Production, booking, hosting and editing. Discover current and past productions below." %}</p>
       </div>
 
       {% if page.intro %}
@@ -29,7 +29,7 @@
       {# ===== FEATURED PLAYER (inside left column) ===== #}
       {% if featured %}
         <section class="featured mb-1">
-          <h2 class="section-title"><span>{% trans "Selected Episode" %}</span></h2>
+          <h2 class="section-title"><span>{% trans "Featured" %}</span></h2>
 
           <div class="featured__grid">
             <div class="featured__media">
@@ -70,7 +70,7 @@
                 {% endif %}
               </div>
 
-              <div class="meta__share">
+              {% comment %} <div class="meta__share">
                 <span>{% trans "Share it" %}</span>
                 <a aria-label="{% trans 'Share to LinkedIn' %}"
                    href="https://www.linkedin.com/sharing/share-offsite/?url={{ request.build_absolute_uri|urlencode }}"
@@ -84,11 +84,11 @@
                 <a aria-label="{% trans 'Share to Line' %}"
                    href="https://social-plugins.line.me/lineit/share?url={{ request.build_absolute_uri|urlencode }}"
                    target="_blank" rel="noopener">{% trans "Line" %}</a>
-              </div>
+              </div> {% endcomment %}
 
               {% if featured.external_url %}
                 <a class="btn" id="meta-link" href="{{ featured.external_url }}"
-                   target="_blank" rel="noopener">{% trans "Open audio" %}</a>
+                   target="_blank" rel="noopener">{% trans "Open" %}</a>
               {% else %}
                 <a class="btn disabled" id="meta-link" tabindex="-1" aria-disabled="true">{% trans "Open audio" %}</a>
               {% endif %}
