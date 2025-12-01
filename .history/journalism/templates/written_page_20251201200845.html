@@ -17,7 +17,7 @@
       <div class="written-hero mb-3">
         <span class="cap" aria-hidden="true"></span>
         <div class="block-title" style="color:#73f0fa">
-          {% trans "Discover here some of my articles" %}
+          {% trans "Writing As A Freelancer" %}
         </div>
         <p>{% trans "I had the chance to work for 10 years for different magazines. Here’s a small selection." %}</p>
       </div>
@@ -47,7 +47,7 @@
 
             {% if d %}
               <span class="w-dot" aria-hidden="true">·</span>
-              <time class="w-date" datetime="{{ d|date:'Y-m-d' }}">{{ d|date:"d/m/Y" }}</time>
+              <time class="w-date" datetime="{{ d|date:'Y-m-d' }}">{{ d|date:"Y" }}</time>
             {% endif %}
           </li>
           {% endwith %}
@@ -67,11 +67,9 @@
           {% with d=a.publication_date %}
           <li class="written-item written-row">
             {% if a.external_url %}
-              <a href="{{ a.external_url }}" class="w-title" target="_blank" rel="noopener">
-                {{ a.title }}
-              </a>
+              <a href="{{ a.external_url }}" target="_blank" rel="noopener" class="w-title w-title--link">{{ a.title }}</a>
             {% else %}
-              <span class="w-title">{{ a.title }}</span>
+              <span class="w-title w-title--nolink">{{ a.title }}</span>
             {% endif %}
 
             {% if a.publication_name %}

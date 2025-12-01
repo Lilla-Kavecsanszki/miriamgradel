@@ -17,9 +17,9 @@
       <div class="written-hero mb-3">
         <span class="cap" aria-hidden="true"></span>
         <div class="block-title" style="color:#73f0fa">
-          {% trans "Discover here some of my articles" %}
+          {% trans "Writing As A Freelancer" %}
         </div>
-        <p>{% trans "I had the chance to work for 10 years for different magazines. Here’s a small selection." %}</p>
+        <p>{% trans "Tech, travel, and beyond. Browse through my features, reports and investigations below" %}</p>
       </div>
 
       {% if page.intro %}
@@ -28,7 +28,7 @@
 
       <!-- My work — current year -->
       <h3 class="section-title">
-        <span class="band">{% trans "My Recent Work" %}</span>
+        <span class="band">{% trans "Recent" %}</span>
       </h3>
       <ul class="written-list" aria-label="{% trans 'Recent articles' %}">
         {% for a in recent_articles %}
@@ -47,7 +47,7 @@
 
             {% if d %}
               <span class="w-dot" aria-hidden="true">·</span>
-              <time class="w-date" datetime="{{ d|date:'Y-m-d' }}">{{ d|date:"d/m/Y" }}</time>
+              <time class="w-date" datetime="{{ d|date:'Y-m-d' }}">{{ d|date:"Y" }}</time>
             {% endif %}
           </li>
           {% endwith %}
@@ -60,7 +60,7 @@
 
       <!-- My previous works -->
       <h3 class="section-title mt-4">
-        <span class="band">{% trans "My previous works" %}</span>
+        <span class="band">{% trans "Previous" %}</span>
       </h3>
       <ul class="written-list" aria-label="{% trans 'Previous articles' %}">
         {% for a in previous_articles %}
