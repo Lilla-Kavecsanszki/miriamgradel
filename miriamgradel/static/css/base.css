@@ -526,3 +526,8 @@ html { scroll-behavior: smooth; }
   transform: translateY(-1px);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 }
+
+/* Hiding language switch hyperlink for the moment - next sprint */
+.menu-bottom ul.list-inline {
+    display: none !important;
+}

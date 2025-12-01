@@ -160,13 +160,13 @@
           <li><a class="menu-link" href="{{ bts_url }}">{% trans "Behind the Scenes" %}</a></li>
 
           <li class="divider" aria-hidden="true"></li>
-          <li><a class="menu-link" href="{{ work_url }}">{% trans "Work With Me" %}</a></li>
+          <li><a class="menu-link" href="{{ work_url }}">{% trans "Work with Me" %}</a></li>
         </ul>
       </nav>
 
       {# Image logo — responsive #}
       <div class="logo my-2">
-        <img src="{% static 'images/cyan_logo.png' %}" alt="Miriam Gradel" class="logo-img img-fluid mx-auto d-block">
+        <img src="{% static 'images/cyan_logo.jpeg' %}" alt="Miriam Gradel" class="logo-img img-fluid mx-auto d-block">
       </div>
 
       <!-- Bottom: language (auto) + socials -->
@@ -280,7 +280,7 @@
   {% if not page or page.content_type.model != 'workwithmepage' %}
     <section id="cta" class="cta-strip" aria-labelledby="cta-heading">
       <div class="cta-inner">
-        <p id="cta-heading" class="cta-text">{% trans "If you’re ready for it  " %}</p>
+        <p id="cta-heading" class="cta-text">{% trans "You have a project in mind?  " %}</p>
         <a href="{{ work_url|default:'/work-with-me/' }}" class="cta-btn">
           {% trans "Let’s talk" %}
         </a>
@@ -305,7 +305,7 @@
       <ul class="footer-links">
         <li><a href="{{ communication_url|default:'#' }}">{% trans "Communication" %}</a></li>
         <li><a href="{{ bts_url|default:'#' }}">{% trans "Behind the Scenes" %}</a></li>
-        <li><a href="{{ work_url|default:'#' }}">{% trans "Work With Me" %}</a></li>
+        <li><a href="{{ work_url|default:'#' }}">{% trans "Work with Me" %}</a></li>
       </ul>
     </nav>
 
