@@ -101,6 +101,9 @@ MIDDLEWARE = [
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
 ]
 
+if not DEBUG:
+    MIDDLEWARE.append("miriamgradel.middlewares.ai_optout.AiOptOutMiddleware")
+
 ROOT_URLCONF = "miriamgradel.urls"
 WSGI_APPLICATION = "miriamgradel.wsgi.application"
 
