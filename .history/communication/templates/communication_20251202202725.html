@@ -168,27 +168,6 @@
     {% endfor %}
   {% endif %}
 
-  {# Bottom section: embedded videos (Instagram, YouTube, etc.) #}
-  {% if page.instagram_reels %}
-    <section class="insta-reels mt-5">
-      {% comment %} <h3 class="section-title">
-        <span class="band">{% trans "Selected work" %}</span>
-      </h3> {% endcomment %}
-
-      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
-        {% for item in page.instagram_reels %}
-          {% with code=item.value.embed_code %}
-            <div class="col d-flex justify-content-center">
-              <div class="video-embed-wrapper w-100">
-                {{ code|safe }}
-              </div>
-            </div>
-          {% endwith %}
-        {% endfor %}
-      </div>
-    </section>
-  {% endif %}
-
   <!-- Back to top button -->
   <a href="#top" class="to-top-button" aria-label="{% trans 'Back to top' %}">
     <span class="arrow" aria-hidden="true">↑</span>

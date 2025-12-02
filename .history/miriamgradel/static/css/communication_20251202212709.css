@@ -207,93 +207,51 @@ a.example-button:active{
 }
 
 /* ========================
-   VIDEO / EMBED GALLERY (2 reels)
+   VIDEO / EMBED GALLERY (bottom of page)
    ======================== */
 
 .insta-reels {
-  margin-top: 2.5rem;
+  margin-top: 2rem;
 }
 
-/* Card-style wrapper for each video, consistent with cyan glow aesthetic */
+/* Keep the heading feeling like the other sections */
+.insta-reels .section-title {
+  margin-bottom: 1rem;
+}
+
+/* Card-style wrapper for each video, matching the cyan glow vibe */
 .video-embed-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 540px;
   background: #fff;
   border-radius: 4px;
   box-shadow:
     2px 3px 10px rgba(115, 240, 250, 0.45),
     0 2px 6px rgba(0, 0, 0, 0.06);
-  padding: .35rem;
+  padding: 0.35rem;
   overflow: hidden;
-  width: 100%;
-  max-width: 540px;
-  margin: 0 auto;
 }
 
+/* Make iframes / blockquotes fill the wrapper nicely */
 .video-embed-wrapper iframe,
 .video-embed-wrapper blockquote,
 .video-embed-wrapper video {
   width: 100% !important;
-  max-width: 100% !important;
+  max-width: 100%;
+  border-radius: 3px;
   margin: 0 auto;
-  border-radius: 3px;
 }
 
-/* Instagram embeds override their own width — force full width */
-.instagram-media {
+/* Instagram embeds sometimes set their own width, so we tame them a bit */
+.insta-reels .instagram-media {
   max-width: 100% !important;
   margin: 0 auto !important;
 }
 
-/* Spacing for small screens */
-@media (max-width: 600px) {
+/* Small screens: a bit more breathing room between rows */
+@media (max-width: 576px) {
   .insta-reels .col {
-    margin-bottom: 1rem;
-  }
-}
-
-/* ==========================
-   Dynamic reel layout (1, 2, or more)
-   ========================== */
-
-/* Common style (glow card) */
-.video-embed-wrapper {
-  background: #fff;
-  border-radius: 4px;
-  box-shadow:
-    2px 3px 10px rgba(115,240,250,.45),
-    0 2px 6px rgba(0,0,0,.06);
-  padding: .35rem;
-  overflow: hidden;
-}
-
-/* Force embeds to behave */
-.video-embed-wrapper iframe,
-.video-embed-wrapper blockquote,
-.video-embed-wrapper video {
-  width: 100% !important;
-  max-width: 100% !important;
-  border-radius: 3px;
-}
-
-/* Fix Instagram width */
-.instagram-media {
-  max-width: 100% !important;
-  margin: 0 auto !important;
-}
-
-/* If there are only 2 reels → center them and disable the forced 3-column layout */
-.insta-reels .row > .col:nth-child(3) {
-  display: none; /* hides empty space for 3rd column if only 2 exist */
-}
-
-/* For large screens: when exactly 2 items → center nicely */
-.insta-reels .row.row-cols-lg-3 > .col {
-  flex: 0 0 50%;
-  max-width: 50%;
-}
-
-/* On smaller screens it naturally becomes stack/2-cols */
-@media (max-width: 600px) {
-  .insta-reels .col {
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
   }
 }

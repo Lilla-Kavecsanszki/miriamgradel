@@ -137,27 +137,60 @@
                 </div>
               {% endif %}
 
-              {# 4) Header: Example + body (rich text) #}
-              {% if svc.example %}
+              {# 4) Header: Example + body #}
+              {% if svc.examples %}
                 <div class="svc-examples mt-4">
-                  <h4 class="mb-2">{% trans "Example:" %}</h4>
-                  <div class="row gx-3 gy-3">
-                    <div class="col-12">
-                      {{ svc.example|richtext }}
-                    </div>
+                  <h4 class="mb-2">
+                    {% if svc.examples|length > 1 %}
+                      {% trans "Examples:" %}
+                    {% else %}
+                      {% trans "Example:" %}
+                    {% endif %}
+                  </h4>
+                  <div class="row row-cols-1 row-cols-md-2 g-3">
+                    {% for ex in svc.examples %}
+                      <div class="col">
+                        <article class="example-card p-3 border-0">
+                          {% if ex.image %}
+                            {% image ex.image fill-600x338 class="img-fluid mb-2 rounded" loading="lazy" alt=ex.title %}
+                          {% endif %}
+                          {% if ex.title %}
+                            <h5 class="mb-1">{{ ex.title }}</h5>
+                          {% endif %}
+                          {% if ex.description %}
+                            <p class="mb-2">{{ ex.description }}</p>
+                          {% endif %}
+                          {% if ex.link_url %}
+                            <a href="{{ ex.link_url }}"
+                               class="example-button d-inline-block"
+                               target="_blank"
+                               rel="noopener"
+                               aria-label="{% blocktrans with l=ex.link_label|default:'Learn more' %}Open: {{ l }}{% endblocktrans %}">
+                              {{ ex.link_label|default:_("Learn more") }}
+                            </a>
+                          {% endif %}
+                        </article>
+                      </div>
+                    {% endfor %}
                   </div>
                 </div>
               {% endif %}
 
-              {# 5) Header: Output + body (rich text) #}
-              {% if svc.output %}
+              {# 5) Header: Output + body #}
+              {% if svc.outputs %}
                 <div class="svc-outputs mt-4">
-                  <h4 class="mb-2">{% trans "Output:" %}</h4>
-                  <div class="row gx-3 gy-3">
-                    <div class="col-12">
-                      {{ svc.output|richtext }}
-                    </div>
-                  </div>
+                  <h4 class="mb-2">
+                    {% if svc.outputs|length > 1 %}
+                      {% trans "Outputs:" %}
+                    {% else %}
+                      {% trans "Output:" %}
+                    {% endif %}
+                  </h4>
+                  <ul>
+                    {% for output in svc.outputs %}
+                      <li>{{ output }}</li>
+                    {% endfor %}
+                  </ul>
                 </div>
               {% endif %}
 
@@ -166,27 +199,6 @@
         </div>
       {% endwith %}
     {% endfor %}
-  {% endif %}
-
-  {# Bottom section: embedded videos (Instagram, YouTube, etc.) #}
-  {% if page.instagram_reels %}
-    <section class="insta-reels mt-5">
-      {% comment %} <h3 class="section-title">
-        <span class="band">{% trans "Selected work" %}</span>
-      </h3> {% endcomment %}
-
-      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
-        {% for item in page.instagram_reels %}
-          {% with code=item.value.embed_code %}
-            <div class="col d-flex justify-content-center">
-              <div class="video-embed-wrapper w-100">
-                {{ code|safe }}
-              </div>
-            </div>
-          {% endwith %}
-        {% endfor %}
-      </div>
-    </section>
   {% endif %}
 
   <!-- Back to top button -->
