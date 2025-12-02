@@ -75,7 +75,7 @@ class AboutBlock(blocks.StructBlock):
     """
     A single About section item (e.g., Academic background, Experience).
     """
-    title = blocks.CharBlock(required=True, max_length=100, help_text="Section title")
+    title = blocks.CharBlock(required=False, max_length=100, help_text="Section title")
     body = blocks.RichTextBlock(required=True, help_text="Details for this section")
 
     class Meta:
