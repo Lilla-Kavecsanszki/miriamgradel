@@ -63,11 +63,11 @@ Visitors to the **Miriam Gradel** website typically want to:
 ## Why the Website Serves These Needs Effectively
 
 - **Intuitive navigation** allows visitors to quickly browse by medium: Written, Audio, or Video.  
-- A flexible CMS (Wagtail) ensures each journalism format is presented with the appropriate layout, typography, and embedded media.  
-- The **Communication** and **Work-With-Me** sections guide prospective clients through services and contact pathways, supported by a consistent design and clear calls-to-action.  
-- The website uses **editorial-grade design patterns** — spacious layouts, strong readability, custom ribbons, and responsive typography — to deliver a premium reading experience.  
-- Integrated **multimedia support** ensures video, audio, and embeds load smoothly and responsively across devices.  
-- The **Behind the Scenes** area gives readers an informal space to explore process insights, updates, and personal notes.  
+- A flexible CMS (Wagtail) ensures each journalism format is presented with the appropriate layout, typography, and embedded media.
+- The **Communication** and **Work-With-Me** sections guide prospective clients through services and contact pathways, supported by a consistent design and clear calls-to-action.
+- The website uses **editorial-grade design patterns** — spacious layouts, strong readability, custom ribbons, and responsive typography — to deliver a premium reading experience.
+- Integrated **multimedia support** ensures video, audio, and embeds load smoothly and responsively across devices.
+- The **Behind the Scenes** area gives readers an informal space to explore process insights, updates, and personal notes. 
 - Multilingual foundations make the site accessible to a broader audience and adaptable for international communication work.
 
 ## Summary
@@ -79,7 +79,7 @@ With an emphasis on clarity, accessibility, and narrative structure, the site he
 
 # User Stories and Epics
 
-## Epic 1: User Management
+## Epic 1: User Management - Admin workspace
 
 ### US101: User Registration:
 **As a new user,** I can register for an account with my email and password so that I can save my preferences and access property details.
