@@ -140,6 +140,14 @@ a.example-button:active{
   box-shadow: inset 0 -1px 0 rgba(0,0,0,.25), 0 4px 10px rgba(0,0,0,.25);
 }
 
+.svc-image-square .svc-img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+  border-radius:4px;
+}
+
 /* BTS SIDEBAR (mini cards) */
 .bts-card--sidebar .thumb img { width:100%; height:auto; display:block; }
 .bts-card--sidebar .bts-title { color:#000; font-weight:700; text-decoration:none; }

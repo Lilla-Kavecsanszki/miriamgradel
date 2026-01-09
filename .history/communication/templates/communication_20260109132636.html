@@ -111,94 +111,82 @@
                 {% endif %}
               </h3>
 
-              {# 1) Body – Description #}
-              <div class="row gx-3 gy-4">
-                <div class="col-12">
-                  {{ svc.details|richtext }}
-                </div>
-              </div>
+              {# CONTENT ROW: text 2/3, image 1/3 (image right) when image exists #}
+              <div class="row gx-4 gy-4 align-items-start">
 
-              {# 2) Header: Offering + body #}
-              {% if svc.offering %}
-                <div class="svc-offering mt-4">
-                  <h4 class="mb-2">{% trans "Offering:" %}</h4>
-                  <div class="row gx-3 gy-3">
-                    <div class="col-12">
+                {# TEXT COLUMN #}
+                <div class="{% if svc.image %}col-12 col-lg-8{% else %}col-12{% endif %}">
+
+                  {# 1) Body – Description #}
+                  {% if svc.details %}
+                    <div class="svc-details">
+                      {{ svc.details|richtext }}
+                    </div>
+                  {% endif %}
+
+                  {# 2) Offering #}
+                  {% if svc.offering %}
+                    <div class="svc-offering mt-4">
+                      <h4 class="mb-2">{% trans "Offering:" %}</h4>
                       {{ svc.offering|richtext }}
                     </div>
+                  {% endif %}
+
+                  {# 4) Example #}
+                  {% if svc.example %}
+                    <div class="svc-examples mt-4">
+                      <h4 class="mb-2">{% trans "Example:" %}</h4>
+                      {{ svc.example|richtext }}
+                    </div>
+                  {% endif %}
+
+                  {# 5) Output #}
+                  {% if svc.output %}
+                    <div class="svc-outputs mt-4">
+                      <h4 class="mb-2">{% trans "Output:" %}</h4>
+                      {{ svc.output|richtext }}
+                    </div>
+                  {% endif %}
+
+                </div>
+
+                {# IMAGE COLUMN (RIGHT) #}
+                {% if svc.image %}
+                  <div class="col-12 col-lg-4 order-lg-2">
+                    <div class="svc-image-square ratio ratio-1x1 overflow-hidden">
+                      {% image svc.image fill-800x800 class="svc-img" loading="lazy" decoding="async" alt=svc.title %}
+                    </div>
                   </div>
-                </div>
-              {% endif %}
+                {% endif %}
 
-              {# 3) Optional image UNDER the Offering part #}
-              {% if svc.image %}
-                <div class="svc-offering-image mt-3">
-                  {% image svc.image fill-900x600 class="img-fluid rounded" loading="lazy" decoding="async" alt=svc.title %}
-                </div>
-              {% endif %}
-
-              {# 4) Header: Example + body #}
-              {% if svc.examples %}
-                <div class="svc-examples mt-4">
-                  <h4 class="mb-2">
-                    {% if svc.examples|length > 1 %}
-                      {% trans "Examples:" %}
-                    {% else %}
-                      {% trans "Example:" %}
-                    {% endif %}
-                  </h4>
-                  <div class="row row-cols-1 row-cols-md-2 g-3">
-                    {% for ex in svc.examples %}
-                      <div class="col">
-                        <article class="example-card p-3 border-0">
-                          {% if ex.image %}
-                            {% image ex.image fill-600x338 class="img-fluid mb-2 rounded" loading="lazy" alt=ex.title %}
-                          {% endif %}
-                          {% if ex.title %}
-                            <h5 class="mb-1">{{ ex.title }}</h5>
-                          {% endif %}
-                          {% if ex.description %}
-                            <p class="mb-2">{{ ex.description }}</p>
-                          {% endif %}
-                          {% if ex.link_url %}
-                            <a href="{{ ex.link_url }}"
-                               class="example-button d-inline-block"
-                               target="_blank"
-                               rel="noopener"
-                               aria-label="{% blocktrans with l=ex.link_label|default:'Learn more' %}Open: {{ l }}{% endblocktrans %}">
-                              {{ ex.link_label|default:_("Learn more") }}
-                            </a>
-                          {% endif %}
-                        </article>
-                      </div>
-                    {% endfor %}
-                  </div>
-                </div>
-              {% endif %}
-
-              {# 5) Header: Output + body #}
-              {% if svc.outputs %}
-                <div class="svc-outputs mt-4">
-                  <h4 class="mb-2">
-                    {% if svc.outputs|length > 1 %}
-                      {% trans "Outputs:" %}
-                    {% else %}
-                      {% trans "Output:" %}
-                    {% endif %}
-                  </h4>
-                  <ul>
-                    {% for output in svc.outputs %}
-                      <li>{{ output }}</li>
-                    {% endfor %}
-                  </ul>
-                </div>
-              {% endif %}
+              </div>
 
             </section>
           </div>
         </div>
       {% endwith %}
     {% endfor %}
+  {% endif %}
+
+  {# Bottom section: embedded videos (Instagram, YouTube, etc.) #}
+  {% if page.instagram_reels %}
+    <section class="insta-reels mt-5">
+      {% comment %} <h3 class="section-title">
+        <span class="band">{% trans "Selected work" %}</span>
+      </h3> {% endcomment %}
+
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
+        {% for item in page.instagram_reels %}
+          {% with code=item.value.embed_code %}
+            <div class="col d-flex justify-content-center">
+              <div class="video-embed-wrapper w-100">
+                {{ code|safe }}
+              </div>
+            </div>
+          {% endwith %}
+        {% endfor %}
+      </div>
+    </section>
   {% endif %}
 
   <!-- Back to top button -->

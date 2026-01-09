@@ -16,6 +16,7 @@
   text-decoration: none;
   color: #000;
   line-height: 1.2;
+  margin-top: .75rem;
   
   /* subtle cyan glow like wme-input fields */
   background: #fff;
@@ -33,13 +34,13 @@
 /* Keep your type, just using the same glow accent as contact titles */
 .svc-title{
   font: inherit;
-  letter-spacing: .005em;
+  letter-spacing: .007em;
   text-shadow:
     0 2px 12px rgba(115, 240, 250, 0.35),
     0 0 4px   rgba(115, 240, 250, 0.55);
 }
 
-/* Arrow: same position + animation, just styled to match your cyan family */
+/* Arrow: position + animation, styled to match cyan family */
 .svc-link::before{
   content:"  →  ";
   opacity: 0;
@@ -91,7 +92,6 @@
   outline-offset: 2px;
 }
 
-
 /* SERVICE SECTIONS (detail blocks) */
 .svc-section {
   padding: 0.5rem 0;
@@ -140,37 +140,63 @@ a.example-button:active{
   box-shadow: inset 0 -1px 0 rgba(0,0,0,.25), 0 4px 10px rgba(0,0,0,.25);
 }
 
+.svc-image-square .svc-img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+  border-radius:4px;
+}
+
 /* BTS SIDEBAR (mini cards) */
 .bts-card--sidebar .thumb img { width:100%; height:auto; display:block; }
 .bts-card--sidebar .bts-title { color:#000; font-weight:700; text-decoration:none; }
 
 /* BACK TO TOP (floating CTA) */
+/* UNIVERSAL BRAND BUTTON */
+.btn-brand,
 .to-top-button{
-  background: var(--cyan);
-  color:#000;
-  font-weight:800;
-  border:none;
-  border-radius:4px;
-  box-shadow: inset 0 -2px 0 rgba(0,0,0,.2), 0 6px 14px rgba(115,240,250,.4);
-  transition: background .2s ease, transform .05s ease-in-out, box-shadow .2s ease;
-  padding:.5rem 1rem;
-  position:fixed;
-  bottom:2rem; right:2rem;
-  z-index:1000;
-  display:block;
-  text-decoration:none;
+  background: var(--brand-cyan, #73f0fa);
+  color: #000;
+  font-weight: 800;
+  border: none;
+  border-radius: 4px;
+  box-shadow:
+    inset 0 -2px 0 rgba(0,0,0,.2),
+    0 6px 14px rgba(115,240,250,.4);
+  padding: .5rem 1rem;
+  text-decoration: none;
+
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+
+  transition:
+    background .2s ease,
+    transform .05s ease-in-out,
+    box-shadow .2s ease;
 }
+
+/* HOVER + FOCUS */
+.btn-brand:hover,
+.btn-brand:focus,
 .to-top-button:hover,
 .to-top-button:focus{
-  transform: translate(-2px, -2px);
-  background:#1fb7c3;
-  color:#fff;
+  background: var(--brand-cyan-dark, #1fb7c3); /* darker cyan */
+  color: #fff;                                  /* better contrast */
+  transform: translate(-2px, -2px);             /* subtle lift */
 }
+
+/* ACTIVE / PRESSED */
+.btn-brand:active,
 .to-top-button:active{
   transform: translateY(1px);
-  background:#148a93;
-  box-shadow: inset 0 -1px 0 rgba(0,0,0,.25), 0 4px 10px rgba(0,0,0,.25);
+  background: var(--brand-cyan-darker, #148a93); /* darkest cyan */
+  box-shadow:
+    inset 0 -1px 0 rgba(0,0,0,.25),
+    0 4px 10px rgba(0,0,0,.25);
 }
+
 @media (max-width: 480px){
   .to-top-button{
     width:48px; height:48px; padding:0; border-radius:9999px;
@@ -178,4 +204,139 @@ a.example-button:active{
     font-size:1.25rem; line-height:1;
   }
   .to-top-button .label{ display:none; }
+}
+
+/* FLOATING "TO TOP" VARIANT */
+.to-top-button{
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 1000;
+}
+
+/* SERVICE IMAGE – pretty card under "Offering" */
+.svc-offering-image {
+  margin: 1.75rem auto 0;              /* space above, centered */
+  max-width: 720px;                    /* keep it elegant on large screens */
+  padding: 0.4rem;                     /* little frame around the image */
+  background: #fff;
+  border-radius: 6px;
+  box-shadow:
+    2px 3px 10px rgba(115, 240, 250, 0.45),
+    0 2px 6px rgba(0, 0, 0, 0.06);     /* same cyan glow family */
+}
+
+/* Image inside the card */
+.svc-offering-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+/* Slightly tighter on very small screens */
+@media (max-width: 576px) {
+  .svc-offering-image {
+    margin-top: 1.25rem;
+    max-width: 100%;
+  }
+}
+
+.svc-section img { 
+  display:block; 
+  width:100%; 
+  height:auto; 
+}
+
+/* ========================
+   VIDEO / EMBED GALLERY (2 reels)
+   ======================== */
+
+.insta-reels {
+  margin-top: 2.5rem;
+}
+
+/* Card-style wrapper for each video, consistent with cyan glow aesthetic */
+.video-embed-wrapper {
+  background: #fff;
+  border-radius: 4px;
+  box-shadow:
+    2px 3px 10px rgba(115, 240, 250, 0.45),
+    0 2px 6px rgba(0, 0, 0, 0.06);
+  padding: .35rem;
+  overflow: hidden;
+  width: 100%;
+  max-width: 540px;
+  margin: 0 auto;
+}
+
+.video-embed-wrapper iframe,
+.video-embed-wrapper blockquote,
+.video-embed-wrapper video {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 auto;
+  border-radius: 3px;
+}
+
+/* Instagram embeds override their own width — force full width */
+.instagram-media {
+  max-width: 100% !important;
+  margin: 0 auto !important;
+}
+
+/* Spacing for small screens */
+@media (max-width: 600px) {
+  .insta-reels .col {
+    margin-bottom: 1rem;
+  }
+}
+
+/* ==========================
+   Dynamic reel layout (1, 2, or more)
+   ========================== */
+
+/* Common style (glow card) */
+.video-embed-wrapper {
+  background: #fff;
+  border-radius: 4px;
+  box-shadow:
+    2px 3px 10px rgba(115,240,250,.45),
+    0 2px 6px rgba(0,0,0,.06);
+  padding: .35rem;
+  overflow: hidden;
+}
+
+/* Force embeds to behave */
+.video-embed-wrapper iframe,
+.video-embed-wrapper blockquote,
+.video-embed-wrapper video {
+  width: 100% !important;
+  max-width: 100% !important;
+  border-radius: 3px;
+}
+
+/* Fix Instagram width */
+.instagram-media {
+  max-width: 100% !important;
+  margin: 0 auto !important;
+}
+
+/* If there are only 2 reels → center them and disable the forced 3-column layout */
+.insta-reels .row > .col:nth-child(3) {
+  display: none; /* hides empty space for 3rd column if only 2 exist */
+}
+
+/* For large screens: when exactly 2 items → center nicely */
+.insta-reels .row.row-cols-lg-3 > .col {
+  flex: 0 0 50%;
+  max-width: 50%;
+}
+
+/* On smaller screens it naturally becomes stack/2-cols */
+@media (max-width: 600px) {
+  .insta-reels .col {
+    margin-bottom: 1rem;
+  }
 }
