@@ -1,10 +1,10 @@
 from django.db import models
-
-from wagtail.models import Page
-from wagtail.fields import RichTextField, StreamField
-from wagtail.admin.panels import FieldPanel, PageChooserPanel
 from wagtail import blocks
+from wagtail.admin.panels import FieldPanel, PageChooserPanel
+from wagtail.fields import RichTextField, StreamField
 from wagtail.images.blocks import ImageChooserBlock
+from wagtail.models import Page
+
 
 class WelcomePage(Page):
     """

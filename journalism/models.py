@@ -1,12 +1,11 @@
 from datetime import date
+
 from django.db import models
 from django.utils import timezone
-
-from wagtail.models import Page, Orderable
-from wagtail.fields import RichTextField
-from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
 from modelcluster.fields import ParentalKey
-
+from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
+from wagtail.fields import RichTextField
+from wagtail.models import Orderable, Page
 
 # ======================
 # WRITTEN
@@ -231,7 +230,8 @@ class AudioPage(Page):
         # BTS teasers (decoupled)
         bts_teasers = []
         try:
-            from bts.models import BTSPage  # change if your app label is different
+            from bts.models import \
+                BTSPage  # change if your app label is different
             bts_teasers = BTSPage.objects.live().specific().order_by("-first_published_at")[:3]
         except Exception:
             pass

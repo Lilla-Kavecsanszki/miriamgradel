@@ -1,16 +1,16 @@
-import os
 import logging
+import os
 
-from django.db import models
-from django.urls import reverse
 from django.contrib import messages
-
+from django.db import models
 from django.shortcuts import render  # only used indirectly via self.render
-from wagtail.admin.panels import FieldPanel, MultiFieldPanel  # InlinePanel removed
+from django.urls import reverse
+from modelcluster.fields import ParentalKey
+from wagtail.admin.panels import (FieldPanel,  # InlinePanel removed
+                                  MultiFieldPanel)
+from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
 from wagtail.fields import RichTextField
 from wagtail.models import Page, Site
-from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
-from modelcluster.fields import ParentalKey
 
 from .forms import ContactForm  # <-- use your own static form
 

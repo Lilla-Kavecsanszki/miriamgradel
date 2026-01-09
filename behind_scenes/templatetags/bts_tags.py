@@ -1,6 +1,8 @@
 from django import template
 from wagtail.models import Site
-from behind_scenes.models import BTSPage, BTSIndexPage  # adjust if your app label differs
+
+from behind_scenes.models import (  # adjust if your app label differs
+    BTSIndexPage, BTSPage)
 
 register = template.Library()
 

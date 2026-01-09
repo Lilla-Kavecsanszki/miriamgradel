@@ -3,14 +3,12 @@ from itertools import chain
 
 from django.db import models
 from django.utils.html import strip_tags
-
-from wagtail.models import Page
-from wagtail.fields import RichTextField, StreamField
-from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 from wagtail import blocks
-from wagtail.images.blocks import ImageChooserBlock
+from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 from wagtail.embeds.blocks import EmbedBlock
-
+from wagtail.fields import RichTextField, StreamField
+from wagtail.images.blocks import ImageChooserBlock
+from wagtail.models import Page
 
 # Categories used for grouping teasers
 BTS_CATEGORIES = (

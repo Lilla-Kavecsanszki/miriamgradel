@@ -2,12 +2,11 @@ import os
 
 from django.db import models
 from django.urls import reverse
+from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
+from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
 from wagtail.fields import RichTextField
 from wagtail.models import Page, Site
-from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
-from modelcluster.fields import ParentalKey
-
 
 # ---------------- Cloudinary RAW storage (optional) ----------------
 VCARD_FILEFIELD_KW = dict(

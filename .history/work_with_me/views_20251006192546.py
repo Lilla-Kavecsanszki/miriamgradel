@@ -1,9 +1,9 @@
 # work_with_me/views.py
+import requests
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404
-from django.utils.text import slugify
 from django.urls import reverse
-import requests
+from django.utils.text import slugify
 
 from .models import WorkWithMePage
 

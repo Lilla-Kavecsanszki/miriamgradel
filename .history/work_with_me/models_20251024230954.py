@@ -1,15 +1,14 @@
-import os
 import logging
+import os
 
+from django.contrib import messages
 from django.db import models
 from django.urls import reverse
-from django.contrib import messages
-
+from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
+from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
 from wagtail.fields import RichTextField
 from wagtail.models import Page, Site
-from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
-from modelcluster.fields import ParentalKey
 
 logger = logging.getLogger(__name__)
 

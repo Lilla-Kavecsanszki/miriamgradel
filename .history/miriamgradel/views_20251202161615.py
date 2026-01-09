@@ -1,5 +1,7 @@
-from django.http import HttpResponse
 import os
+
+from django.http import HttpResponse
+
 
 def robots_txt(request):
     is_prod = os.getenv("ENV", "dev").lower() == "prod"

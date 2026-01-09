@@ -1,5 +1,6 @@
 from django.conf import settings
 
+
 def robots_txt(request):
     if not settings.DEBUG:
         content = (
