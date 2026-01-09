@@ -46,7 +46,8 @@
                 <div class="meta__body richtext" id="meta-desc"></div>
               {% endif %}
 
-              {% comment %} <div class="meta__credits" id="meta-credits">
+              {% comment %}
+              <div class="meta__credits" id="meta-credits">
                 {% if featured.produced_by and featured.produced_for %}
                   {% blocktrans with by=featured.produced_by forw=featured.produced_for %}
                     Produced by <strong>{{ by }}</strong> for: <strong>{{ forw }}</strong>
@@ -60,10 +61,11 @@
                     Produced for: <strong>{{ forw }}</strong>
                   {% endblocktrans %}
                 {% endif %}
-              </div> {% endcomment %}
+              </div>
+              {% endcomment %}
 
-              {# --- Share row --- #}
-              {% comment %} <div class="meta__share">
+              {% comment %}
+              <div class="meta__share">
                 <span>{% trans "Share it" %}</span>
                 <a aria-label="{% trans 'Share to LinkedIn' %}"
                    href="https://www.linkedin.com/sharing/share-offsite/?url={{ request.build_absolute_uri|urlencode }}"
@@ -77,7 +79,8 @@
                 <a aria-label="{% trans 'Share to Line' %}"
                    href="https://social-plugins.line.me/lineit/share?url={{ request.build_absolute_uri|urlencode }}"
                    target="_blank" rel="noopener">{% trans "Line" %}</a>
-              </div> {% endcomment %}
+              </div>
+              {% endcomment %}
 
               {% if featured.external_url %}
                 <a class="btn" id="meta-link" href="{{ featured.external_url }}" target="_blank" rel="noopener">{% trans "Open video" %}</a>
@@ -89,6 +92,8 @@
 
           {# Stash current featured embed + meta for swap-back #}
           <template id="tpl-featured-current">{% embed featured.embed_url %}</template>
+          <template id="tpl-featured-desc">{% if featured.description %}{{ featured.description|richtext }}{% endif %}</template>
+
           <div id="featured-meta-store"
                data-title="{{ featured.standfirst|default:_('Untitled')|escape }}"
                data-date="{{ featured.video_date|date:'d/m/Y' }}"
@@ -116,6 +121,7 @@
                 data-produced-for="{{ v.produced_for|default_if_none:''|escape }}"
                 data-external-url="{{ v.external_url|default_if_none:''|escape }}"
                 data-tpl-id="tpl-{{ forloop.counter0 }}"
+                data-desc-tpl-id="tpl-desc-{{ forloop.counter0 }}"
               >
                 <div class="embed embed--thumb">{% embed v.embed_url %}</div>
               </button>
@@ -131,6 +137,7 @@
                     data-produced-for="{{ v.produced_for|default_if_none:''|escape }}"
                     data-external-url="{{ v.external_url|default_if_none:''|escape }}"
                     data-tpl-id="tpl-{{ forloop.counter0 }}"
+                    data-desc-tpl-id="tpl-desc-{{ forloop.counter0 }}"
                   >
                     {{ v.standfirst|default:_("Untitled") }}
                   </button>
@@ -140,6 +147,10 @@
 
               <template id="tpl-{{ forloop.counter0 }}">
                 {% embed v.embed_url %}
+              </template>
+
+              <template id="tpl-desc-{{ forloop.counter0 }}">
+                {% if v.description %}{{ v.description|richtext }}{% endif %}
               </template>
             </article>
           {% empty %}
@@ -198,8 +209,9 @@
     const metaCredits = document.getElementById('meta-credits');
     const metaLink    = document.getElementById('meta-link');
 
-    const featuredTpl   = document.getElementById('tpl-featured-current');
-    const featuredStore = document.getElementById('featured-meta-store');
+    const featuredTpl      = document.getElementById('tpl-featured-current');
+    const featuredDescTpl  = document.getElementById('tpl-featured-desc');
+    const featuredStore    = document.getElementById('featured-meta-store');
 
     let prevFeatured = {
       embedHTML:   featuredTpl ? featuredTpl.innerHTML : '',
@@ -207,10 +219,12 @@
       date:        featuredStore ? featuredStore.dataset.date : '',
       producedBy:  featuredStore ? featuredStore.dataset.producedBy : '',
       producedFor: featuredStore ? featuredStore.dataset.producedFor : '',
-      externalUrl: featuredStore ? featuredStore.dataset.externalUrl : ''
+      externalUrl: featuredStore ? featuredStore.dataset.externalUrl : '',
+      descHTML:    featuredDescTpl ? featuredDescTpl.innerHTML : (metaDesc ? metaDesc.innerHTML : '')
     };
 
     function setHTML(el, html) { if (el) el.innerHTML = html || ''; }
+
     function setCredits(by, forWho) {
       if (!metaCredits) return;
       if (by && forWho) {
@@ -223,6 +237,7 @@
         metaCredits.innerHTML = '';
       }
     }
+
     function setLink(url) {
       if (!metaLink) return;
       if (url) {
@@ -259,7 +274,11 @@
 
       const card = btn.closest('.card');
       const tplId = btn.getAttribute('data-tpl-id');
+      const descTplId = btn.getAttribute('data-desc-tpl-id');
+
       const tpl = tplId ? document.getElementById(tplId) : null;
+      const descTpl = descTplId ? document.getElementById(descTplId) : null;
+
       const cardThumb = card ? card.querySelector('.embed.embed--thumb') : null;
 
       if (!tpl || !player || !card) return;
@@ -270,18 +289,19 @@
         date:        btn.getAttribute('data-date') || '',
         producedBy:  btn.getAttribute('data-produced-by') || '',
         producedFor: btn.getAttribute('data-produced-for') || '',
-        externalUrl: btn.getAttribute('data-external-url') || ''
+        externalUrl: btn.getAttribute('data-external-url') || '',
+        descHTML:    descTpl ? descTpl.innerHTML : ''
       };
 
       // Promote clicked to featured
       player.innerHTML = clicked.embedHTML;
       setHTML(metaTitle, clicked.title);
       setHTML(metaDate,  clicked.date);
-      setHTML(metaDesc,  '');  // no per-card desc stored here
+      setHTML(metaDesc,  clicked.descHTML);
       setCredits(clicked.producedBy, clicked.producedFor);
       setLink(clicked.externalUrl);
 
-      // Demote previous featured back into clicked card
+      // Demote previous featured back into clicked card (embed + title/date/link only)
       if (cardThumb && prevFeatured.embedHTML) {
         cardThumb.innerHTML = prevFeatured.embedHTML;
       }

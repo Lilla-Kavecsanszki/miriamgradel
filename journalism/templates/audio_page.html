@@ -97,13 +97,14 @@
 
           {# Stash current featured embed + meta for swap-back #}
           <template id="tpl-audio-featured-current">{% embed featured.embed_url %}</template>
+          <template id="tpl-audio-featured-desc">{% if featured.description %}{{ featured.description|richtext }}{% endif %}</template>
+
           <div id="featured-audio-meta-store"
                data-title="{{ featured.title|default:_('Untitled')|escape }}"
                data-date="{{ featured.audio_date|date:'d/m/Y' }}"
                data-produced-by="{{ featured.produced_by|default_if_none:''|escape }}"
                data-produced-for="{{ featured.produced_for|default_if_none:''|escape }}"
                data-external-url="{{ featured.external_url|default_if_none:''|escape }}"
-               data-desc="{{ featured.description|richtext|striptags|escape }}"
                hidden></div>
         </section>
       {% endif %}
@@ -124,8 +125,8 @@
                 data-produced-by="{{ a.produced_by|default_if_none:''|escape }}"
                 data-produced-for="{{ a.produced_for|default_if_none:''|escape }}"
                 data-external-url="{{ a.external_url|default_if_none:''|escape }}"
-                data-desc="{{ a.description|richtext|striptags|escape }}"
                 data-tpl-id="tpl-a-{{ forloop.counter0 }}"
+                data-desc-tpl-id="tpl-a-desc-{{ forloop.counter0 }}"
               >
                 <div class="embed embed--thumb">{% embed a.embed_url %}</div>
               </button>
@@ -140,8 +141,8 @@
                     data-produced-by="{{ a.produced_by|default_if_none:''|escape }}"
                     data-produced-for="{{ a.produced_for|default_if_none:''|escape }}"
                     data-external-url="{{ a.external_url|default_if_none:''|escape }}"
-                    data-desc="{{ a.description|richtext|striptags|escape }}"
                     data-tpl-id="tpl-a-{{ forloop.counter0 }}"
+                    data-desc-tpl-id="tpl-a-desc-{{ forloop.counter0 }}"
                   >
                     {{ a.title|default:_("Untitled") }}
                   </button>
@@ -151,6 +152,10 @@
 
               <template id="tpl-a-{{ forloop.counter0 }}">
                 {% embed a.embed_url %}
+              </template>
+
+              <template id="tpl-a-desc-{{ forloop.counter0 }}">
+                {% if a.description %}{{ a.description|richtext }}{% endif %}
               </template>
             </article>
           {% empty %}
@@ -195,13 +200,14 @@
     </div>
   </div>
 </section>
+
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('iframe').forEach(f => f.setAttribute('loading','lazy'));
-});
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('iframe').forEach(f => f.setAttribute('loading','lazy'));
+  });
 </script>
 
-{# ===== Player swap-back logic ===== #}
+{# ===== Player swap-back logic (template-based desc, like Video page) ===== #}
 <script>
 (function () {
   const player = document.getElementById('audio-player');
@@ -212,6 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const metaLink = document.getElementById('meta-link');
 
   const featuredTpl = document.getElementById('tpl-audio-featured-current');
+  const featuredDescTpl = document.getElementById('tpl-audio-featured-desc');
   const featuredStore = document.getElementById('featured-audio-meta-store');
 
   let prevFeatured = {
@@ -221,7 +228,7 @@ document.addEventListener('DOMContentLoaded', () => {
     producedBy: featuredStore ? featuredStore.dataset.producedBy : '',
     producedFor: featuredStore ? featuredStore.dataset.producedFor : '',
     externalUrl: featuredStore ? featuredStore.dataset.externalUrl : '',
-    desc: featuredStore ? featuredStore.dataset.desc : ''
+    descHTML: featuredDescTpl ? featuredDescTpl.innerHTML : (metaDesc ? metaDesc.innerHTML : '')
   };
 
   function setHTML(el, html) { if (el) el.innerHTML = html || ''; }
@@ -259,7 +266,6 @@ document.addEventListener('DOMContentLoaded', () => {
       btn.setAttribute('data-produced-by', data.producedBy || '');
       btn.setAttribute('data-produced-for', data.producedFor || '');
       btn.setAttribute('data-external-url', data.externalUrl || '');
-      btn.setAttribute('data-desc', data.desc || '');
     });
     const titleBtn = cardEl.querySelector('.card__title .play-audio-in-hero');
     if (titleBtn) titleBtn.textContent = data.title || '{% trans "Untitled" %}';
@@ -271,7 +277,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const card = btn.closest('.card');
     const tplId = btn.getAttribute('data-tpl-id');
+    const descTplId = btn.getAttribute('data-desc-tpl-id');
+
     const tpl = tplId ? document.getElementById(tplId) : null;
+    const descTpl = descTplId ? document.getElementById(descTplId) : null;
+
     const cardThumb = card ? card.querySelector('.embed.embed--thumb') : null;
 
     if (!tpl || !player || !card) return;
@@ -283,18 +293,18 @@ document.addEventListener('DOMContentLoaded', () => {
       producedBy: btn.getAttribute('data-produced-by') || '',
       producedFor: btn.getAttribute('data-produced-for') || '',
       externalUrl: btn.getAttribute('data-external-url') || '',
-      desc: btn.getAttribute('data-desc') || ''
+      descHTML: descTpl ? descTpl.innerHTML : ''
     };
 
     // Promote to featured
     player.innerHTML = clicked.embedHTML;
     setHTML(metaTitle, clicked.title);
     setHTML(metaDate, clicked.date);
-    setHTML(metaDesc, clicked.desc);
+    setHTML(metaDesc, clicked.descHTML);
     setCredits(clicked.producedBy, clicked.producedFor);
     setLink(clicked.externalUrl);
 
-    // Demote previous featured back into clicked card
+    // Demote previous featured back into clicked card (embed + title/date/link only)
     if (cardThumb && prevFeatured.embedHTML) {
       cardThumb.innerHTML = prevFeatured.embedHTML;
     }

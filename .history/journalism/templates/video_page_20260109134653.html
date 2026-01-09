@@ -17,7 +17,7 @@
       <div class="video-hero mb-3">
         <span class="cap" aria-hidden="true"></span>
         <div class="block-title" style="color: #73f0fa">{% trans "Video & TV" %}</div>
-        <p>{% trans "For some clients, I had to film and produce videos. Here’s a glimpse at my multimedia work." %}</p>
+        <p>{% trans "News, reels, documentaries and more, from behind and in front of the camera." %}</p>
       </div>
 
       {% if page.intro %}
@@ -27,7 +27,7 @@
       {# ===== FEATURED PLAYER ===== #}
       {% if featured %}
         <section class="featured mb-1">
-          <h2 class="section-title"><span>{% trans "Selected Episode" %}</span></h2>
+          <h2 class="section-title"><span>{% trans "Featured" %}</span></h2>
 
           <div class="featured__grid">
             <div class="featured__media">
@@ -46,6 +46,7 @@
                 <div class="meta__body richtext" id="meta-desc"></div>
               {% endif %}
 
+              {% comment %}
               <div class="meta__credits" id="meta-credits">
                 {% if featured.produced_by and featured.produced_for %}
                   {% blocktrans with by=featured.produced_by forw=featured.produced_for %}
@@ -61,8 +62,9 @@
                   {% endblocktrans %}
                 {% endif %}
               </div>
+              {% endcomment %}
 
-              {# --- Share row --- #}
+              {% comment %}
               <div class="meta__share">
                 <span>{% trans "Share it" %}</span>
                 <a aria-label="{% trans 'Share to LinkedIn' %}"
@@ -78,11 +80,12 @@
                    href="https://social-plugins.line.me/lineit/share?url={{ request.build_absolute_uri|urlencode }}"
                    target="_blank" rel="noopener">{% trans "Line" %}</a>
               </div>
+              {% endcomment %}
 
               {% if featured.external_url %}
                 <a class="btn" id="meta-link" href="{{ featured.external_url }}" target="_blank" rel="noopener">{% trans "Open video" %}</a>
               {% else %}
-                <a class="btn disabled" id="meta-link" tabindex="-1" aria-disabled="true">{% trans "Open video" %}</a>
+                <a class="btn disabled" id="meta-link" tabindex="-1" aria-disabled="true">{% trans "Open" %}</a>
               {% endif %}
             </aside>
           </div>
@@ -95,13 +98,14 @@
                data-produced-by="{{ featured.produced_by|default_if_none:''|escape }}"
                data-produced-for="{{ featured.produced_for|default_if_none:''|escape }}"
                data-external-url="{{ featured.external_url|default_if_none:''|escape }}"
+               data-desc-html="{% if featured.description %}{{ featured.description|richtext|escapejs }}{% endif %}"
                hidden></div>
         </section>
       {% endif %}
 
       {# ===== ALL VIDEOS GRID ===== #}
       <section class="all-videos">
-        <h2 class="section-title"><span>{% trans "All my videos" %}</span></h2>
+        <h2 class="section-title"><span>{% trans "Other Examples" %}</span></h2>
 
         <div class="cards" id="video-cards">
           {% for v in videos %}
@@ -115,6 +119,7 @@
                 data-produced-by="{{ v.produced_by|default_if_none:''|escape }}"
                 data-produced-for="{{ v.produced_for|default_if_none:''|escape }}"
                 data-external-url="{{ v.external_url|default_if_none:''|escape }}"
+                data-desc-html="{% if v.description %}{{ v.description|richtext|escapejs }}{% endif %}"
                 data-tpl-id="tpl-{{ forloop.counter0 }}"
               >
                 <div class="embed embed--thumb">{% embed v.embed_url %}</div>
@@ -130,6 +135,7 @@
                     data-produced-by="{{ v.produced_by|default_if_none:''|escape }}"
                     data-produced-for="{{ v.produced_for|default_if_none:''|escape }}"
                     data-external-url="{{ v.external_url|default_if_none:''|escape }}"
+                    data-desc-html="{% if v.description %}{{ v.description|richtext|escapejs }}{% endif %}"
                     data-tpl-id="tpl-{{ forloop.counter0 }}"
                   >
                     {{ v.standfirst|default:_("Untitled") }}
@@ -207,7 +213,8 @@
       date:        featuredStore ? featuredStore.dataset.date : '',
       producedBy:  featuredStore ? featuredStore.dataset.producedBy : '',
       producedFor: featuredStore ? featuredStore.dataset.producedFor : '',
-      externalUrl: featuredStore ? featuredStore.dataset.externalUrl : ''
+      externalUrl: featuredStore ? featuredStore.dataset.externalUrl : '',
+      descHTML:    featuredStore ? (featuredStore.dataset.descHtml || '') : (metaDesc ? metaDesc.innerHTML : '')
     };
 
     function setHTML(el, html) { if (el) el.innerHTML = html || ''; }
@@ -246,6 +253,7 @@
         btn.setAttribute('data-produced-by', data.producedBy || '');
         btn.setAttribute('data-produced-for', data.producedFor || '');
         btn.setAttribute('data-external-url', data.externalUrl || '');
+        btn.setAttribute('data-desc-html', data.descHTML || '');
       });
       const titleBtn = cardEl.querySelector('.card__title .play-in-hero');
       if (titleBtn) titleBtn.textContent = data.title || '{{ _("Untitled") }}';
@@ -270,14 +278,15 @@
         date:        btn.getAttribute('data-date') || '',
         producedBy:  btn.getAttribute('data-produced-by') || '',
         producedFor: btn.getAttribute('data-produced-for') || '',
-        externalUrl: btn.getAttribute('data-external-url') || ''
+        externalUrl: btn.getAttribute('data-external-url') || '',
+        descHTML:    btn.getAttribute('data-desc-html') || ''
       };
 
       // Promote clicked to featured
       player.innerHTML = clicked.embedHTML;
       setHTML(metaTitle, clicked.title);
       setHTML(metaDate,  clicked.date);
-      setHTML(metaDesc,  '');  // no per-card desc stored here
+      setHTML(metaDesc,  clicked.descHTML);
       setCredits(clicked.producedBy, clicked.producedFor);
       setLink(clicked.externalUrl);
 
