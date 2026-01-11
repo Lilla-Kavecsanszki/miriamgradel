@@ -1,9 +1,6 @@
-# journalism/models.py
-from __future__ import annotations
-
 from datetime import date
-from typing import TYPE_CHECKING, List
 
+from django.apps import apps
 from django.db import models
 from django.utils import timezone
 from modelcluster.fields import ParentalKey
@@ -11,26 +8,34 @@ from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.fields import RichTextField
 from wagtail.models import Orderable, Page
 
-if TYPE_CHECKING:
-    # Only for type hints; doesn't import at runtime (avoids hard coupling)
-    from behind_scenes.models import BTSPage  # noqa: F401
 
-
-def get_bts_teasers(limit: int = 3) -> List["BTSPage"]:
+def _safe_page_date(page: Page) -> date:
     """
-    Safely fetch latest BTS teasers without hard dependency on the app.
+    Stable fallback date for sorting when an item has no explicit date.
+    """
+    if page.first_published_at:
+        return timezone.localtime(page.first_published_at).date()
+    return date.min
 
-    - No blanket exception swallowing.
-    - No migrations (pure Python change).
-    - Returns [] if behind_scenes app isn't installed or BTSPage can't be imported.
+
+def _get_bts_teasers(limit: int = 3):
+    """
+    Fetch latest BTS teasers without hard-importing the BTS app
+    (avoids circular imports and broad exception handling).
+
+    Adjust app_label/model_name to match your BTS app:
+      - If your app is "behind_scenes" and model is "BTSPage":
+          apps.get_model("behind_scenes", "BTSPage")
+      - If your app is "bts" and model is "BTSPage":
+          apps.get_model("bts", "BTSPage")
     """
     try:
-        from behind_scenes.models import BTSPage
-    except ImportError:
+        bts_model = apps.get_model("behind_scenes", "BTSPage")
+    except LookupError:
         return []
 
-    return list(
-        BTSPage.objects.live()
+    return (
+        bts_model.objects.live()
         .specific()
         .order_by("-first_published_at")[:limit]
     )
@@ -56,30 +61,27 @@ class WrittenPage(Page):
     def get_context(self, request, *args, **kwargs):
         ctx = super().get_context(request, *args, **kwargs)
 
-        year = date.today().year
-        qs = list(self.articles.all())
+        current_year = date.today().year
+        items = list(self.articles.all())
 
         def pubdate(item):
             if item.publication_date:
                 return item.publication_date
-            # stable fallback even if missing date
-            if self.first_published_at:
-                return timezone.localtime(self.first_published_at).date()
-            return date.min
+            return _safe_page_date(self)
 
-        items = sorted(qs, key=pubdate, reverse=True)
+        items_sorted = sorted(items, key=pubdate, reverse=True)
 
-        recent: list[WrittenArticleItem] = []
-        previous: list[WrittenArticleItem] = []
-        for item in items:
-            (recent if pubdate(item).year == year else previous).append(item)
+        recent = []
+        previous = []
+        for item in items_sorted:
+            (recent if pubdate(item).year == current_year else previous).append(item)
 
         ctx.update(
             {
-                "current_year": year,
+                "current_year": current_year,
                 "recent_articles": recent,
                 "previous_articles": previous,
-                "bts_teasers": get_bts_teasers(limit=3),
+                "bts_teasers": _get_bts_teasers(limit=3),
             }
         )
         return ctx
@@ -90,11 +92,14 @@ class WrittenArticleItem(Orderable):
 
     title = models.CharField(max_length=200)
     publication_name = models.CharField(
-        max_length=150, blank=True, help_text="e.g. The Sun"
+        max_length=150,
+        blank=True,
+        help_text="e.g. The Sun",
     )
     publication_date = models.DateField(null=True, blank=True)
     external_url = models.URLField(
-        blank=True, help_text="If set, the index links out to this URL."
+        blank=True,
+        help_text="If set, the index links out to this URL.",
     )
     excerpt = models.TextField(blank=True)
 
@@ -117,8 +122,8 @@ class VideoPage(Page):
     Holds video items (no child pages).
     Renders a featured video (newest by date) plus lists/buckets.
     """
-
     template = "video_page.html"
+
     intro = RichTextField(blank=True)
 
     content_panels = Page.content_panels + [
@@ -132,31 +137,29 @@ class VideoPage(Page):
     def get_context(self, request, *args, **kwargs):
         ctx = super().get_context(request, *args, **kwargs)
 
-        year = date.today().year
-        qs = list(self.videos.all())
+        current_year = date.today().year
+        items = list(self.videos.all())
 
         def pubdate(item):
             if item.video_date:
                 return item.video_date
-            if self.first_published_at:
-                return timezone.localtime(self.first_published_at).date()
-            return date.min
+            return _safe_page_date(self)
 
-        videos_sorted = sorted(qs, key=pubdate, reverse=True)
+        videos_sorted = sorted(items, key=pubdate, reverse=True)
 
         featured = videos_sorted[0] if videos_sorted else None
         others = videos_sorted[1:] if len(videos_sorted) > 1 else []
 
-        recent: list[VideoItem] = []
-        previous: list[VideoItem] = []
-        for video in videos_sorted:
-            (recent if pubdate(video).year == year else previous).append(video)
+        recent = []
+        previous = []
+        for item in videos_sorted:
+            (recent if pubdate(item).year == current_year else previous).append(item)
 
         ctx.update(
             {
-                "current_year": year,
+                "current_year": current_year,
                 "featured": featured,
-                "videos": others,  # flat list for “All my videos”
+                "videos": others,
                 "recent_videos": recent,
                 "previous_videos": previous,
             }
@@ -166,16 +169,16 @@ class VideoPage(Page):
 
 class VideoItem(Orderable):
     """
-    One video row that lives inside a VideoPage.
-    If 'external_url' is set, index links out.
+    One video row that lives *inside* a VideoPage.
+    If 'external_url' is set, index links out; else we can show the embed on the index.
     """
-
     page = ParentalKey(VideoPage, related_name="videos", on_delete=models.CASCADE)
 
     video_date = models.DateField(null=True, blank=True)
     standfirst = models.CharField(max_length=180, blank=True)
     description = RichTextField(
-        features=["bold", "italic", "link", "ol", "ul"], blank=True
+        features=["bold", "italic", "link", "ol", "ul"],
+        blank=True,
     )
 
     embed_url = models.URLField(help_text="YouTube/Vimeo URL (oEmbed).")
@@ -183,7 +186,10 @@ class VideoItem(Orderable):
     produced_by = models.CharField(max_length=120, blank=True)
     produced_for = models.CharField(max_length=120, blank=True)
 
-    external_url = models.URLField(blank=True, help_text="If set, index links out.")
+    external_url = models.URLField(
+        blank=True,
+        help_text="If set, index links out.",
+    )
 
     panels = [
         MultiFieldPanel(
@@ -223,8 +229,8 @@ class AudioPage(Page):
     """
     Holds audio items; renders a featured player (newest by date) and a list.
     """
-
     template = "audio_page.html"
+
     intro = RichTextField(blank=True)
 
     content_panels = Page.content_panels + [
@@ -238,34 +244,32 @@ class AudioPage(Page):
     def get_context(self, request, *args, **kwargs):
         ctx = super().get_context(request, *args, **kwargs)
 
-        year = date.today().year
+        current_year = date.today().year
         items = list(self.audios.all())
 
         def pubdate(item):
             if item.audio_date:
                 return item.audio_date
-            if self.first_published_at:
-                return timezone.localtime(self.first_published_at).date()
-            return date.min
+            return _safe_page_date(self)
 
         audios_sorted = sorted(items, key=pubdate, reverse=True)
 
         featured = audios_sorted[0] if audios_sorted else None
         others = audios_sorted[1:] if len(audios_sorted) > 1 else []
 
-        recent: list[AudioItem] = []
-        previous: list[AudioItem] = []
+        recent = []
+        previous = []
         for item in audios_sorted:
-            (recent if pubdate(item).year == year else previous).append(item)
+            (recent if pubdate(item).year == current_year else previous).append(item)
 
         ctx.update(
             {
-                "current_year": year,
+                "current_year": current_year,
                 "featured": featured,
-                "audios": others,  # flat list for “All my audio”
+                "audios": others,
                 "recent_audios": recent,
                 "previous_audios": previous,
-                "bts_teasers": get_bts_teasers(limit=3),
+                "bts_teasers": _get_bts_teasers(limit=3),
             }
         )
         return ctx
@@ -276,14 +280,14 @@ class AudioItem(Orderable):
     One audio row inside AudioPage.
     Use oEmbed-able URLs (SoundCloud, Spotify, etc.) in `embed_url`.
     """
-
     page = ParentalKey(AudioPage, related_name="audios", on_delete=models.CASCADE)
 
     title = models.CharField(max_length=200)
     audio_date = models.DateField(null=True, blank=True)
     standfirst = models.CharField(max_length=180, blank=True)
     description = RichTextField(
-        features=["bold", "italic", "link", "ol", "ul"], blank=True
+        features=["bold", "italic", "link", "ol", "ul"],
+        blank=True,
     )
 
     embed_url = models.URLField(help_text="SoundCloud/Spotify/etc. URL (oEmbed).")
@@ -292,7 +296,8 @@ class AudioItem(Orderable):
     produced_for = models.CharField(max_length=120, blank=True)
 
     external_url = models.URLField(
-        blank=True, help_text="If set, buttons link out to this URL."
+        blank=True,
+        help_text="If set, buttons link out to this URL.",
     )
 
     panels = [

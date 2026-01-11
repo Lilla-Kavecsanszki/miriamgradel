@@ -10,40 +10,45 @@ from pathlib import Path
 
 from django.contrib.messages import constants as messages
 
+
 # -------------------------------------------------------------------
 # Paths
 # -------------------------------------------------------------------
 BASE_DIR = Path(__file__).resolve().parents[2]  # repo root
-PROJECT_DIR = Path(__file__).resolve().parents[1]  # settings/.. (project package)
+PROJECT_DIR = Path(__file__).resolve().parents[1]  # project package root
+
 
 # -------------------------------------------------------------------
 # Core flags / env
 # -------------------------------------------------------------------
-DEBUG = os.getenv("DEBUG", "True").lower() in {"1", "true", "yes"}
-SECRET_KEY = os.getenv("SECRET_KEY", "change-me-in-prod")
+def _env_bool(name: str, default: str = "False") -> bool:
+    return os.getenv(name, default).strip().lower() in {"1", "true", "yes", "on"}
 
-_ALLOWED_HOSTS_DEFAULT = (
-    "localhost,127.0.0.1,miriamgradel.cc,www.miriamgradel.cc"
+
+DEBUG = _env_bool("DEBUG", "False")
+
+# In production you MUST set SECRET_KEY in env.
+# The fallback is ONLY acceptable for local dev if dev.py overrides it.
+SECRET_KEY = os.getenv("SECRET_KEY")
+if not SECRET_KEY and not DEBUG:
+    raise RuntimeError("SECRET_KEY must be set when DEBUG=False")
+if not SECRET_KEY:
+    SECRET_KEY = "dev-only-insecure-secret-key-change-me"
+
+_raw_hosts = os.getenv(
+    "ALLOWED_HOSTS",
+    "localhost,127.0.0.1,miriamgradel.cc,www.miriamgradel.cc",
 )
-ALLOWED_HOSTS = [
-    host.strip()
-    for host in os.getenv("ALLOWED_HOSTS", _ALLOWED_HOSTS_DEFAULT).split(",")
-    if host.strip()
-]
+ALLOWED_HOSTS = [h.strip() for h in _raw_hosts.split(",") if h.strip()]
 
-# Fail fast in production if SECRET_KEY not set properly
-if not DEBUG and SECRET_KEY in {"", "change-me-in-prod"}:
-    raise RuntimeError(
-        "SECRET_KEY must be set to a strong value when DEBUG=False."
-    )
-
-# Optional WhiteNoise availability check (so dev won't crash if not installed)
+# Optional WhiteNoise availability check (so dev won't crash if not installed yet)
 try:
     import whitenoise  # noqa: F401
-
-    _HAS_WHITENOISE = True
-except Exception:
+except ImportError:
     _HAS_WHITENOISE = False
+else:
+    _HAS_WHITENOISE = True
+
 
 # -------------------------------------------------------------------
 # Applications
@@ -59,7 +64,7 @@ INSTALLED_APPS = [
     # Wagtail
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",
-    "wagtail.contrib.sitemaps",  # sitemap support
+    "wagtail.contrib.sitemaps",
     "wagtail.sites",
     "wagtail.users",
     "wagtail.snippets",
@@ -83,34 +88,34 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 ]
 
+
 # -------------------------------------------------------------------
 # Middleware (order matters)
 # -------------------------------------------------------------------
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    # Use WhiteNoise if available (gzip/brotli + cache busting for static)
     *(
         ["whitenoise.middleware.WhiteNoiseMiddleware"]
         if _HAS_WHITENOISE
         else []
     ),
     "django.contrib.sessions.middleware.SessionMiddleware",
-    # Locale middleware must be after Session and before Common
-    "django.middleware.locale.LocaleMiddleware",
+    "django.middleware.locale.LocaleMiddleware",  # after Session, before Common
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    # Wagtail redirects near the end
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
 ]
 
 if not DEBUG:
     MIDDLEWARE.append("miriamgradel.middlewares.ai_optout.AiOptOutMiddleware")
 
+
 ROOT_URLCONF = "miriamgradel.urls"
 WSGI_APPLICATION = "miriamgradel.wsgi.application"
+
 
 # -------------------------------------------------------------------
 # Templates
@@ -131,6 +136,7 @@ TEMPLATES = [
     },
 ]
 
+
 # -------------------------------------------------------------------
 # Database
 # -------------------------------------------------------------------
@@ -145,21 +151,17 @@ DATABASES = {
     }
 }
 
-# Heroku/Postgres via DATABASE_URL (optional)
-db_url = os.getenv("DATABASE_URL")
-if db_url:
-    try:
-        import dj_database_url
-    except ImportError as exc:
-        raise RuntimeError(
-            "DATABASE_URL is set but dj-database-url is not installed."
-        ) from exc
+# Heroku/Postgres via DATABASE_URL
+DATABASE_URL = os.getenv("DATABASE_URL")
+if DATABASE_URL:
+    import dj_database_url
 
     DATABASES["default"] = dj_database_url.config(
-        default=db_url,
+        default=DATABASE_URL,
         conn_max_age=600,
-        ssl_require=not DEBUG,
+        ssl_require=True,
     )
+
 
 # -------------------------------------------------------------------
 # Password validation
@@ -188,10 +190,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
 # -------------------------------------------------------------------
 # Internationalization / i18n (Wagtail-ready)
 # -------------------------------------------------------------------
-LANGUAGE_CODE = "en"  # plain "en" works best with Wagtail locales
+LANGUAGE_CODE = "en"
 TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
@@ -206,12 +209,13 @@ WAGTAIL_CONTENT_LANGUAGES = LANGUAGES
 WAGTAIL_I18N_ENABLED = True
 LOCALE_PATHS = [str(BASE_DIR / "locale")]
 
+
 # -------------------------------------------------------------------
 # Static & Media files
 # -------------------------------------------------------------------
 STATIC_URL = "/static/"
-STATIC_ROOT = str(BASE_DIR / "staticfiles")  # collectstatic target
-STATICFILES_DIRS = [str(PROJECT_DIR / "static")]  # project assets
+STATIC_ROOT = str(BASE_DIR / "staticfiles")
+STATICFILES_DIRS = [str(PROJECT_DIR / "static")]
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = str(BASE_DIR / "media")
@@ -221,7 +225,6 @@ STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
 ]
 
-# Django 5 STORAGES API
 STORAGES = {
     "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
     "staticfiles": {
@@ -233,6 +236,12 @@ STORAGES = {
     },
 }
 
+WHITENOISE_MAX_AGE = 60 * 60 * 24 * 365  # 1 year
+
+
+# -------------------------------------------------------------------
+# Messages
+# -------------------------------------------------------------------
 MESSAGE_TAGS = {
     messages.ERROR: "danger",
     messages.SUCCESS: "success",
@@ -240,11 +249,15 @@ MESSAGE_TAGS = {
     messages.INFO: "info",
 }
 
-# Media on Cloudinary (keep static on WhiteNoise)
+
+# -------------------------------------------------------------------
+# Cloudinary (media only; keep static on WhiteNoise)
+# -------------------------------------------------------------------
 if os.getenv("CLOUDINARY_URL") or os.getenv("CLOUDINARY_CLOUD_NAME"):
     INSTALLED_APPS += ["cloudinary", "cloudinary_storage"]
+
     STORAGES["default"] = {
-        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage"
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     }
     CLOUDINARY_STORAGE = {
         "SECURE": True,
@@ -252,11 +265,9 @@ if os.getenv("CLOUDINARY_URL") or os.getenv("CLOUDINARY_CLOUD_NAME"):
         "OVERWRITE": True,
     }
 
-# WhiteNoise: cache headers for fingerprinted files (used if installed)
-WHITENOISE_MAX_AGE = 60 * 60 * 24 * 365  # 1 year
 
 # -------------------------------------------------------------------
-# Caching (simple local cache; upgrade to Redis in prod if needed)
+# Caching
 # -------------------------------------------------------------------
 CACHES = {
     "default": {
@@ -264,6 +275,7 @@ CACHES = {
         "LOCATION": "miriamgradel-site",
     }
 }
+
 
 # -------------------------------------------------------------------
 # Wagtail
@@ -275,7 +287,8 @@ WAGTAILSEARCH_BACKENDS = {
 }
 
 WAGTAILADMIN_BASE_URL = os.getenv(
-    "WAGTAILADMIN_BASE_URL", "http://localhost:8000"
+    "WAGTAILADMIN_BASE_URL",
+    "http://localhost:8000",
 )
 
 WAGTAILDOCS_EXTENSIONS = [
@@ -293,44 +306,52 @@ WAGTAILDOCS_EXTENSIONS = [
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 10_000
 
+
 # -------------------------------------------------------------------
 # Email / contact form notifications
 # -------------------------------------------------------------------
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-
 EMAIL_HOST = os.getenv("EMAIL_HOST", "send.one.com")
 EMAIL_PORT = int(os.getenv("EMAIL_PORT", "465"))
 
-# Port 465 = implicit SSL, not STARTTLS.
-EMAIL_USE_SSL = os.getenv("EMAIL_USE_SSL", "True").lower() in {"1", "true", "yes"}
-EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "False").lower() in {"1", "true", "yes"}
+# Safer defaults:
+# - 465 => SSL
+# - 587 => STARTTLS
+EMAIL_USE_SSL = _env_bool("EMAIL_USE_SSL", "True")
+EMAIL_USE_TLS = _env_bool("EMAIL_USE_TLS", "False")
+
+if EMAIL_USE_SSL and EMAIL_USE_TLS:
+    raise RuntimeError("EMAIL_USE_SSL and EMAIL_USE_TLS cannot both be True")
 
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", "contact@miriamgradel.cc")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", "")
 
 DEFAULT_FROM_EMAIL = os.getenv(
-    "DEFAULT_FROM_EMAIL", EMAIL_HOST_USER or "webform@localhost"
+    "DEFAULT_FROM_EMAIL",
+    EMAIL_HOST_USER or "webform@localhost",
 )
 SERVER_EMAIL = DEFAULT_FROM_EMAIL
+
 
 # -------------------------------------------------------------------
 # Security (tighten automatically when DEBUG=False)
 # -------------------------------------------------------------------
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
 if not DEBUG:
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
+
     SECURE_HSTS_SECONDS = int(os.getenv("SECURE_HSTS_SECONDS", "31536000"))
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
+
     SECURE_CONTENT_TYPE_NOSNIFF = True
-    SECURE_SSL_REDIRECT = os.getenv("SECURE_SSL_REDIRECT", "True").lower() in {
-        "1",
-        "true",
-        "yes",
-    }
+
+    SECURE_SSL_REDIRECT = _env_bool("SECURE_SSL_REDIRECT", "True")
+
     X_FRAME_OPTIONS = "DENY"
-    CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "").split()
     SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
 
-# Behind Heroku's router (proxy)
-SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+    _raw_csrf = os.getenv("CSRF_TRUSTED_ORIGINS", "")
+    CSRF_TRUSTED_ORIGINS = [o for o in _raw_csrf.split() if o.strip()]

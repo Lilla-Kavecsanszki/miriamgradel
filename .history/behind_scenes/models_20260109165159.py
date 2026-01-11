@@ -1,5 +1,5 @@
 # behind_scenes/models.py
-from __future__ import annotations
+from itertools import chain
 
 from django.db import models
 from django.utils.html import strip_tags
@@ -19,15 +19,15 @@ BTS_CATEGORIES = (
 )
 
 
+# -----------------------
+# INDEX (intro + unified grid)
+# -----------------------
 class BTSIndexPage(Page):
     """Landing page that shows intro + ALL teaser cards in one responsive grid."""
-
     template = "bts_index_page.html"
 
     intro_heading = models.CharField(
-        max_length=120,
-        blank=True,
-        default="Behind the Scenes",
+        max_length=120, blank=True, default="Behind the Scenes"
     )
     intro_body = RichTextField(blank=True)
 
@@ -39,17 +39,14 @@ class BTSIndexPage(Page):
     parent_page_types = ["home.HomePage"]
     subpage_types = ["behind_scenes.BTSPage"]  # detail pages live under here
 
+    # Kept for compatibility if referenced elsewhere (e.g., sidebars)
     def teasers_for_category(self, category: str, limit: int = 3):
-        """
-        Optional helper: returns newest BTS items for a given category.
-        Kept for compatibility if referenced elsewhere (e.g., sidebars).
-        """
         return (
             BTSPage.objects.child_of(self)
             .live()
             .filter(category=category)
-            .order_by("-first_published_at", "-latest_revision_created_at")
-        )[:limit]
+            .order_by("-first_published_at")[:limit]
+        )
 
     def get_context(self, request, *args, **kwargs):
         """
@@ -68,24 +65,24 @@ class BTSIndexPage(Page):
         ctx.update(
             {
                 "all_teasers": all_items,
-                # Optional; keep if other templates still use them
+                # These are optional; keep if other parts of the site still use them
                 "written_teasers": self.teasers_for_category("written", 3),
                 "audio_teasers": self.teasers_for_category("audio", 3),
                 "video_teasers": self.teasers_for_category("video", 3),
-                "communication_teasers": self.teasers_for_category(
-                    "communication",
-                    3,
-                ),
+                "communication_teasers": self.teasers_for_category("communication", 3),
             }
         )
         return ctx
 
 
+# -----------------------
+# DETAIL (one BTS item)
+# -----------------------
 class BTSPage(Page):
     """One BTS detail page with its own URL."""
-
     template = "bts_detail_page.html"
 
+    # Category (controls where it appears and the single chip on cards)
     category = models.CharField(
         max_length=20,
         choices=BTS_CATEGORIES,
@@ -93,6 +90,7 @@ class BTSPage(Page):
         help_text="Which main section this BTS relates to.",
     )
 
+    # Teaser card fields (used on index + sidebars)
     teaser_title = models.CharField(
         max_length=120,
         blank=True,
@@ -112,6 +110,7 @@ class BTSPage(Page):
         help_text="Card/hero image.",
     )
 
+    # Detail intro
     intro_title = models.CharField(
         max_length=120,
         blank=True,
@@ -122,6 +121,7 @@ class BTSPage(Page):
         help_text="Intro paragraph under the heading.",
     )
 
+    # Rich detail body (paragraphs, images, embeds, gallery)
     body = StreamField(
         [
             (
@@ -166,9 +166,7 @@ class BTSPage(Page):
                                         ("image", ImageChooserBlock(required=True)),
                                         (
                                             "caption",
-                                            blocks.CharBlock(
-                                                required=False, max_length=200
-                                            ),
+                                            blocks.CharBlock(required=False, max_length=200),
                                         ),
                                     ],
                                     icon="image",
@@ -184,20 +182,13 @@ class BTSPage(Page):
         ],
         use_json_field=True,
         blank=True,
-        # Prefer blank=True over null=True for JSON/content fields in Django.
-        # Keeping NULL out of the DB avoids edge cases.
-        null=False,
-        default=list,
+        null=True,
     )
 
     content_panels = Page.content_panels + [
         FieldPanel("category"),
         MultiFieldPanel(
-            [
-                FieldPanel("teaser_title"),
-                FieldPanel("teaser_summary"),
-                FieldPanel("teaser_image"),
-            ],
+            [FieldPanel("teaser_title"), FieldPanel("teaser_summary"), FieldPanel("teaser_image")],
             heading="Teaser card",
         ),
         MultiFieldPanel(
@@ -207,26 +198,19 @@ class BTSPage(Page):
         FieldPanel("body"),
     ]
 
-    parent_page_types = ["behind_scenes.BTSIndexPage"]
-    subpage_types = []
+    parent_page_types = ["behind_scenes.BTSIndexPage"]  # only under the index
+    subpage_types = []  # no children
 
+    # Helpers for cards/templates
     @property
     def card_title(self) -> str:
         return self.teaser_title or self.title
 
     @property
     def card_summary(self) -> str:
-        """
-        Prefer explicit teaser_summary; otherwise fall back to plain-text intro_body.
-        """
         if self.teaser_summary:
             return self.teaser_summary
-
         if self.intro_body:
-            # Convert RichText to plain text, normalize whitespace, then truncate.
-            text = " ".join(strip_tags(str(self.intro_body)).split())
-            if len(text) > 200:
-                return f"{text[:200]}…"
-            return text
-
+            text = strip_tags(str(self.intro_body))
+            return (text[:200] + "…") if len(text) > 200 else text
         return ""
