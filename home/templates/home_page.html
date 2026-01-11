@@ -39,7 +39,7 @@
   <h3 class="section-title"><span>{% trans "Discover what I do" %}</span></h3>
 
   <div class="hscroll" id="services-scroll">
-    <div class="hscroll__track" tabindex="0" aria-label="{% trans 'Services carousel' %}">
+    <div class="hscroll__track" role="region" tabindex="0" aria-label="{% trans 'Services carousel' %}">
       {% for block in page.services %}
         {% if block.block_type == "service" %}
           {# Pick link target: internal page URL, else external URL, else # #}

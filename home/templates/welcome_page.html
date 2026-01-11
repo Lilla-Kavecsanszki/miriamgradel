@@ -14,7 +14,7 @@
 
 {% block content %}
   {% image page.background_image original as bg %}
-  <section class="welcome-hero" style="--welcome-bg: url('{{ bg.url }}')">
+  <div class="welcome-hero" style="--welcome-bg: url('{{ bg.url }}')">
     <div class="container-fluid welcome-inner">
       <div class="row w-100">
         <div class="col-12 col-md-6 col-lg-4 d-flex align-items-center">
@@ -36,7 +36,7 @@
       <!-- Cyan arrow (hidden on small screens via welcome.css) -->
       <button id="enter-button" class="enter-btn" type="button" aria-label="{% trans 'Enter site' %}">▼</button>
     </div>
-  </section>
+  </div>
 {% endblock %}
 
 {% block extra_js %}
