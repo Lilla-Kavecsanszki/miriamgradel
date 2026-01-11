@@ -1,3 +1,8 @@
+:root{
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
 /* ================== FONTS ================== */
 @font-face {
   font-family: 'Designer';
@@ -31,10 +36,17 @@
 
 /* ================== ARROW ================== */
 .enter-btn{
-  position: absolute; left: 50%; bottom: max(2rem, env(safe-area-inset-bottom));
+  position: absolute; 
+  left: 50%; 
+  bottom: calc(2rem + var(--safe-bottom, 0px));
   transform: translateX(-50%);
-  border: 0; background: transparent; color: #73f0fa; cursor: pointer;
-  font-size: 2rem; line-height: 1; z-index: 10;
+  border: 0; 
+  background: transparent; 
+  color: #73f0fa; 
+  cursor: pointer;
+  font-size: 2rem; 
+  line-height: 1; 
+  z-index: 10;
   transition: transform .3s ease, opacity .3s ease;
 }
 .enter-btn:hover, .enter-btn:focus{ transform: translateX(-50%) translateY(-4px); opacity: .8; }
@@ -86,8 +98,13 @@
     /* tablet baseline sizing; phones override below */
     font-size: clamp(4rem, 20vw, 9rem);
   }
-  .template-welcome .mobile-top{    top:    max(0px, env(safe-area-inset-top)) !important; }
-  .template-welcome .mobile-bottom{ bottom: max(0px, env(safe-area-inset-bottom)) !important; }
+  .template-welcome .mobile-top{
+  top: calc(0px + var(--safe-top, 0px)) !important;
+  }
+
+  .template-welcome .mobile-bottom{
+    bottom: calc(0px + var(--safe-bottom, 0px)) !important;
+  }
 
   /* Hide arrow to avoid clashing with bottom word */
   .template-welcome .enter-btn{ display: none !important; }

@@ -11,12 +11,13 @@
   position: relative;
   height: 100vh; height: 100svh; height: 100dvh;
   width: 100%;
+  cursor: pointer;
   background: center/cover no-repeat var(--welcome-bg, #000);
   display: flex; overflow: hidden; z-index: 1;
 
   /* scroll-like exit motion */
   transform: translateY(0);
-  transition: transform .20s cubic-bezier(.22,.61,.36,1), opacity .20s ease;
+  transition: transform .25s cubic-bezier(.22,.61,.36,1), opacity .25s ease;
   will-change: transform, opacity;
 }
 .welcome-inner{
@@ -30,10 +31,17 @@
 
 /* ================== ARROW ================== */
 .enter-btn{
-  position: absolute; left: 50%; bottom: max(2rem, env(safe-area-inset-bottom));
+  position: absolute; 
+  left: 50%; 
+  bottom: max(2rem, env(safe-area-inset-bottom));
   transform: translateX(-50%);
-  border: 0; background: transparent; color: #73f0fa; cursor: pointer;
-  font-size: 2rem; line-height: 1; z-index: 10;
+  border: 0; 
+  background: transparent; 
+  color: #73f0fa; 
+  cursor: pointer;
+  font-size: 2rem; 
+  line-height: 1; 
+  z-index: 10;
   transition: transform .3s ease, opacity .3s ease;
 }
 .enter-btn:hover, .enter-btn:focus{ transform: translateX(-50%) translateY(-4px); opacity: .8; }
@@ -85,8 +93,12 @@
     /* tablet baseline sizing; phones override below */
     font-size: clamp(4rem, 20vw, 9rem);
   }
-  .template-welcome .mobile-top{    top:    max(0px, env(safe-area-inset-top)) !important; }
-  .template-welcome .mobile-bottom{ bottom: max(0px, env(safe-area-inset-bottom)) !important; }
+  .template-welcome .mobile-top{
+    top: max(0px, env(safe-area-inset-top)) !important;
+  }
+  .template-welcome .mobile-bottom{
+    bottom: max(0px, env(safe-area-inset-bottom)) !important;
+  }
 
   /* Hide arrow to avoid clashing with bottom word */
   .template-welcome .enter-btn{ display: none !important; }
