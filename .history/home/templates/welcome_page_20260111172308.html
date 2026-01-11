@@ -4,11 +4,8 @@
 {% block body_class %}template-welcome{% endblock %}
 
 {# SEO: splash page should NOT be indexed; canonical should point to /home/ #}
-{% block robots_meta %}
-  <meta name="robots" content="noindex,follow">
-{% endblock %}
-
 {% block seo_overrides %}
+  <meta name="robots" content="noindex,follow">
   <link rel="canonical" href="https://www.miriamgradel.cc/home/" />
 {% endblock %}
 
