@@ -57,7 +57,7 @@
               {% endif %}
             </div>
             <div class="service-card__body">
-              <h3 class="service-card__title">{{ block.value.title }}</h3>
+              <h4 class="service-card__title">{{ block.value.title }}</h4>
               {% if block.value.description %}
                 <p class="service-card__text">{{ block.value.description }}</p>
               {% endif %}
@@ -124,7 +124,7 @@
   {# ========== ABOUT (two-column) ========== #}
   {% if page.about %}
     <section id="about" class="mb-4">
-      <h2 class="section-title"><span>{% trans "Who is Miriam?" %}</span></h2>
+      <h2 class="section-title"><span>{% trans "Who is Miriam?" %}</span></h3>
 
       <div class="about-layout">
         <!-- LEFT: text -->
@@ -133,7 +133,7 @@
             {% if blk.block_type == "about_item" %}
               <article class="about-item">
                 {% if blk.value.title %}
-                  <h3 class="about-subtitle">{{ blk.value.title }}</h3>
+                  <h4 class="about-subtitle">{{ blk.value.title }}</h4>
                 {% endif %}
                 <div class="about-text">
                   {{ blk.value.body|richtext }}

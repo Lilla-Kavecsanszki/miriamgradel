@@ -35,7 +35,7 @@
 
       <!-- Service anchor tiles -->
       {% if page.services %}
-      <section class="svc-index mb-4">
+      <section class="svc-index mb-4" aria-labelledby="services-heading">
         <ul class="svc-links list-unstyled">
           {% for service in page.services %}
             {% with svc=service.value %}

@@ -35,7 +35,7 @@
 
       <!-- Service anchor tiles -->
       {% if page.services %}
-      <section class="svc-index mb-4">
+      <section class="svc-index mb-4" aria-labelledby="services-heading>
         <ul class="svc-links list-unstyled">
           {% for service in page.services %}
             {% with svc=service.value %}
@@ -63,7 +63,7 @@
     <!-- BTS sidebar -->
     <div class="col-12 col-lg-4 mt-4 mt-lg-0">
       <aside class="bts-aside">
-        <h2 class="section-title">{% trans "Behind the Scenes" %}</h2>
+        <h3 class="section-title">{% trans "Behind the Scenes" %}</h3>
         {% bts_teasers_for 'communication' 3 as bts_teasers %}
         {% if bts_teasers %}
           <ul class="list-unstyled">
@@ -74,7 +74,7 @@
                     {% if bts.teaser_image %}
                       {% image bts.teaser_image fill-600x338 class="w-100" loading="lazy" decoding="async" alt=bts.card_title %}
                     {% endif %}
-                    <h3 class="bts-title d-inline-block mt-2">{{ bts.card_title }}</h3>
+                    <span class="bts-title d-inline-block mt-2">{{ bts.card_title }}</span>
                   </a>
                   <div class="bts-body">
                     {% if bts.card_summary %}
@@ -103,13 +103,13 @@
               id="{% if svc.slug %}{{ svc.slug|slugify }}{% elif svc.title %}{{ svc.title|slugify }}{% else %}section-{{ forloop.counter }}{% endif %}"
               class="svc-section mb-1{% if forloop.counter|divisibleby:2 %} svc-section--alt{% endif %}"
             >
-              <h2 class="section-title">
+              <h3 class="section-title">
                 {% if svc.title %}
                   <span class="band">{{ svc.title }}</span>
                 {% else %}
                   <span class="band">{% trans "Service" %} {{ forloop.counter }}</span>
                 {% endif %}
-              </h2>
+              </h3>
 
               {# CONTENT ROW: text 2/3, image 1/3 (image right) when image exists #}
               <div class="row gx-4 gy-4 align-items-start">
@@ -170,8 +170,7 @@
 
   {# Bottom section: embedded videos (Instagram, YouTube, etc.) #}
   {% if page.instagram_reels %}
-    <section class="insta-reels mt-5" aria-labelledby="insta-heading">
-      <h2 id="insta-heading" class="visually-hidden">Instagram reels</h2>
+    <section class="insta-reels mt-5">
       {% comment %} <h3 class="section-title">
         <span class="band">{% trans "Selected work" %}</span>
       </h3> {% endcomment %}

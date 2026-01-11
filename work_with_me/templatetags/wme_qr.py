@@ -48,5 +48,5 @@ def wme_qr_png(data, scale=8, border=8, title="Scan QR"):
     # Create a data URI for a PNG
     uri = q.png_data_uri(scale=int(scale or 8), border=int(border or 8), dark="black", light="white")
     alt = title or "Scan QR"
-    html = f'<img src="{uri}" alt="{alt}" decoding="async" loading="eager" />'
+    html = f'<img src="{uri}" alt="{alt}" decoding="async" loading="eager">'
     return mark_safe(html)
