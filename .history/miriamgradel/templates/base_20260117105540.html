@@ -4,34 +4,29 @@
 <html lang="{{ LANGUAGE_CODE|default:'en' }}">
 <head>
   <meta charset="utf-8">
-
   <title>
     {% block title %}
-      {% if page and page.seo_title %}
-        {{ page.seo_title }}
-      {% elif page %}
-        {{ page.title }}
-      {% else %}
-        Miriam Gradel
-      {% endif %}
+      {% if page.seo_title %}{{ page.seo_title }}{% else %}{{ page.title }}{% endif %}
     {% endblock %}
     {% block title_suffix %}
       {% wagtail_site as current_site %}
-      {% if current_site and current_site.site_name %}
-        - {{ current_site.site_name }}
-      {% endif %}
+      {% if current_site and current_site.site_name %}- {{ current_site.site_name }}{% endif %}
     {% endblock %}
   </title>
 
-  {% if page and page.search_description %}
+  {% if page.search_description %}
+    <meta name="description" content="{{ page.search_description }}">
+  {% endif %}
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  {% if page.search_description %}
     <meta name="description" content="{{ page.search_description }}">
   {% else %}
     <meta name="description" content="Journalism and storytelling by Miriam Gradel across written, audio and visual formats. Selected work, behind-the-scenes insights, and communication projects.">
   {% endif %}
 
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>{% block title %}{% trans "Miriam Gradel" %}{% endblock %}</title>
 
-  <!-- AI training opt-out -->
+  <!-- AI training opt-out (optional HTML layer) -->
   {% block robots_meta %}
     <meta name="robots" content="noai, noimageai">
   {% endblock %}
@@ -44,7 +39,7 @@
   {# Page-specific SEO overrides (e.g. WelcomePage noindex + canonical to /home/) #}
   {% block seo_overrides %}{% endblock %}
 
-  {# hreflang alternates #}
+  {# hreflang alternates (current + other translations) #}
   {% if page and page.id %}
     <link rel="alternate" hreflang="{{ page.locale.language_code }}" href="{{ page.full_url|default:page.url }}">
     {% for t in page.get_translations %}
@@ -64,18 +59,23 @@
   <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
   <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
 
-  {# --- Embed preconnects --- #}
+  <!-- Embeds (YouTube/Vimeo) -->
   <link rel="preconnect" href="https://www.youtube.com">
   <link rel="preconnect" href="https://i.ytimg.com">
   <link rel="preconnect" href="https://www.youtube-nocookie.com">
   <link rel="preconnect" href="https://player.vimeo.com">
   <link rel="preconnect" href="https://i.vimeocdn.com">
+  <link rel="dns-prefetch" href="//www.youtube.com">
+  <link rel="dns-prefetch" href="//i.ytimg.com">
+  <link rel="dns-prefetch" href="//www.youtube-nocookie.com">
+  <link rel="dns-prefetch" href="//player.vimeo.com">
+  <link rel="dns-prefetch" href="//i.vimeocdn.com">
 
   {# --- Social / Rich cards --- #}
   {% if page %}
     <meta property="og:type" content="website">
-    <meta property="og:title" content="{% firstof page.seo_title page.title 'Miriam Gradel' %}">
-    <meta property="og:description" content="{% if page.search_description %}{{ page.search_description }}{% else %}Journalism and storytelling by Miriam Gradel across written, audio and visual formats.{% endif %}">
+    <meta property="og:title" content="{% firstof page.seo_title page.title %}">
+    <meta property="og:description" content="{{ page.search_description|default_if_none:'' }}">
     <meta property="og:url" content="{{ page.full_url|default:request.build_absolute_uri }}">
     {% block meta_image %}
       <meta property="og:image" content="{{ request.site.root_url }}{% static 'images/og-default.jpg' %}">
@@ -96,7 +96,7 @@
 
   {% block extra_css %}{% endblock %}
 
-  {# --- Structured data (Person) --- #}
+  {# Structured data (Person) #}
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
