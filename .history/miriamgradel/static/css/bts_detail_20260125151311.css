@@ -1,5 +1,6 @@
 /* ===============================
-   Behind The Scenes — Detail page (refined)
+   Behind The Scenes — Detail page (editorial system)
+   Future-proof for text, images, embeds, galleries
    =============================== */
 
 /* ---- layout constants ---- */
@@ -30,7 +31,7 @@
 }
 
 /* ===============================
-   Intro/standfirst & body (aligned to rail)
+   Intro & body rail
    =============================== */
 
 .bts-article header.bts-intro,
@@ -57,10 +58,13 @@
   font-size: 1rem;
   line-height: 1.7;
   color: #333;
+  overflow-wrap: anywhere;   /* protect rail from long URLs / code */
 }
 
+/* Paragraph rhythm */
 .article-body p{ margin: 0 0 var(--block-gap); }
 
+/* Headings */
 .article-body h2{
   font-size: 1.5rem;
   font-weight: 700;
@@ -73,12 +77,23 @@
   margin: calc(var(--block-gap) * 1.5) 0 calc(var(--block-gap) * .75);
 }
 
+/* Lists */
 .article-body ul,
 .article-body ol{
   margin: 0 0 var(--block-gap);
   padding-left: 1.25rem;
 }
 
+/* Blockquotes */
+.article-body blockquote{
+  border-inline-start: 3px solid var(--cyan, #73f0fa);
+  padding-inline-start: 1rem;
+  font-style: italic;
+  color: #555;
+  margin: calc(var(--block-gap) * 1.5) 0;
+}
+
+/* Figures & captions */
 .article-body figure{ margin: calc(var(--block-gap) * 1.5) 0; }
 
 .article-body figcaption{
@@ -88,15 +103,111 @@
   text-align: center;
 }
 
-.article-body blockquote{
-  border-inline-start: 3px solid var(--cyan, #73f0fa);
-  padding-inline-start: 1rem;
-  font-style: italic;
-  color: #555;
-  margin: calc(var(--block-gap) * 1.5) 0;
+/* ===============================
+   StreamField block wrappers
+   =============================== */
+
+.bts-block{ margin: 0 0 var(--block-gap); }
+
+/* Protect rail from wide media */
+.article-body img,
+.article-body iframe,
+.article-body video{
+  max-width: 100%;
 }
 
-/* UNIVERSAL BRAND BUTTON */
+/* Base image style */
+.bts-img{
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 12px;
+}
+
+/* ===============================
+   Image alignment (admin controlled)
+   =============================== */
+
+/* Full width stays in rail */
+.bts-media.align-full{}
+
+/* Float images on desktop only */
+@media (min-width: 992px){
+  .bts-media.align-left,
+  .bts-media.align-right{
+    max-width: min(420px, 45%);
+  }
+
+  .bts-media.align-left{
+    float: left;
+    margin: 0.25rem 1.25rem 0.75rem 0;
+  }
+
+  .bts-media.align-right{
+    float: right;
+    margin: 0.25rem 0 0.75rem 1.25rem;
+  }
+}
+
+/* Clear floats after content */
+.article-body::after{
+  content: "";
+  display: block;
+  clear: both;
+}
+
+/* ===============================
+   Embeds (YouTube, Vimeo, Spotify, etc.)
+   =============================== */
+
+.bts-embed .embed-wrap{
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(0,0,0,0.04);
+}
+
+.bts-embed iframe,
+.bts-embed embed,
+.bts-embed object{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* ===============================
+   Gallery grid
+   =============================== */
+
+.gallery-grid{
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (min-width: 992px){
+  .gallery-grid{
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.gallery-item{ margin: 0; }
+
+.gallery-item figcaption{
+  text-align: center;
+  margin-top: .35rem;
+  font-size: .875rem;
+  color: #6c757d;
+}
+
+/* ===============================
+   UNIVERSAL BRAND BUTTON
+   =============================== */
+
 .btn-brand,
 .to-top-button{
   background: var(--brand-cyan, #73f0fa);
@@ -120,21 +231,21 @@
     box-shadow .2s ease;
 }
 
-/* HOVER + FOCUS */
+/* Hover + focus */
 .btn-brand:hover,
 .btn-brand:focus,
 .to-top-button:hover,
 .to-top-button:focus{
-  background: var(--brand-cyan-dark, #1fb7c3); /* darker cyan */
-  color: #fff;                                  /* better contrast */
-  transform: translate(-2px, -2px);             /* subtle lift */
+  background: var(--brand-cyan-dark, #1fb7c3);
+  color: #fff;
+  transform: translate(-2px, -2px);
 }
 
-/* ACTIVE / PRESSED */
+/* Active */
 .btn-brand:active,
 .to-top-button:active{
   transform: translateY(1px);
-  background: var(--brand-cyan-darker, #148a93); /* darkest cyan */
+  background: var(--brand-cyan-darker, #148a93);
   box-shadow:
     inset 0 -1px 0 rgba(0,0,0,.25),
     0 4px 10px rgba(0,0,0,.25);
@@ -144,14 +255,13 @@
    Back button (sticky inside article)
    =============================== */
 
-/* Wrapper aligns to the same reading rail and sticks near bottom */
 .back-affix{
   position: sticky;
   bottom: calc(16px + env(safe-area-inset-bottom, 0px));
   z-index: 2;
 
   display: flex;
-  justify-content: flex-end;   /* push button to right edge of text rail */
+  justify-content: flex-end;
 
   width: 100%;
   max-width: var(--measure);
@@ -161,8 +271,7 @@
   text-align: right;
 }
 
-/* Brand button (not fixed; respects the sticky wrapper) */
-/* FLOATING "TO TOP" VARIANT */
+/* Floating mobile variant */
 .to-top-button{
   position: fixed;
   bottom: 2rem;
@@ -170,15 +279,18 @@
   z-index: 1000;
 }
 
-/* On very narrow screens, center the sticky wrapper (keeps alignment clean) */
+/* Center on narrow screens */
 @media (max-width: 576px){
-  .back-affix{ justify-content: center; text-align: center; }
+  .back-affix{
+    justify-content: center;
+    text-align: center;
+  }
 }
 
 /* ===============================
    Sidebar offset exceptions
-   (let hero + back-affix visually break out under the sidebar on desktop)
    =============================== */
+
 @media (min-width: 992px){
   .container-fluid.bts-detail > .bts-article > .written-hero{
     margin-left: calc(-1 * var(--sidebar-w));
@@ -189,29 +301,6 @@
 }
 
 /* ===============================
-   Optional: compact floating "to top" variant using the brand button
-   =============================== */
-@media (max-width: 480px){
-  .btn-brand.to-top-button{
-    width:48px; height:48px; padding:0; border-radius:9999px;
-    display:inline-flex; align-items:center; justify-content:center;
-    font-size:1.25rem; line-height:1;
-    gap:0; /* hide label spacing when label is hidden */
-  }
-  .btn-brand.to-top-button .label{ display:none; }
-}
-
-/* ===============================
-   Utilities
-   =============================== */
-[id]{ scroll-margin-top: 80px; }
-html{ scroll-behavior: smooth; }
-
-@media (prefers-reduced-motion: reduce){
-  .btn-brand{ transition: none; }
-}
-
-/* ===============================
    Editorial: justified text
    =============================== */
 
@@ -219,9 +308,18 @@ html{ scroll-behavior: smooth; }
 .bts-article header.bts-intro .lead,
 .article-body,
 .article-body p,
-.article-body .rich-text {
+.article-body .rich-text{
   text-align: justify;
   text-justify: inter-word;
   hyphens: auto;
   -webkit-hyphens: auto;
 }
+
+/* Reduce motion preference */
+@media (prefers-reduced-motion: reduce){
+  .btn-brand{ transition: none; }
+}
+
+/* Anchor offset (nice with sticky menus) */
+[id]{ scroll-margin-top: 80px; }
+html{ scroll-behavior: smooth; }
