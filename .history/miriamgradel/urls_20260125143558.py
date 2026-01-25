@@ -2,6 +2,7 @@ from django.conf import settings
 from django.conf.urls.i18n import i18n_patterns
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.http import HttpResponseServerError
 from django.urls import include, path
 
 from wagtail import urls as wagtail_urls
@@ -10,14 +11,21 @@ from wagtail.contrib.sitemaps.views import sitemap as wagtail_sitemap
 from wagtail.documents import urls as wagtaildocs_urls
 
 from search import views as search_views
-
 from .views import robots_txt
+
+
+def test_500(request):
+    return HttpResponseServerError()
+
 
 urlpatterns = [
     # Admins (not localized)
     path("django-admin/", admin.site.urls),
     path("admin/", include(wagtailadmin_urls)),
     path("documents/", include(wagtaildocs_urls)),
+
+    # ✅ temp test route (keep ABOVE wagtail_urls)
+    path("test-500/", test_500),
 
     # Project routes
     path("search/", search_views.search, name="search"),
@@ -46,4 +54,3 @@ if settings.DEBUG:
         settings.MEDIA_URL,
         document_root=settings.MEDIA_ROOT,
     )
-

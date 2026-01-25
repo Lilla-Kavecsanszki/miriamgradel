@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Page not found{% endblock %}
+{% block title %}Internal server error{% endblock %}
 
-{% block body_class %}template-404{% endblock %}
+{% block body_class %}template-500{% endblock %}
 
 {# Hide the global side menu like on welcome page #}
 {% block side_menu %}{% endblock %}
@@ -15,10 +15,11 @@
 {% block content %}
   <section class="error-page">
     <div class="error-content">
-      <h1 class="error-code">404</h1>
-      <h2 class="error-title">Page not found</h2>
+      <h1 class="error-code">500</h1>
+      <h2 class="error-title">Internal server error</h2>
       <p class="error-message">
-        Sorry, the page you’re looking for doesn’t exist or may have been moved.
+        Sorry, something went wrong on our side.<br>
+        Please try again in a moment.
       </p>
       <a href="/" class="btn mt-3">Return Home</a>
     </div>

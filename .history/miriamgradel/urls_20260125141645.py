@@ -47,3 +47,12 @@ if settings.DEBUG:
         document_root=settings.MEDIA_ROOT,
     )
 
+from django.http import HttpResponseServerError
+from django.urls import path
+
+def test_500(request):
+    return HttpResponseServerError()
+
+urlpatterns += [
+    path("test-500/", test_500),
+]
