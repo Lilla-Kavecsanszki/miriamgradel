@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static wagtailcore_tags wagtailimages_tags i18n wagtailembeds_tags bts_tags %}
+{% load static wagtailcore_tags wagtailimages_tags i18n wagtail_embeds_tags %}
 
 {% block body_class %}template-communication{% endblock %}
 
@@ -111,16 +111,20 @@
                 {% endif %}
               </h2>
 
+              {# CONTENT ROW: text 2/3, image 1/3 (image right) when image exists #}
               <div class="row gx-4 gy-4 align-items-start">
 
+                {# TEXT COLUMN #}
                 <div class="{% if svc.image %}col-12 col-lg-8{% else %}col-12{% endif %}">
 
+                  {# 1) Body – Description #}
                   {% if svc.details %}
                     <div class="svc-details">
                       {{ svc.details|richtext }}
                     </div>
                   {% endif %}
 
+                  {# 2) Offering #}
                   {% if svc.offering %}
                     <div class="svc-offering mt-4">
                       <h4 class="mb-2">{% trans "Offering:" %}</h4>
@@ -128,6 +132,7 @@
                     </div>
                   {% endif %}
 
+                  {# 4) Example #}
                   {% if svc.example %}
                     <div class="svc-examples mt-4">
                       <h4 class="mb-2">{% trans "Example:" %}</h4>
@@ -135,6 +140,7 @@
                     </div>
                   {% endif %}
 
+                  {# 5) Output #}
                   {% if svc.output %}
                     <div class="svc-outputs mt-4">
                       <h4 class="mb-2">{% trans "Output:" %}</h4>
@@ -144,6 +150,7 @@
 
                 </div>
 
+                {# IMAGE COLUMN (RIGHT) #}
                 {% if svc.image %}
                   <div class="col-12 col-lg-4 order-lg-2">
                     <div class="svc-image-square ratio ratio-1x1 overflow-hidden">
@@ -165,35 +172,21 @@
   {% if page.instagram_reels %}
     <section class="insta-reels mt-5" aria-labelledby="insta-heading">
       <h2 id="insta-heading" class="visually-hidden">Instagram reels</h2>
+      {% comment %} <h3 class="section-title">
+        <span class="band">{% trans "Selected work" %}</span>
+      </h3> {% endcomment %}
 
       <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
         {% for item in page.instagram_reels %}
-          {% with value=item.value.embed_code|default_if_none:"" %}
+          {% with code=item.value.embed_code %}
             <div class="col d-flex justify-content-center">
               <div class="video-embed-wrapper w-100">
-
-                {% if "instagram.com/reel/" in value or "instagram.com/p/" in value %}
-                  <blockquote
-                    class="instagram-media"
-                    data-instgrm-permalink="{{ value }}"
-                    data-instgrm-version="14"
-                    style="width:100%; margin:0 auto;">
-                  </blockquote>
-
-                {% elif "youtube.com/" in value or "youtu.be/" in value or "vimeo.com/" in value or "tiktok.com/" in value %}
-                  {% embed value %}
-
-                {% else %}
-                  {{ value|safe }}
-                {% endif %}
-
+                {{ code|safe }}
               </div>
             </div>
           {% endwith %}
         {% endfor %}
       </div>
-
-      <script async src="https://www.instagram.com/embed.js"></script>
     </section>
   {% endif %}
 
