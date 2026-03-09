@@ -44,7 +44,7 @@ class VideoEmbedBlock(blocks.StructBlock):
 
     class Meta:
         label = "Video embed"
-        icon = "media",
+        icon = "media"
 
 
 class ServiceCardBlock(blocks.StructBlock):

@@ -23,19 +23,28 @@ class ExampleItemBlock(blocks.StructBlock):
 
 
 class VideoEmbedBlock(blocks.StructBlock):
-    """Stores embed code or a direct URL for a video/social embed."""
+    """Stores a social/video URL plus an optional preview image."""
 
     embed_code = blocks.TextBlock(
         required=True,
         help_text=(
-            "Paste any embed code (iframe, blockquote, script) OR a direct URL "
-            "(Instagram / YouTube / Vimeo / TikTok, etc.)."
+            "Paste a direct URL (Instagram / YouTube / Vimeo / TikTok, etc.) "
+            "or embed code if needed."
         ),
+    )
+    preview_image = ImageChooserBlock(
+        required=False,
+        help_text="Optional preview image / thumbnail for Instagram or video cards.",
+    )
+    title = blocks.CharBlock(
+        required=False,
+        max_length=120,
+        help_text="Optional short label shown under the preview.",
     )
 
     class Meta:
         label = "Video embed"
-        icon = "media"
+        icon = "media",
 
 
 class ServiceCardBlock(blocks.StructBlock):
