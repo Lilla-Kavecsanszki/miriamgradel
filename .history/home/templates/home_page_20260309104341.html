@@ -36,7 +36,7 @@
 
 <!-- ========== SERVICES (Horizontal carousel) ========== -->
 <section id="services" class="mb-4">
-  <h3 class="section-title"><span>{% trans "Discover what I do" %}</span></h3>
+  <h2 class="section-title"><span>{% trans "What I do" %}</span></h2>
 
   <div class="hscroll" id="services-scroll">
     <div class="hscroll__track" role="region" tabindex="0" aria-label="{% trans 'Services carousel' %}">
@@ -57,7 +57,7 @@
               {% endif %}
             </div>
             <div class="service-card__body">
-              <h4 class="service-card__title">{{ block.value.title }}</h4>
+              <h3 class="service-card__title">{{ block.value.title }}</h3>
               {% if block.value.description %}
                 <p class="service-card__text">{{ block.value.description }}</p>
               {% endif %}
@@ -70,10 +70,12 @@
     </div>
 
     <!-- Controls (inside .hscroll and after the track) -->
-    <div class="hscroll__controls" aria-label="{% trans 'Carousel controls' %}">
-      <button class="hscroll__btn hscroll__btn--prev" aria-label="{% trans 'Previous services' %}" type="button"></button>
-      <div class="hscroll__dots" aria-label="{% trans 'Services navigation' %}"></div>
-      <button class="hscroll__btn hscroll__btn--next" aria-label="{% trans 'Next services' %}" type="button"></button>
+    <div class="hscroll__controls" role="group" aria-label="Carousel controls">
+      <button class="hscroll__btn hscroll__btn--prev" type="button" aria-label="Previous services"></button>
+
+      <div class="hscroll__dots" role="navigation" aria-label="Services navigation"></div>
+
+      <button class="hscroll__btn hscroll__btn--next" type="button" aria-label="Next services"></button>
     </div>
   </div>
 </section>
@@ -81,23 +83,29 @@
   <!-- ========== REVIEWS ========== -->
   {% if page.reviews %}
     <section id="reviews" class="mb-4">
-      <h3 class="section-title mb-4">
+      <h2 class="section-title mb-4">
         <span>{% trans "What working with me is like" %}</span>
-      </h3>
+      </h2>
       <div class="row g-3">
         {% for block in page.reviews %}
           {% if block.block_type == "review" %}
             <div class="col-12 col-lg-6 col-xxl-4">
               <article class="review-card h-100">
+                <h3 class="visually-hidden">
+                  Review from {{ block.value.name|default:"Client" }}
+                </h3>
+
                 {% if block.value.image %}
                   <div class="review-card__img">
                     {% image block.value.image fill-400x400 class="w-100 h-100" loading="lazy" decoding="async" alt=block.value.name %}
                   </div>
                 {% endif %}
+
                 <div class="review-card__body">
                   {% if block.value.quote %}
                     <blockquote class="review-card__quote">“{{ block.value.quote }}”</blockquote>
                   {% endif %}
+
                   <div class="review-card__meta">
                     <div class="review-card__name">{{ block.value.name }}</div>
                     {% if block.value.role %}
@@ -116,7 +124,7 @@
   {# ========== ABOUT (two-column) ========== #}
   {% if page.about %}
     <section id="about" class="mb-4">
-      <h3 class="section-title"><span>{% trans "Who is Miriam?" %}</span></h3>
+      <h2 class="section-title"><span>{% trans "Who am I" %}</span></h2>
 
       <div class="about-layout">
         <!-- LEFT: text -->
@@ -125,7 +133,7 @@
             {% if blk.block_type == "about_item" %}
               <article class="about-item">
                 {% if blk.value.title %}
-                  <h4 class="about-subtitle">{{ blk.value.title }}</h4>
+                  <h3 class="about-subtitle">{{ blk.value.title }}</h3>
                 {% endif %}
                 <div class="about-text">
                   {{ blk.value.body|richtext }}

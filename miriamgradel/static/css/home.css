@@ -361,7 +361,7 @@
   margin:0;
   position:relative;
   border: none !important;
-  box-shadow: 8px 0 0 #73f0fa;
+  box-shadow: 8px 0 18px rgba(115,240,250,.8);
   overflow:hidden;
 }
 
