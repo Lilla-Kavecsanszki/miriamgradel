@@ -97,7 +97,7 @@ class ServiceCardBlock(blocks.StructBlock):
 class CommunicationPage(Page):
     """
     A single Communication page with intro text, service cards, optional highlights,
-    and optional social media cards (Instagram, YouTube, etc.).
+    and optional embedded videos (Instagram, YouTube, etc.).
     """
 
     template = "communication.html"
@@ -121,15 +121,19 @@ class CommunicationPage(Page):
     )
 
     instagram_reels = StreamField(
-        [("instagram_card", InstagramCardBlock())],
+        [("video", VideoEmbedBlock())],
         blank=True,
-        null=True,
+        null=True,  # keep: avoids DB/schema change
         use_json_field=True,
-        help_text="Optional Instagram cards shown at the bottom.",
+        help_text=(
+            "Optional embedded videos (Instagram, YouTube, Vimeo, TikTok, etc.) "
+            "shown at the bottom."
+        ),
     )
 
     content_panels = Page.content_panels + [
         FieldPanel("intro"),
         FieldPanel("services"),
+        FieldPanel("project_highlights"),
         FieldPanel("instagram_reels"),
     ]

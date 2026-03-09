@@ -97,7 +97,7 @@ class ServiceCardBlock(blocks.StructBlock):
 class CommunicationPage(Page):
     """
     A single Communication page with intro text, service cards, optional highlights,
-    and optional social media cards (Instagram, YouTube, etc.).
+    and optional embedded videos (Instagram, YouTube, etc.).
     """
 
     template = "communication.html"
@@ -131,5 +131,6 @@ class CommunicationPage(Page):
     content_panels = Page.content_panels + [
         FieldPanel("intro"),
         FieldPanel("services"),
+        FieldPanel("project_highlights"),
         FieldPanel("instagram_reels"),
     ]

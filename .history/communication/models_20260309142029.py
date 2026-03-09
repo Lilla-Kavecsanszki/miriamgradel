@@ -131,5 +131,6 @@ class CommunicationPage(Page):
     content_panels = Page.content_panels + [
         FieldPanel("intro"),
         FieldPanel("services"),
+        FieldPanel("project_highlights"),
         FieldPanel("instagram_reels"),
     ]
