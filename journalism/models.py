@@ -56,7 +56,6 @@ class WrittenPage(Page):
     def get_context(self, request, *args, **kwargs):
         ctx = super().get_context(request, *args, **kwargs)
 
-        year = date.today().year
         qs = list(self.articles.all())
 
         def pubdate(item):
@@ -69,16 +68,10 @@ class WrittenPage(Page):
 
         items = sorted(qs, key=pubdate, reverse=True)
 
-        recent: list[WrittenArticleItem] = []
-        previous: list[WrittenArticleItem] = []
-        for item in items:
-            (recent if pubdate(item).year == year else previous).append(item)
-
         ctx.update(
             {
-                "current_year": year,
-                "recent_articles": recent,
-                "previous_articles": previous,
+                "recent_articles": items[:3],     # newest 3
+                "previous_articles": items[3:],   # the rest
                 "bts_teasers": get_bts_teasers(limit=3),
             }
         )
@@ -105,8 +98,8 @@ class WrittenArticleItem(Orderable):
         FieldPanel("external_url"),
         FieldPanel("excerpt"),
     ]
-
-
+    
+    
 # ======================
 # VIDEO
 # ======================
