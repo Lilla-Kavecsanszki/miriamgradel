@@ -26,20 +26,17 @@
         <div class="container px-3 px-md-4">
           <h3 class="fw-bold mb-5">Your message has been sent successfully.</h3>
           <p class="lead mb-0">
-            Thank you for reaching out! I’ll respond as soon as I can.
+            Thank you for your message. I will get back to you as soon as possible.
           </p>
         </div>
       </section>
 
       <!-- Back button -->
       <p>
-        {% with home_page=request.site.root_page.get_children.live.first %}
-          <a class="btn btn-brand mb-5 px-4 py-2" href="{% pageurl home_page %}">
-            &larr; Back to Home
-          </a>
-        {% endwith %}
+        <a class="btn btn-brand mb-5 px-4 py-2" href="/home/">
+          &larr; Back to Home
+        </a>
       </p>
-
     </div>
   </div>
 </div>
